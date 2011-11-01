@@ -15,8 +15,6 @@
 #include <math.h>
 #include <float.h>
 
-#include <omp.h>
-
 #include "distance.h"
 
 typedef struct {

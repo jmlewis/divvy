@@ -104,7 +104,7 @@ void dendrogram(int N, int complete, float *distance, dendrite *result) {
 		//absorb cluster and update nearest neighbors
 		for (i = 0; i < (N-1); i++) {
 			//	printf("%i %i %i \n", nearest[i], ncopy[mindex], bookkeep[mindex]);
-			if (nearest[i] == groupA || nearest[i] == groupB && i != mindex && i != ncopy[mindex])
+			if ((nearest[i] == groupA || nearest[i] == groupB) && i != mindex && i != ncopy[mindex])
 				nearest[i] = N + j;				
 		}
 		
