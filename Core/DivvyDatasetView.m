@@ -222,6 +222,8 @@
   [image unlockFocus];
   
   self.renderedImage = image;
+    
+  [image release];
   
   return self.renderedImage;
 }
@@ -255,7 +257,7 @@
   NSArray *pluginTypes = [delegate pluginTypes];
   
   for(NSString *pluginType in pluginTypes) {
-    [self setValue:[[NSMutableArray alloc] init] forKey:[NSString stringWithFormat:@"%@s", pluginType]];
+    [self setValue:[NSMutableArray array] forKey:[NSString stringWithFormat:@"%@s", pluginType]];
     
     NSMutableArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
     
@@ -307,8 +309,8 @@
   NSArray *pluginDefaults = delegate.pluginDefaults;
   
   for(NSString *pluginType in pluginTypes) {
-    NSMutableArray *plugins = [[NSMutableArray alloc] init];
-    NSMutableArray *pluginIDs = [[NSMutableArray alloc] init];
+    NSMutableArray *plugins = [NSMutableArray array];
+    NSMutableArray *pluginIDs = [NSMutableArray array];
     [self setValue:plugins forKey:[NSString stringWithFormat:@"%@s", pluginType]];
     [self setValue:pluginIDs forKey:[NSString stringWithFormat:@"%@IDs", pluginType]];
     
@@ -328,11 +330,10 @@
         }
       }
     
-    NSMutableArray *pluginResults = [[NSMutableArray alloc] init];
+    NSMutableArray *pluginResults = [NSMutableArray array];
     for(id aPlugin in [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]])
       [pluginResults addObject:[NSNull null]];
     [self setValue:pluginResults forKey:[NSString stringWithFormat:@"%@Results", pluginType]];
-    [pluginResults release];
   }
 }
 

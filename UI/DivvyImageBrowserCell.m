@@ -36,6 +36,8 @@
 		color = CGColorCreate(colorSpace, strokeComponents);
 		[selectionLayer setBorderColor:color];
 		CFRelease(color);
+        
+        CFRelease(colorSpace);
     
 		[selectionLayer setBorderWidth:7.0];
 		[selectionLayer setCornerRadius:5];

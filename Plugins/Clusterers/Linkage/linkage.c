@@ -31,7 +31,7 @@ void dendrogram(int N, int complete, float *distance, dendrite *result) {
 	float * minima = (float *)malloc((N - 1) * sizeof(float));
 	float min = FLT_MAX;
 	float ndist;
-	int mindex, groupA, groupB;
+	int mindex = 0, groupA, groupB;
 	
 	//step 1: make two arrays of size n-1: row minima and nearest neighbors
 	for(i = 0; i < N - 1; i++) {

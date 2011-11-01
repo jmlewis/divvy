@@ -13,6 +13,8 @@
 #import "DivvyDataset.h"
 #import "DivvyDatasetView.h"
 
+#import "DivvyImageBrowserView.h"
+
 #import "DivvyDatasetsPanel.h"
 #import "DivvyDatasetViewPanel.h"
 
