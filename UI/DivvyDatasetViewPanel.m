@@ -48,20 +48,19 @@
   NSArray *pluginTypes = delegate.pluginTypes;
 
   for(NSString *pluginType in pluginTypes) {
-    NSMutableArray *pluginViewControllers = [[NSMutableArray alloc] init];
+    NSMutableArray *pluginViewControllers = [NSMutableArray array];
     [self setValue:pluginViewControllers forKey:[NSString stringWithFormat:@"%@ViewControllers", pluginType]];
-    [pluginViewControllers release];
     
     for(NSEntityDescription *anEntityDescription in [[[NSApp delegate] managedObjectModel] entities])
       if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {        
         Class controller = NSClassFromString([NSString stringWithFormat:@"%@%@%@", @"Divvy", anEntityDescription.name, @"Controller"]);
-        NSMutableArray *controllers = [self valueForKey:[NSString stringWithFormat:@"%@ViewControllers", pluginType]];
         
         id controllerInstance = [[controller alloc] init];
-        [controllers addObject:controllerInstance];
+        [pluginViewControllers addObject:controllerInstance];
         [controllerInstance release];
         
-        [NSBundle loadNibNamed:[NSString stringWithFormat:@"%@%@", @"Divvy", anEntityDescription.name] owner:controllerInstance];
+        NSString *nibName = [NSString stringWithFormat:@"%@%@", @"Divvy", anEntityDescription.name];
+        [NSBundle loadNibNamed:nibName owner:controllerInstance];
       }
   }
 }

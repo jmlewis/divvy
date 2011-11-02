@@ -7,15 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D2312A6143B5E82009DD6DD /* DivvyIsomap.h in Sources */ = {isa = PBXBuildFile; fileRef = 0D86ADF51428998D00877901 /* DivvyIsomap.h */; };
 		0D2312A7143B5E82009DD6DD /* DivvyIsomap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D86ADF61428998D00877901 /* DivvyIsomap.mm */; };
-		0D2312A8143B5E82009DD6DD /* DivvyIsomapController.h in Sources */ = {isa = PBXBuildFile; fileRef = 0D86AE021428BEF600877901 /* DivvyIsomapController.h */; };
 		0D2312A9143B5E82009DD6DD /* DivvyIsomapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D86AE031428BEF600877901 /* DivvyIsomapController.m */; };
 		0D2312AA143B5E82009DD6DD /* isomap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D86ADF814289A4F00877901 /* isomap.cpp */; };
-		0D2312AB143B5E82009DD6DD /* isomap.h in Sources */ = {isa = PBXBuildFile; fileRef = 0D86ADFA14289A7400877901 /* isomap.h */; };
 		0D2312AD143B5E82009DD6DD /* dijkstra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D86ADFB1428A47C00877901 /* dijkstra.cpp */; };
-		0D2312AE143B5E82009DD6DD /* fibheap.h in Sources */ = {isa = PBXBuildFile; fileRef = 0D86ADFD1428A4DD00877901 /* fibheap.h */; };
-		0D55DC7613FAA05A000ADAFB /* DivvyPCA.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D55DC7513FAA05A000ADAFB /* DivvyPCA.xib */; };
 		0D55DC7713FAA081000ADAFB /* DivvyPCA.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1957713983DE500BF1EC7 /* DivvyPCA.m */; };
 		0D55DC7813FAA081000ADAFB /* pca.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D55DC6F13FAA04A000ADAFB /* pca.c */; };
 		0D55DC7913FAA081000ADAFB /* DivvyPCAController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D55DC7313FAA056000ADAFB /* DivvyPCAController.m */; };
@@ -299,7 +294,7 @@
 		D7764F5C137B4CDE00F7F49F /* DatasetWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatasetWindow.xib; sourceTree = "<group>"; };
 		D77DF783118636A2009C1946 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		D78CD47313FC718C00390ABD /* Divvy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Divvy.xcdatamodel; sourceTree = "<group>"; };
-		D792E57B14292A4F0084626A /* DivvyIsomap.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DivvyIsomap.plist; sourceTree = "<group>"; };
+		D792E57B14292A4F0084626A /* DivvyIsomap-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DivvyIsomap-Info.plist"; sourceTree = "<group>"; };
 		D792E59314292C120084626A /* DivvyNilPointVisualizer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyNilPointVisualizer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D792E59414292C120084626A /* DivvyNilPointVisualizer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DivvyNilPointVisualizer-Info.plist"; sourceTree = "<group>"; };
 		D792E59B14292C710084626A /* DivvyNilPointVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyNilPointVisualizer.h; sourceTree = "<group>"; };
@@ -526,7 +521,7 @@
 				0D86ADF814289A4F00877901 /* isomap.cpp */,
 				0D8F0C0F1461ABBD007E3376 /* DivvyIsomap.xcdatamodeld */,
 				0D86ADFA14289A7400877901 /* isomap.h */,
-				D792E57B14292A4F0084626A /* DivvyIsomap.plist */,
+				D792E57B14292A4F0084626A /* DivvyIsomap-Info.plist */,
 				0D86ADFB1428A47C00877901 /* dijkstra.cpp */,
 				0D86ADFD1428A4DD00877901 /* fibheap.h */,
 				0D86AE001428BC5A00877901 /* DivvyIsomap.xib */,
@@ -1152,7 +1147,6 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				D7764F5D137B4CDE00F7F49F /* DatasetWindow.xib in Resources */,
-				0D55DC7613FAA05A000ADAFB /* DivvyPCA.xib in Resources */,
 				D7AADA5014465C800041E6F1 /* processing.png in Resources */,
 				D71D5F3914609FBC003DA34F /* Divvy.icns in Resources */,
 			);
@@ -1239,14 +1233,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D2312A6143B5E82009DD6DD /* DivvyIsomap.h in Sources */,
 				0D2312A7143B5E82009DD6DD /* DivvyIsomap.mm in Sources */,
-				0D2312A8143B5E82009DD6DD /* DivvyIsomapController.h in Sources */,
 				0D2312A9143B5E82009DD6DD /* DivvyIsomapController.m in Sources */,
 				0D2312AA143B5E82009DD6DD /* isomap.cpp in Sources */,
-				0D2312AB143B5E82009DD6DD /* isomap.h in Sources */,
 				0D2312AD143B5E82009DD6DD /* dijkstra.cpp in Sources */,
-				0D2312AE143B5E82009DD6DD /* fibheap.h in Sources */,
 				0D8F0C111461ABBD007E3376 /* DivvyIsomap.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1489,7 +1479,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyPCA;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1504,7 +1494,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
-				INFOPLIST_FILE = Plugins/Reducers/Isomap/DivvyIsomap.plist;
+				INFOPLIST_FILE = "Plugins/Reducers/Isomap/DivvyIsomap-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1528,7 +1518,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
-				INFOPLIST_FILE = Plugins/Reducers/Isomap/DivvyIsomap.plist;
+				INFOPLIST_FILE = "Plugins/Reducers/Isomap/DivvyIsomap-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1539,7 +1529,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyIsomap;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1589,7 +1579,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyTSNE;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1705,7 +1695,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyScatterPlot;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1751,7 +1741,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilClusterer;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1847,7 +1837,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyKMeans;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1893,7 +1883,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilPointVisualizer;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2031,7 +2021,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyLinkage;
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;

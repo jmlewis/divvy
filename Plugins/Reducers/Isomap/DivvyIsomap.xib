@@ -31,7 +31,7 @@
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSCustomObject" id="1001">
-				<string key="NSClassName">DivvyTSNEController</string>
+				<string key="NSClassName">DivvyIsomapController</string>
 			</object>
 			<object class="NSCustomObject" id="1003">
 				<string key="NSClassName">FirstResponder</string>
@@ -47,7 +47,7 @@
 					<object class="NSSlider" id="168412438">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{30, 10}, {244, 25}}</string>
+						<string key="NSFrame">{{18, 20}, {263, 25}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -59,7 +59,7 @@
 							<reference key="NSControlView" ref="168412438"/>
 							<double key="NSMaxValue">15</double>
 							<double key="NSMinValue">3</double>
-							<double key="NSValue">11</double>
+							<double key="NSValue">9</double>
 							<double key="NSAltIncValue">0.0</double>
 							<int key="NSNumberOfTickMarks">7</int>
 							<int key="NSTickMarkPosition">0</int>
@@ -70,7 +70,7 @@
 					<object class="NSTextField" id="58674595">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 41}, {194, 17}}</string>
+						<string key="NSFrame">{{17, 52}, {194, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="168412438"/>
@@ -106,7 +106,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{299, 67}</string>
+				<string key="NSFrameSize">{299, 89}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="58674595"/>
@@ -119,6 +119,22 @@
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeK:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="168412438"/>
+					</object>
+					<int key="connectionID">46</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="1005"/>
+					</object>
+					<int key="connectionID">48</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -154,8 +170,8 @@
 						<reference key="object" ref="1005"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="168412438"/>
 							<reference ref="58674595"/>
+							<reference ref="168412438"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -233,28 +249,28 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">45</int>
+			<int key="maxID">48</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">DivvyTSNEController</string>
+					<string key="className">DivvyIsomapController</string>
 					<string key="superclassName">NSViewController</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">changePerplexity:</string>
+						<string key="NS.key.0">changeK:</string>
 						<string key="NS.object.0">id</string>
 					</object>
 					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">changePerplexity:</string>
+						<string key="NS.key.0">changeK:</string>
 						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">changePerplexity:</string>
+							<string key="name">changeK:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/DivvyTSNEController.h</string>
+						<string key="minorKey">./Classes/DivvyIsomapController.h</string>
 					</object>
 				</object>
 			</object>
