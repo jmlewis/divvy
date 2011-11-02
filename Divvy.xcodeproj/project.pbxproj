@@ -26,6 +26,7 @@
 		0D86ADEE1428990F00877901 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77DF783118636A2009C1946 /* Accelerate.framework */; };
 		0D86ADEF1428990F00877901 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D730D27713B5297E00E01F31 /* Cocoa.framework */; };
 		0D86AE011428BC5A00877901 /* DivvyIsomap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D86AE001428BC5A00877901 /* DivvyIsomap.xib */; };
+		0D8F0C111461ABBD007E3376 /* DivvyIsomap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F0C0F1461ABBD007E3376 /* DivvyIsomap.xcdatamodeld */; };
 		0D9C419E13FD00D700E59675 /* tsne.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C419D13FD00D700E59675 /* tsne.c */; };
 		0D9C41A113FD00E900E59675 /* DivvyTSNE.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C41A013FD00E900E59675 /* DivvyTSNE.m */; };
 		0D9C41A413FD00F800E59675 /* DivvyTSNEController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C41A313FD00F800E59675 /* DivvyTSNEController.m */; };
@@ -120,6 +121,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0D55DC5C13FA9FCA000ADAFB;
 			remoteInfo = DivvyPCA;
+		};
+		0DC7D5741461AB52001D57BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0D86ADE51428990F00877901;
+			remoteInfo = DivvyIsomap;
 		};
 		D704B6A913E088B1002692E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -227,10 +235,10 @@
 		0D86ADFA14289A7400877901 /* isomap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = isomap.h; sourceTree = "<group>"; };
 		0D86ADFB1428A47C00877901 /* dijkstra.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dijkstra.cpp; sourceTree = "<group>"; };
 		0D86ADFD1428A4DD00877901 /* fibheap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fibheap.h; sourceTree = "<group>"; };
-		0D86ADFE1428BC1F00877901 /* DivvyIsomap.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DivvyIsomap.xcdatamodel; sourceTree = "<group>"; };
 		0D86AE001428BC5A00877901 /* DivvyIsomap.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DivvyIsomap.xib; sourceTree = "<group>"; };
 		0D86AE021428BEF600877901 /* DivvyIsomapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyIsomapController.h; sourceTree = "<group>"; };
 		0D86AE031428BEF600877901 /* DivvyIsomapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyIsomapController.m; sourceTree = "<group>"; };
+		0D8F0C101461ABBD007E3376 /* DivvyIsomap.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DivvyIsomap.xcdatamodel; sourceTree = "<group>"; };
 		0D9C419113FD007100E59675 /* DivvyTSNE.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyTSNE.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D9C419213FD007100E59675 /* DivvyTSNE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DivvyTSNE-Info.plist"; sourceTree = "<group>"; };
 		0D9C419C13FD00D700E59675 /* tsne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tsne.h; sourceTree = "<group>"; };
@@ -516,11 +524,11 @@
 				0D86AE021428BEF600877901 /* DivvyIsomapController.h */,
 				0D86AE031428BEF600877901 /* DivvyIsomapController.m */,
 				0D86ADF814289A4F00877901 /* isomap.cpp */,
+				0D8F0C0F1461ABBD007E3376 /* DivvyIsomap.xcdatamodeld */,
 				0D86ADFA14289A7400877901 /* isomap.h */,
 				D792E57B14292A4F0084626A /* DivvyIsomap.plist */,
 				0D86ADFB1428A47C00877901 /* dijkstra.cpp */,
 				0D86ADFD1428A4DD00877901 /* fibheap.h */,
-				0D86ADFE1428BC1F00877901 /* DivvyIsomap.xcdatamodel */,
 				0D86AE001428BC5A00877901 /* DivvyIsomap.xib */,
 			);
 			path = Isomap;
@@ -924,6 +932,7 @@
 				D7A24DA813F3225C001AD337 /* PBXTargetDependency */,
 				D7A24DAA13F3225C001AD337 /* PBXTargetDependency */,
 				0D55DCAD13FAA0D2000ADAFB /* PBXTargetDependency */,
+				0DC7D5751461AB52001D57BF /* PBXTargetDependency */,
 				D751AC9D13FD7E780089FAAE /* PBXTargetDependency */,
 				D7A250F81402F7E2001AD337 /* PBXTargetDependency */,
 				D792E59A14292C1E0084626A /* PBXTargetDependency */,
@@ -1238,6 +1247,7 @@
 				0D2312AB143B5E82009DD6DD /* isomap.h in Sources */,
 				0D2312AD143B5E82009DD6DD /* dijkstra.cpp in Sources */,
 				0D2312AE143B5E82009DD6DD /* fibheap.h in Sources */,
+				0D8F0C111461ABBD007E3376 /* DivvyIsomap.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1361,6 +1371,11 @@
 			isa = PBXTargetDependency;
 			target = 0D55DC5C13FA9FCA000ADAFB /* DivvyPCA */;
 			targetProxy = 0D55DCAC13FAA0D2000ADAFB /* PBXContainerItemProxy */;
+		};
+		0DC7D5751461AB52001D57BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0D86ADE51428990F00877901 /* DivvyIsomap */;
+			targetProxy = 0DC7D5741461AB52001D57BF /* PBXContainerItemProxy */;
 		};
 		D704B6AA13E088B1002692E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2142,6 +2157,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0D8F0C0F1461ABBD007E3376 /* DivvyIsomap.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0D8F0C101461ABBD007E3376 /* DivvyIsomap.xcdatamodel */,
+			);
+			currentVersion = 0D8F0C101461ABBD007E3376 /* DivvyIsomap.xcdatamodel */;
+			path = DivvyIsomap.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

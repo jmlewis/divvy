@@ -18,6 +18,8 @@ struct IsomapImpl {};
 @dynamic reducerID;
 @dynamic name;
 
+@dynamic d;
+
 @dynamic k;
 
 
@@ -26,6 +28,10 @@ struct IsomapImpl {};
 	
 	self.name = @"Isomap";
 	self.reducerID = [[NSProcessInfo processInfo] globallyUniqueString];
+}
+
+- (void) calculateD:(DivvyDataset *)dataset {
+    // Isomap always stays with its default of 2
 }
 
 - (void) reduceDataset:(DivvyDataset *)dataset

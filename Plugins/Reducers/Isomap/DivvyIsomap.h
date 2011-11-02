@@ -6,15 +6,17 @@
 //  Copyright 2011 Delft University of Technology. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
+#import <Cocoa/Cocoa.h>
 #import "DivvyReducer.h"
 
-@interface DivvyIsomap : NSManagedObject
+
+@interface DivvyIsomap : NSManagedObject <DivvyReducer>
 
 @property (nonatomic, retain) NSString *reducerID;
 @property (nonatomic, retain) NSString *name;
 
-@property (nonatomic, retain) NSNumber *k;
+@property (nonatomic, retain) NSNumber *d;
 
+@property (nonatomic, retain) NSNumber *k;
 
 @end
