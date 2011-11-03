@@ -10,10 +10,16 @@
 #include "tsne.h"
 #include <math.h>
 #include <float.h>
+#include <dispatch/dispatch.h>
 #include <Accelerate/Accelerate.h>
+
+dispatch_queue_t queue;
 
 
 void perform_tsne(float* X, int D, int N, float* Y, int no_dims, float perplexity) {
+    
+    // Initialize libdispatch
+    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	
 	// Set learning parameters
 	int max_iter = 1000, stop_lying_iter = 100;
@@ -52,8 +58,12 @@ void perform_tsne(float* X, int D, int N, float* Y, int no_dims, float perplexit
 		compute_gradient(Y, unnorm_Q, dY, N, no_dims);
 		
 		// Update solution
-		for(int i = 0; i < N * no_dims; i++) uY[i] = momentum * uY[i] - eta * dY[i];
-		for(int i = 0; i < N * no_dims; i++)  Y[i] = Y[i] + uY[i];
+        dispatch_apply(N * no_dims, queue, ^(size_t i) {
+            uY[i] = momentum * uY[i] - eta * dY[i];
+            Y[i] = Y[i] + uY[i];
+        });
+		//for(int i = 0; i < N * no_dims; i++) uY[i] = momentum * uY[i] - eta * dY[i];
+		//for(int i = 0; i < N * no_dims; i++)  Y[i] = Y[i] + uY[i];
 			
 		// Make solution zero-mean
 		zero_mean(Y, N, no_dims);
@@ -135,16 +145,16 @@ void zero_mean(float* X, int N, int D) {
 void compute_squared_euclidean_distance(float* X, int N, int D, float* DD) {
     
     // Compute squared Euclidean distance matrix (without BLAS)
-    float val;
-	for(int n = 0; n < N; n++) {
+    //for(int n = 0; n < N; n++) {
+    dispatch_apply(N, queue, ^(size_t n) {
 		DD[n * N + n] = 0.0;
 		for(int m = n + 1; m < N; m++) {
-			val = 0.0;
+			float val = 0.0;
 			for(int d = 0; d < D; d++) val += (X[n * D + d] - X[m * D + d]) * (X[n * D + d] - X[m * D + d]);
 			DD[n * N + m] = val;
 			DD[m * N + n] = val;
 		}
-	}    
+	});
     
     // Compute squared Euclidean distance matrix (using BLAS)
     // ...put squared row and column sums in DD...
@@ -158,8 +168,9 @@ void compute_gaussian_perplexity(float* X, int N, int D, float* P, float perplex
 	compute_squared_euclidean_distance(X, N, D, DD);
 	
 	// Compute the Gaussian kernel row by row
-	for(int n = 0; n < N; n++) {
-		
+	//for(int n = 0; n < N; n++) {
+    dispatch_apply(N, queue, ^(size_t n) {
+	
 		// Initialize some variables
 		bool found = false;
 		float beta = 1.0;
@@ -212,7 +223,7 @@ void compute_gaussian_perplexity(float* X, int N, int D, float* P, float perplex
 		float sumP = 0.0;
 		for(int m = 0; m < N; m++) sumP += P[n * N + m];
 		for(int m = 0; m < N; m++) P[n * N + m] /= sumP;
-	}
+	});
 	
 	// Make sure the Gaussian kernel is symmetric
     float val1, val2;
@@ -241,15 +252,15 @@ void compute_student(float* X, int N, int D, float* P, float* unnorm_P) {
     compute_squared_euclidean_distance(X, N, D, unnorm_P);
 	
 	// Compute unnormalized Student-t densities
-	float val;
-	for(int n = 0; n < N; n++) {
+	//for(int n = 0; n < N; n++) {
+    dispatch_apply(N, queue, ^(size_t n) {
 		unnorm_P[n * N + n] = FLT_MIN;
 		for(int m = n + 1; m < N; m++) {
-            val = 1 / (1 + unnorm_P[n * N + m]);
+            float val = 1.0f / (1.0f + unnorm_P[n * N + m]);
 			unnorm_P[n * N + m] = val;
 			unnorm_P[m * N + n] = val;
 		}
-	}
+	});
 	
 	// Compute row sums
 	float* sum_P = (float*) calloc(N, sizeof(float));
@@ -274,7 +285,10 @@ void compute_student(float* X, int N, int D, float* P, float* unnorm_P) {
 }
 
 void compute_stiffnesses(float* P, float* Q, float* unnorm_Q, int N) {
-	for(int i = 0; i < N * N; i++) unnorm_Q[i] = 4.0 * (P[i] - Q[i]) * unnorm_Q[i];
+	//for(int i = 0; i < N * N; i++) {
+    dispatch_apply(N * N, queue, ^(size_t i) {
+        unnorm_Q[i] = 4.0 * (P[i] - Q[i]) * unnorm_Q[i];
+    });
 }
 
 void compute_gradient(float* Y, float* Z, float* dY, int N, int D) {
@@ -283,16 +297,16 @@ void compute_gradient(float* Y, float* Z, float* dY, int N, int D) {
 	for(int i = 0; i < N * D; i++) dY[i] = 0.0;
 	
 	// Perform the computation of the gradient
-	float val;
-	for(int n = 0; n < N; n++) {
+	//for(int n = 0; n < N; n++) {
+    dispatch_apply(N, queue, ^(size_t n) {
 		for(int m = n + 1; m < N; m++) {
 			for(int d = 0; d < D; d++) {
-				val = (Y[n * D + d] - Y[m * D + d]) * Z[n * N + m];
+				float val = (Y[n * D + d] - Y[m * D + d]) * Z[n * N + m];
 				dY[n * D + d] += val;
 				dY[m * D + d] -= val;
 			}
 		}
-	}
+	});
 }
 
 float evaluate_error(float* P, float* Q, int N) {
