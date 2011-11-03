@@ -20,8 +20,12 @@
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-  //[[NSColor colorWithCalibratedRed:0.7f green:0.7f blue:0.7f alpha:1.0f] setFill];
-  //NSRectFill(dirtyRect);    
-}
+  NSColor *startingColor = [NSColor colorWithCalibratedRed:0.85f green:0.85f blue:0.85f alpha:1.0f];
+  NSColor *endingColor = [NSColor colorWithCalibratedRed:0.75f green:0.75f blue:0.75f alpha:1.0f];  
+  
+  NSGradient* aGradient = [[NSGradient alloc]
+                           initWithStartingColor:startingColor
+                           endingColor:endingColor];
+  [aGradient drawInRect:[self bounds] angle:270];}
 
 @end

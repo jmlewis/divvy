@@ -200,6 +200,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
       self.selectedDatasetView = newDatasetView;
     }
     [self.datasetViewPanelController reflow];
+    [self.datasetViewPanelController.scrollView.documentView scrollPoint:NSMakePoint(0.0, 0.0)];
   }
 }
 

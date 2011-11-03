@@ -118,8 +118,8 @@
   NSRect topFrame = self.view.frame;
   NSRect documentFrame = [self.scrollView.documentView frame];
   
-  float y = 0.f; // Go from the bottom up
-  float headerBuffer = -10.f; // Buffer between bottom of header and top of view
+  float y = 0.f; // Go from the top down
+  float headerBuffer = 0.f; // Buffer between bottom of header and top of view
   
   // Need to set documentFrame height before positioning the subviews
   for(NSString *pluginType in pluginTypes) {
@@ -151,7 +151,7 @@
     }
   }
 
-  y += delegate.selectedDatasetView ? 20.f : 70.f; // Top border, with room for select label if nothing's selected
+  y += delegate.selectedDatasetView ? 0.f : 50.f; // Top border, with room for select label if nothing's selected
   
   
   documentFrame.origin.y = topFrame.origin.y + topFrame.size.height - y;

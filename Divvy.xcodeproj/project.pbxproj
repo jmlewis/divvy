@@ -269,7 +269,7 @@
 		D704B88F13E1EDE1002692E9 /* DivvyNilClustererController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyNilClustererController.m; sourceTree = "<group>"; };
 		D704B89113E1EDF2002692E9 /* DivvyNilClusterer.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = DivvyNilClusterer.xcdatamodel; sourceTree = "<group>"; };
 		D704B89313E1EE41002692E9 /* DivvyNilClusterer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DivvyNilClusterer.xib; sourceTree = "<group>"; };
-		D71D5F3814609FBC003DA34F /* Divvy.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Divvy.icns; path = ../Divvy.icns; sourceTree = "<group>"; };
+		D71D5F3814609FBC003DA34F /* Divvy.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Divvy.icns; sourceTree = "<group>"; };
 		D72E1D0D116FC6F8000D3D95 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D730D22D13B5266500E01F31 /* DivvyKMeans.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = DivvyKMeans.xcdatamodel; sourceTree = "<group>"; };
 		D730D23413B526A800E01F31 /* DivvyPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DivvyPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };

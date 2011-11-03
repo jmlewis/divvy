@@ -11,6 +11,8 @@
 #import "DivvyAppDelegate.h"
 #import "DivvyDataset.h"
 
+#import "DivvyDatasetWindow.h"
+
 #import "DivvyDatasetVisualizer.h"
 #import "DivvyPointVisualizer.h"
 #import "DivvyClusterer.h"
@@ -296,8 +298,23 @@
   [self.operationQueue setMaxConcurrentOperationCount:1]; // Serial queue on a per dataset view basis
   
   [self updatePlugins];
+
+  [self setProcessingImage];
+  [delegate.datasetWindowController.datasetViewsBrowser reloadData];  
   
-  [self checkForNullPluginResults];
+  NSInvocationOperation *invocationOperation = [[[NSInvocationOperation alloc] initWithTarget:self
+                                                                                     selector:@selector(checkForNullPluginResults)
+                                                                                       object:nil] autorelease];
+  
+  // Reload the DatasetView image in main thread once processing is complete.
+  [invocationOperation setCompletionBlock:^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [delegate.datasetWindowController.datasetViewsBrowser reloadData];
+    });
+  }];
+  
+  
+  [self.operationQueue addOperation:invocationOperation];    
 }
 
 - (void) createPlugins {
