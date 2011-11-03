@@ -37,13 +37,13 @@ struct IsomapImpl {};
 - (void) reduceDataset:(DivvyDataset *)dataset
            reducedData:(NSData *)reducedData {
 	
-	int no_dims = 2;
 	float *newReducedData = (float*) [reducedData bytes];
     int cur_k = [[self k] intValue];
+    if(cur_k == 0) cur_k = 12;          // cannot be zero!
     run_isomap([dataset floatData], 
                [[dataset n] unsignedIntValue], 
                [[dataset d] unsignedIntValue], 
-               newReducedData, no_dims, cur_k);     // this code is in C++
+               newReducedData, [self.d unsignedIntValue], cur_k);     // this code is in C++
 }
 
 

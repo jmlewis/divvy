@@ -223,6 +223,7 @@
 		0D55DC7213FAA056000ADAFB /* DivvyPCAController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyPCAController.h; sourceTree = "<group>"; };
 		0D55DC7313FAA056000ADAFB /* DivvyPCAController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyPCAController.m; sourceTree = "<group>"; };
 		0D55DC7513FAA05A000ADAFB /* DivvyPCA.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DivvyPCA.xib; sourceTree = "<group>"; };
+		0D6CEC5314626D0B007A7EF6 /* libdispatch.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdispatch.dylib; path = usr/lib/system/libdispatch.dylib; sourceTree = SDKROOT; };
 		0D86ADF31428990F00877901 /* DivvyIsomap.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyIsomap.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D86ADF51428998D00877901 /* DivvyIsomap.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = DivvyIsomap.h; sourceTree = "<group>"; };
 		0D86ADF61428998D00877901 /* DivvyIsomap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DivvyIsomap.mm; sourceTree = "<group>"; };
@@ -575,6 +576,7 @@
 		29B97314FDCFA39411CA2CEA /* Divvy */ = {
 			isa = PBXGroup;
 			children = (
+				0D6CEC5314626D0B007A7EF6 /* libdispatch.dylib */,
 				D7642A6613F4EE5200F1CE56 /* Dataset Visualizers */,
 				D7642A6713F4EE5F00F1CE56 /* Point Visualizers */,
 				D7642A6813F4EE6C00F1CE56 /* Clusterers */,
@@ -1546,6 +1548,10 @@
 				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
 				INFOPLIST_FILE = "Plugins/Reducers/TSNE/DivvyTSNE-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/usr/lib/system\"",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -1570,6 +1576,10 @@
 				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
 				INFOPLIST_FILE = "Plugins/Reducers/TSNE/DivvyTSNE-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/usr/lib/system\"",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
