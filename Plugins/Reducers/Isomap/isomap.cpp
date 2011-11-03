@@ -10,7 +10,7 @@
 #include "fibheap.h"
 #include <math.h>
 #include <float.h>
-#include <iostream.h>
+#include <iostream>
 #include <Accelerate/Accelerate.h>
 
 void dodijk_sparse(long int M,
@@ -116,7 +116,7 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
     int n = N, lda = N, lwork = -1, info;
 	float wkopt;
 	float* lambda = (float*) malloc(N * sizeof(float));
-    printf("N = %d, D = %d, no_dims = %d, n = %d, lda = %d, K = %d\n", N, D, no_dims, n, lda, K);
+  std::printf("N = %d, D = %d, no_dims = %d, n = %d, lda = %d, K = %d\n", N, D, no_dims, n, lda, K);
 	ssyev_((char*) "V", (char*) "U", &n, gD, &lda, lambda, &wkopt, &lwork, &info); // gets optimal size of working memory
 	lwork = (int) wkopt;
 	float* work = (float*) malloc(lwork * sizeof(float));	
@@ -126,9 +126,9 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
     for(int n = 0; n < N; n++) {
 		for(int d = 0; d < no_dims; d++) {
             Y[n * no_dims + d] = gD[d * N + n] * sqrt(lambda[d]);
-            printf("%f, ", Y[n * no_dims + d]);
+            std::printf("%f, ", Y[n * no_dims + d]);
 		}
-        printf("\n");
+        std::printf("\n");
 	}
     
     // Clean up memory
