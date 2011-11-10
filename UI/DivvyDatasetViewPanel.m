@@ -74,7 +74,7 @@
   delegate.selectedDatasetView.selectedDatasetVisualizer = pointVisualizerController.content;
   
   [delegate.selectedDatasetView datasetVisualizerChanged];
-  [delegate reloadSelectedDatasetViewImage];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 - (IBAction) pointVisualizerSelect:(id)sender {
@@ -85,7 +85,7 @@
   delegate.selectedDatasetView.selectedPointVisualizer = pointVisualizerController.content;
   
   [delegate.selectedDatasetView pointVisualizerChanged];
-  [delegate reloadSelectedDatasetViewImage];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 - (IBAction) clustererSelect:(id)sender {
@@ -96,7 +96,7 @@
   delegate.selectedDatasetView.selectedClusterer = clustererController.content;
   
   [delegate.selectedDatasetView datasetVisualizerChanged]; // If the clustering changes, the dataset visualizer result needs to be updated
-  [delegate reloadSelectedDatasetViewImage];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 - (IBAction) reducerSelect:(id)sender {
@@ -108,7 +108,7 @@
   
   [delegate.selectedDatasetView datasetVisualizerChanged]; // If the reduction changes, the dataset visualizer result needs to be updated
   [delegate.selectedDatasetView pointVisualizerChanged]; // Same for the point visualizer
-  [delegate reloadSelectedDatasetViewImage];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 - (void) reflow {

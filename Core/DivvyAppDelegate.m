@@ -18,6 +18,7 @@
 #import "DivvyReducer.h"
 
 #import "DivvyPluginManager.h"
+#import "DivvyDatasetViewOperation.h"
 #import "DivvyDelegateSettings.h"
 
 #import "DivvyDatasetViewPanel.h"
@@ -56,29 +57,65 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 @synthesize managedObjectModel;
 @synthesize managedObjectContext;
 
+@synthesize operationQueue;
+
+@synthesize version;
 @synthesize processingImage;
 
-- (void) reloadSelectedDatasetViewImage {
-  [self.selectedDatasetView setProcessingImage];
-  [self.datasetWindowController.datasetViewsBrowser reloadData];  
+- (void) reloadDatasetView:(DivvyDatasetView *)datasetView {
+  [datasetView setProcessingImage];
   
-  NSInvocationOperation *invocationOperation = [[[NSInvocationOperation alloc] initWithTarget:self.selectedDatasetView
-                                                                                     selector:@selector(checkForNullPluginResults)
-                                                                                       object:nil] autorelease];
+  NSError *error = nil;
+  [self.managedObjectContext save:&error]; // Save any changes to the persistent store
+  if(error) {
+    NSString *message = [NSString stringWithFormat:@"%@ [%@]",
+                         [error description], ([error userInfo] ? [[error userInfo] description] : @"no user info")];
+    NSLog(@"CBA Failure message: %@", message);        
+  }
+  
+  NSManagedObjectID *datasetViewID = datasetView.objectID;
+  DivvyDatasetViewOperation *datasetViewOperation = [[DivvyDatasetViewOperation alloc] initWithObjectID:datasetViewID];
+  DivvyDatasetViewOperation *existingOperation = nil;
+  
+  // Check for existing operations on the same dataset view
+  // The one with a completion block is the final one
+  for (DivvyDatasetViewOperation *op in operationQueue.operations)
+    if (op.completionBlock != nil && op.datasetViewID == datasetViewID)
+      existingOperation = [op retain];
+  
+  if (existingOperation) {
+    existingOperation.completionBlock = nil;
+    [datasetViewOperation addDependency:existingOperation];
+    [existingOperation release];
+  }
   
   // Reload the DatasetView image in main thread once processing is complete.
-  [invocationOperation setCompletionBlock:^{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.datasetWindowController.datasetViewsBrowser reloadData];
+  [datasetViewOperation setCompletionBlock:^{
+    dispatch_async(dispatch_get_main_queue(), ^{      
+      // Pull the changes from the persistent store
+      [self.managedObjectContext refreshObject:datasetView mergeChanges:YES];
+      
+      // Unset the processing image
+      [datasetView reloadImage];
+      
+      // Refresh the image browser
+      [self.datasetWindowController.datasetViewsBrowser reloadData];
     });
   }];
   
+  [operationQueue addOperation:datasetViewOperation];
+  [datasetViewOperation release];
   
-  [self.selectedDatasetView.operationQueue addOperation:invocationOperation];
+  [self.datasetWindowController.datasetViewsBrowser reloadData];
 }
 
 - (NSArray *)defaultSortDescriptors {
   return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]];
+}
+
+- (NSNumber *)version {
+  self.version = [NSNumber numberWithInt:[version intValue] + 1];
+  return version;
 }
 
 - (IBAction) openDatasets:(id)sender {
@@ -123,10 +160,17 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   
   pluginManager = [DivvyPluginManager shared];
   
+  operationQueue = [[NSOperationQueue alloc] init];
+  //[operationQueue setMaxConcurrentOperationCount:###base this on number of cores/threads per core?###]
+  
+  version = [NSNumber numberWithInt:0];
+  
   return self;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  self.processingImage = [[[NSImage alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"processing" withExtension:@"png"]] autorelease];  
+  
   DivvyDatasetWindow *datasetWindow;
   datasetWindow = [[DivvyDatasetWindow alloc] initWithWindowNibName:@"DatasetWindow"];
   [datasetWindow showWindow:nil];
@@ -138,10 +182,19 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   // Load the datasets from the managed object context early so that we can set the saved selection in applicationDidFinishLaunching
   NSError *error = nil;
   [self.datasetsPanelController.datasetsArrayController fetchWithRequest:nil merge:NO error:&error];
+  
+  NSEntityDescription *datasetViewEntityDescription = [self.managedObjectModel.entitiesByName objectForKey:@"DatasetView"];
+  NSFetchRequest *datasetViewRequest = [[[NSFetchRequest alloc] init] autorelease];
+  [datasetViewRequest setEntity:datasetViewEntityDescription];
+  NSArray *datasetViewArray = [self.managedObjectContext executeFetchRequest:datasetViewRequest error:&error];
+  
+  // Fetch the dataset views and start drawing them
+  for (DivvyDatasetView *datasetView in datasetViewArray) {
+    [datasetView updatePlugins]; // Check if there are any new plugins since last time Divvy launched
+    [self reloadDatasetView:datasetView];
+  }
 
   [self.datasetViewPanelController loadPluginViewControllers];
-  
-  self.processingImage = [[[NSImage alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"processing" withExtension:@"png"]] autorelease];
   
   // Connect to delegateSettings
   NSEntityDescription *delegateSettingsEntityDescription = [self.managedObjectModel.entitiesByName objectForKey:@"DelegateSettings"];
@@ -249,6 +302,9 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   
   if (persistentStoreCoordinator) return persistentStoreCoordinator;
   
+  //NSString *storeType = NSBinaryStoreType;
+  NSString *storeType = NSSQLiteStoreType;
+  
   NSManagedObjectModel *mom = [self managedObjectModel];
   if (!mom) {
     NSAssert(NO, @"Managed object model is nil");
@@ -321,16 +377,17 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
         NSLog(@"Failure message: %@", message);        
       }
       
-      NSValue *classValue = [[NSPersistentStoreCoordinator registeredStoreTypes] objectForKey:NSSQLiteStoreType];
-      Class sqliteStoreClass = (Class)[classValue pointerValue];
-      Class sqliteStoreMigrationManagerClass = [sqliteStoreClass migrationManagerClass];
       
-      manager = [[sqliteStoreMigrationManagerClass alloc]
+      NSValue *classValue = [[NSPersistentStoreCoordinator registeredStoreTypes] objectForKey:storeType];
+      Class storeClass = (Class)[classValue pointerValue];
+      Class storeMigrationManagerClass = [storeClass migrationManagerClass];
+      
+      manager = [[storeMigrationManagerClass alloc]
                                      initWithSourceModel:momWithExistingStore destinationModel:mom];
 
-      if (![manager migrateStoreFromURL:migrationURL type:NSSQLiteStoreType
+      if (![manager migrateStoreFromURL:migrationURL type:storeType
                                 options:nil withMappingModel:mappingModel toDestinationURL:url
-                        destinationType:NSSQLiteStoreType destinationOptions:nil error:&error]) {
+                        destinationType:storeType destinationOptions:nil error:&error]) {
         
         NSString *message = [NSString stringWithFormat:@"Migration failed %@ [%@]",
                              [error description], ([error userInfo] ? [[error userInfo] description] : @"no user info")];
@@ -344,7 +401,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
     }
     
     
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
+    if (![persistentStoreCoordinator addPersistentStoreWithType:storeType 
                                                   configuration:configName 
                                                             URL:url 
                                                         options:nil 
@@ -379,6 +436,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   }
   managedObjectContext = [[NSManagedObjectContext alloc] init];
   [managedObjectContext setPersistentStoreCoordinator: coordinator];
+  [managedObjectContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
   
   return managedObjectContext;
 }
@@ -422,6 +480,22 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {    
   // Save the selected datasets.
   self.delegateSettings.selectedDatasets = self.selectedDatasets;
+  
+  // Don't save all the images between sessions--it makes things slow and takes up a lot of disk
+  unsigned int i;
+  NSMutableArray *results;
+  for(DivvyDataset *dataset in self.datasetsPanelController.datasetsArrayController.arrangedObjects)
+    for(DivvyDatasetView *datasetView in dataset.datasetViews.allObjects) {
+      results = [datasetView.datasetVisualizerResults mutableCopy];
+      for(i = 0; i < results.count; i++)
+        [results replaceObjectAtIndex:i withObject:[NSNull null]];
+      datasetView.datasetVisualizerResults = results;
+
+      results = [datasetView.pointVisualizerResults mutableCopy];
+      for(i = 0; i < results.count; i++)
+        [results replaceObjectAtIndex:i withObject:[NSNull null]];
+      datasetView.pointVisualizerResults = results;
+    }
   
   // Stops a bunch of CoreGraphics errors from the binding between the dataset window
   // title and the selected dataset title. There's probably a better way to fix them though.  
@@ -494,6 +568,9 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   [persistentStoreCoordinator release];
   [managedObjectModel release];
   
+  [operationQueue release];
+  
+  [version release];
   [processingImage release];
   
   [super dealloc];

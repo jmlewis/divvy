@@ -21,7 +21,7 @@
 @implementation DivvyDatasetView
 
 @dynamic uniqueID;
-@dynamic version;
+@synthesize version;
 @dynamic dateCreated;
 
 @dynamic dataset;
@@ -51,74 +51,75 @@
 @synthesize selectedClusterer;
 @synthesize selectedReducer;
 
-@synthesize operationQueue;
-
 @synthesize renderedImage;
 
 - (void) setProcessingImage {
   DivvyAppDelegate *delegate = [NSApp delegate];
   
   self.renderedImage = delegate.processingImage;
-  
-  NSNumber *newVersion = [NSNumber numberWithInt:self.version.intValue + 1];
-  self.version = nil;
-  self.version = newVersion;
+  self.version = delegate.version;
 }
 
 - (void) reloadImage {
-  self.renderedImage = nil;
+  DivvyAppDelegate *delegate = [NSApp delegate];
   
-  NSNumber *newVersion = [NSNumber numberWithInt:self.version.intValue + 1];
-  self.version = nil;
-  self.version = newVersion;
+  self.renderedImage = nil;
+  self.version = delegate.version;
 }
 
 
 - (void) checkForNullPluginResults {
   // We require a specific order, so we don't use the delegate version
+  // Make this a (constant?) member of DatasetView so we don't have to recalculate it every time
   NSArray *pluginTypes = [[NSArray alloc] initWithObjects:kDivvyClusterer, kDivvyReducer, kDivvyDatasetVisualizer, kDivvyPointVisualizer, nil];
   
   for(NSString *pluginType in pluginTypes) {
     NSArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
     NSArray *pluginResults = [self valueForKey:[NSString stringWithFormat:@"%@Results", pluginType]];
-    id selectedPlugin = [self valueForKey:[NSString stringWithFormat:@"selected%@%@", 
+    id <DivvyPlugin> selectedPlugin = [self valueForKey:[NSString stringWithFormat:@"selected%@%@", 
                                            [[pluginType substringToIndex:1] capitalizedString], 
                                            [pluginType substringFromIndex:1]]];
     
     int index = [plugins indexOfObject:selectedPlugin];
+    
     id result = [pluginResults objectAtIndex:index];
+    
     if(result == [NSNull null]) {
-      SEL pluginChanged = NSSelectorFromString([NSString stringWithFormat:@"%@Update", pluginType]);
-      [self performSelector:pluginChanged];
+      SEL pluginUpdate = NSSelectorFromString([NSString stringWithFormat:@"%@Update", pluginType]);
+      [self performSelector:pluginUpdate];
     }
   }
-  
-  if([self.operationQueue operationCount] < 2) // This is the last operation
-    [self reloadImage];
-  else
-    [self setProcessingImage];
-  
+    
   [pluginTypes release];
 }
 
+// This code, and similar code below it, is obviously repetitive
 - (void) datasetVisualizerChanged {
-  int datasetVisualizerIndex = [self.datasetVisualizers indexOfObject:self.selectedDatasetVisualizer];  
-  [self.datasetVisualizerResults replaceObjectAtIndex:datasetVisualizerIndex withObject:[NSNull null]];
+  int datasetVisualizerIndex = [self.datasetVisualizers indexOfObject:self.selectedDatasetVisualizer];
+  NSMutableArray *results = [self.datasetVisualizerResults mutableCopy];
+  [results replaceObjectAtIndex:datasetVisualizerIndex withObject:[NSNull null]];
+  self.datasetVisualizerResults = results;
 }
    
  - (void) pointVisualizerChanged {
    int pointVisualizerIndex = [self.pointVisualizers indexOfObject:self.selectedPointVisualizer];  
-   [self.pointVisualizerResults replaceObjectAtIndex:pointVisualizerIndex withObject:[NSNull null]];
+   NSMutableArray *results = [self.pointVisualizerResults mutableCopy];
+   [results replaceObjectAtIndex:pointVisualizerIndex withObject:[NSNull null]];
+   self.pointVisualizerResults = results;
  }
 
 - (void) clustererChanged {
   int clustererIndex = [self.clusterers indexOfObject:self.selectedClusterer];
-  [self.clustererResults replaceObjectAtIndex:clustererIndex withObject:[NSNull null]];
+  NSMutableArray *results = [self.clustererResults mutableCopy];
+  [results replaceObjectAtIndex:clustererIndex withObject:[NSNull null]];
+  self.clustererResults = results;
 }
 
 - (void) reducerChanged {
   int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];  
-  [self.reducerResults replaceObjectAtIndex:reducerIndex withObject:[NSNull null]];
+  NSMutableArray *results = [self.reducerResults mutableCopy];
+  [results replaceObjectAtIndex:reducerIndex withObject:[NSNull null]];
+  self.reducerResults = results;
 }
 
 - (void) datasetVisualizerUpdate {
@@ -126,47 +127,59 @@
   int clustererIndex = [self.clusterers indexOfObject:self.selectedClusterer];
   int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];
   
-  // Prevent possible problems caused by a reducerChanged/clustererChanged message during drawing
+  // If the current reducer or clusterer result is null, there's another computation pending and we don't have to draw
   NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
   NSData *clustererResult = [self.clustererResults objectAtIndex:clustererIndex];
   
-  [reducerResult retain];
-  [clustererResult retain];
-  
-  NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
-  NSImage *newImage = [[[NSImage alloc] initWithSize:imageSize] autorelease];
-  
-  [self.selectedDatasetVisualizer drawImage:newImage
-                                reducedData:reducerResult
-                                   reducedD:self.selectedReducer.d
-                                    dataset:self.dataset
-                                 assignment:clustererResult];
-  
-  [reducerResult release];
-  [clustererResult release];
-  
-  [self.datasetVisualizerResults replaceObjectAtIndex:datasetVisualizerIndex withObject:newImage];
+  if(reducerResult != (NSData *)[NSNull null] && clustererResult != (NSData *)[NSNull null]) {
+    [reducerResult retain];
+    [clustererResult retain];
+    
+    NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
+    NSImage *newImage = [[NSImage alloc] initWithSize:imageSize];
+    
+    [self.selectedDatasetVisualizer drawImage:newImage
+                                  reducedData:reducerResult
+                                     reducedD:self.selectedReducer.d
+                                      dataset:self.dataset
+                                   assignment:clustererResult];
+
+    [reducerResult release];
+    [clustererResult release];
+    
+    NSMutableArray *results = [self.datasetVisualizerResults mutableCopy];
+    [results replaceObjectAtIndex:datasetVisualizerIndex withObject:newImage];
+    self.datasetVisualizerResults = results;
+    
+    [newImage release];
+  }
 }
 
 - (void) pointVisualizerUpdate {
   int pointVisualizerIndex = [self.pointVisualizers indexOfObject:self.selectedPointVisualizer];
   int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];  
   
-  // Prevent possible problems caused by a reducerChanged/clustererChanged message during drawing
+  // If the current reducer result is null, there's another computation pending and we don't have to draw
   NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
   
-  [reducerResult retain];
-  
-  NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
-  NSImage *newImage = [[[NSImage alloc] initWithSize:imageSize] autorelease];
-  
-  [self.selectedPointVisualizer drawImage:newImage
-                              reducedData:reducerResult
-                                  dataset:self.dataset];
-  
-  [reducerResult release];
-
-  [self.pointVisualizerResults replaceObjectAtIndex:pointVisualizerIndex withObject:newImage];
+  if(reducerResult != (NSData *)[NSNull null]) {
+    [reducerResult retain];
+    
+    NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
+    NSImage *newImage = [[NSImage alloc] initWithSize:imageSize];
+    
+    [self.selectedPointVisualizer drawImage:newImage
+                                reducedData:reducerResult
+                                    dataset:self.dataset];
+    
+    [reducerResult release];
+    
+    NSMutableArray *results = [self.pointVisualizerResults mutableCopy];
+    [results replaceObjectAtIndex:pointVisualizerIndex withObject:newImage];
+    self.pointVisualizerResults = results;
+    
+    [newImage release];
+  }
 }
 
 - (void) clustererUpdate {
@@ -174,12 +187,17 @@
 
   int numBytes = [self.dataset.n intValue] * sizeof(int);
   int *newAssignment = malloc(numBytes);
-  NSData *newData = [NSData dataWithBytesNoCopy:newAssignment length:numBytes freeWhenDone:YES];
+  NSData *newData = [[NSData alloc] initWithBytesNoCopy:newAssignment length:numBytes freeWhenDone:YES];
   
   [self.selectedClusterer clusterDataset:self.dataset
                               assignment:newData];
   
-  [self.clustererResults replaceObjectAtIndex:clustererIndex withObject:newData];
+  NSMutableArray *results = [self.clustererResults mutableCopy];
+  [results replaceObjectAtIndex:clustererIndex withObject:newData];
+  self.clustererResults = results;
+  
+  [newData release];
+  
   [self datasetVisualizerChanged];
 }
 
@@ -190,13 +208,18 @@
   
   int numBytes = [self.dataset.n intValue] * [self.selectedReducer.d unsignedIntValue] * sizeof(float);
   int *newReducedData = malloc(numBytes);
-  NSData *newData = [NSData dataWithBytesNoCopy:newReducedData length:numBytes freeWhenDone:YES];
+  NSData *newData = [[NSData alloc] initWithBytesNoCopy:newReducedData length:numBytes freeWhenDone:YES];
   
   [self.selectedReducer reduceDataset:self.dataset
                           reducedData:newData];
   
   
-  [self.reducerResults replaceObjectAtIndex:reducerIndex withObject:newData];  
+  NSMutableArray *results = [self.reducerResults mutableCopy];
+  [results replaceObjectAtIndex:reducerIndex withObject:newData];
+  self.reducerResults = results;
+  
+  [newData release];
+  
   [self datasetVisualizerChanged];
   [self pointVisualizerChanged];
 }
@@ -211,16 +234,21 @@
   NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
   NSImage *image = [[NSImage alloc] initWithSize:imageSize];
   
-  [image lockFocus];
-  [[self.datasetVisualizerResults objectAtIndex:datasetVisualizerIndex] drawAtPoint:NSMakePoint(0.f, 0.f) 
-                                                                           fromRect:NSZeroRect 
-                                                                          operation:NSCompositeSourceOver 
-                                                                           fraction:1.0];
+  NSImage *datasetVisualizerImage = [self.datasetVisualizerResults objectAtIndex:datasetVisualizerIndex];
+  NSImage *pointVisualizerImage = [self.pointVisualizerResults objectAtIndex:pointVisualizerIndex];
   
-  [[self.pointVisualizerResults objectAtIndex:pointVisualizerIndex] drawAtPoint:NSMakePoint(0.f, 0.f) 
-                                                                       fromRect:NSZeroRect 
-                                                                      operation:NSCompositeSourceOver 
-                                                                       fraction:1.0];  
+  [image lockFocus];
+  if (datasetVisualizerImage != (NSImage *)[NSNull null])
+    [datasetVisualizerImage drawAtPoint:NSMakePoint(0.f, 0.f) 
+                               fromRect:NSZeroRect 
+                              operation:NSCompositeSourceOver 
+                               fraction:1.0];
+
+  if (pointVisualizerImage != (NSImage *)[NSNull null])
+    [pointVisualizerImage drawAtPoint:NSMakePoint(0.f, 0.f) 
+                             fromRect:NSZeroRect 
+                            operation:NSCompositeSourceOver 
+                             fraction:1.0];  
   [image unlockFocus];
   
   self.renderedImage = image;
@@ -236,14 +264,11 @@
 - (void) awakeFromInsert {
   [super awakeFromInsert];
   
-  // Called when the object is first created.
-  self.dateCreated = [NSDate date];  
+  self.dateCreated = [NSDate date];
    
   [self createPlugins];
   
   [self generateUniqueID];
-  self.operationQueue = [[[NSOperationQueue alloc] init] autorelease];
-  [self.operationQueue setMaxConcurrentOperationCount:1]; // Serial queue on a per dataset view basis
 }
 
 - (void) awakeFromFetch {
@@ -252,8 +277,9 @@
   DivvyAppDelegate *delegate = [NSApp delegate];
   
   // Reconnect datasetView with its components.
-  NSManagedObjectContext *moc = [delegate managedObjectContext];
-  NSManagedObjectModel *mom = [delegate managedObjectModel];
+  // This could be simpler for fetches inside DivvyDatasetViewOperation
+  NSManagedObjectContext *moc = self.managedObjectContext;
+  NSManagedObjectModel *mom = delegate.managedObjectModel;
   NSError *error = nil;
   
   NSArray *pluginTypes = [delegate pluginTypes];
@@ -293,34 +319,12 @@
         }
     }
   }
-  
-  self.operationQueue = [[[NSOperationQueue alloc] init] autorelease];
-  [self.operationQueue setMaxConcurrentOperationCount:1]; // Serial queue on a per dataset view basis
-  
-  [self updatePlugins];
-
-  [self setProcessingImage];
-  [delegate.datasetWindowController.datasetViewsBrowser reloadData];  
-  
-  NSInvocationOperation *invocationOperation = [[[NSInvocationOperation alloc] initWithTarget:self
-                                                                                     selector:@selector(checkForNullPluginResults)
-                                                                                       object:nil] autorelease];
-  
-  // Reload the DatasetView image in main thread once processing is complete.
-  [invocationOperation setCompletionBlock:^{
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [delegate.datasetWindowController.datasetViewsBrowser reloadData];
-    });
-  }];
-  
-  
-  [self.operationQueue addOperation:invocationOperation];    
 }
 
 - (void) createPlugins {
   // Could be cleaned up a bit
   DivvyAppDelegate *delegate = [NSApp delegate];
-  NSManagedObjectContext* moc = delegate.managedObjectContext;
+  NSManagedObjectContext* moc = self.managedObjectContext;
   NSManagedObjectModel* mom = delegate.managedObjectModel;
   NSArray *pluginTypes = delegate.pluginTypes;
   NSArray *pluginDefaults = delegate.pluginDefaults;
@@ -383,17 +387,6 @@
         }
       }
   }
-}
-
-- (void) willSave { // Don't save all the images--it makes things slow and takes up a lot of disk
-  unsigned int i;
-  
-  for(i = 0; i < self.datasetVisualizerResults.count; i++)
-    [self.datasetVisualizerResults replaceObjectAtIndex:i withObject:[NSNull null]];
-
-
-  for(i = 0; i < self.pointVisualizerResults.count; i++)
-    [self.pointVisualizerResults replaceObjectAtIndex:i withObject:[NSNull null]];
 }
 
 - (void) setSelectedDatasetVisualizer:(id <DivvyDatasetVisualizer>)aDatasetVisualizer {
@@ -459,12 +452,12 @@
   // Core Data properties automatically managed.
   // Only release retained & sythesized properties.
   
+  [version release];
+  
   [datasetVisualizers release];
   [pointVisualizers release];
   [clusterers release];
   [reducers release];
-  
-  [operationQueue release];
   
   [renderedImage release];
   

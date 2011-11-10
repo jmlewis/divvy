@@ -50,23 +50,7 @@
   if (clickedSegmentTag == 0) { // Add button
     DivvyDatasetView *datasetView = [NSEntityDescription insertNewObjectForEntityForName:@"DatasetView" inManagedObjectContext:delegate.managedObjectContext];
     datasetView.dataset = delegate.selectedDataset;
-    
-    [datasetView setProcessingImage];
-    [self.datasetViewsBrowser reloadData];  
-    
-    NSInvocationOperation *invocationOperation = [[[NSInvocationOperation alloc] initWithTarget:datasetView
-                                                                                       selector:@selector(checkForNullPluginResults)
-                                                                                         object:nil] autorelease];
-    
-    // Reload the DatasetView image in main thread once processing is complete.
-    [invocationOperation setCompletionBlock:^{
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [self.datasetViewsBrowser reloadData];
-      });
-    }];
-    
-    
-    [datasetView.operationQueue addOperation:invocationOperation];    
+    [delegate reloadDatasetView:datasetView];
   }
   else { // Remove button
     for (id datasetView in [self.datasetViewsArrayController selectedObjects])

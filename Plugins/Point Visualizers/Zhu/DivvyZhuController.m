@@ -16,6 +16,7 @@
 - (IBAction) changeLineWidth:(id)sender {
   DivvyAppDelegate *delegate = [NSApp delegate];
   [delegate.selectedDatasetView  pointVisualizerChanged];
-  [delegate reloadSelectedDatasetViewImage];}
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
+}
 
 @end

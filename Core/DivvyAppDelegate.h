@@ -39,6 +39,9 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
+@property (nonatomic, retain) NSOperationQueue *operationQueue;
+
+@property (nonatomic, retain) NSNumber *version;
 @property (nonatomic, retain) NSImage *processingImage;
 
 - (IBAction)saveAction:sender;
@@ -49,6 +52,6 @@
 
 - (NSArray *)defaultSortDescriptors;
 
-- (void) reloadSelectedDatasetViewImage;
+- (void) reloadDatasetView:(DivvyDatasetView *)datasetView;
 
 @end

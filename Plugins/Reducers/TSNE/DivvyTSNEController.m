@@ -13,9 +13,9 @@
 @implementation DivvyTSNEController
 
 -(IBAction) changePerplexity:(id)sender {
-    DivvyAppDelegate *delegate = [NSApp delegate];
-    [delegate.selectedDatasetView  reducerChanged];
-    [delegate reloadSelectedDatasetViewImage];
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  [delegate.selectedDatasetView  reducerChanged];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 @end

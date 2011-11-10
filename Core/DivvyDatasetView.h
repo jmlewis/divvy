@@ -24,20 +24,20 @@
 
 @property (nonatomic, retain) DivvyDataset *dataset;
 
-@property (nonatomic, retain) NSMutableArray *datasetVisualizerIDs;
-@property (nonatomic, retain) NSMutableArray *pointVisualizerIDs;
-@property (nonatomic, retain) NSMutableArray *clustererIDs;
-@property (nonatomic, retain) NSMutableArray *reducerIDs;
+@property (nonatomic, retain) NSArray *datasetVisualizerIDs;
+@property (nonatomic, retain) NSArray *pointVisualizerIDs;
+@property (nonatomic, retain) NSArray *clustererIDs;
+@property (nonatomic, retain) NSArray *reducerIDs;
 
 @property (nonatomic, retain) NSString *selectedDatasetVisualizerID;
 @property (nonatomic, retain) NSString *selectedPointVisualizerID;
 @property (nonatomic, retain) NSString *selectedClustererID;
 @property (nonatomic, retain) NSString *selectedReducerID;
 
-@property (nonatomic, retain) NSMutableArray *datasetVisualizerResults;
-@property (nonatomic, retain) NSMutableArray *pointVisualizerResults;
-@property (nonatomic, retain) NSMutableArray *clustererResults;
-@property (nonatomic, retain) NSMutableArray *reducerResults;
+@property (nonatomic, retain) NSArray *datasetVisualizerResults;
+@property (nonatomic, retain) NSArray *pointVisualizerResults;
+@property (nonatomic, retain) NSArray *clustererResults;
+@property (nonatomic, retain) NSArray *reducerResults;
 
 @property (nonatomic, retain) NSMutableArray *datasetVisualizers;
 @property (nonatomic, retain) NSMutableArray *pointVisualizers;
@@ -48,8 +48,6 @@
 @property (nonatomic, assign) id <DivvyPointVisualizer> selectedPointVisualizer;
 @property (nonatomic, assign) id <DivvyClusterer> selectedClusterer;
 @property (nonatomic, assign) id <DivvyReducer> selectedReducer;
-
-@property (nonatomic, retain) NSOperationQueue *operationQueue;
 
 @property (nonatomic, retain) NSImage *renderedImage;
 @property (nonatomic, readonly) NSImage *image;

@@ -20,10 +20,10 @@ void kmeans(float *data, unsigned int n, unsigned int d, unsigned int k, int *as
   
   int num_changed_points;
   int num_iterations = 0;
-  int max_iterations = 10000;
+  int max_iterations = 1000000;
   int i, j, o;
   
-  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
   
   for(i = 0; i < k; i++) {
     int sample_centroid = rand() % n;

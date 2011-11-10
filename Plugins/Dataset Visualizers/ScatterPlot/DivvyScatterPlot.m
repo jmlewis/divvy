@@ -41,11 +41,18 @@
   [self addObserver:self forKeyPath:@"pointSize" options:0 context:nil];
 }
 
+- (void) willTurnIntoFault {
+  [self removeObserver:self forKeyPath:@"xAxis"];
+  [self removeObserver:self forKeyPath:@"yAxis"];
+  [self removeObserver:self forKeyPath:@"pointSize"];
+
+}
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   DivvyAppDelegate *delegate = [NSApp delegate];
   
   [delegate.selectedDatasetView  datasetVisualizerChanged];
-  [delegate reloadSelectedDatasetViewImage];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 - (void) drawImage:(NSImage *) image 

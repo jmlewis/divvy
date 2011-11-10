@@ -46,11 +46,17 @@
   [self addObserver:self forKeyPath:@"initCentroidsFromPointsInDataset" options:0 context:nil];
 }
 
+- (void) willTurnIntoFault {
+  [self removeObserver:self forKeyPath:@"k"];
+  [self removeObserver:self forKeyPath:@"numRestarts"];
+  [self removeObserver:self forKeyPath:@"initCentroidsFromPointsInDataset"];
+}
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   DivvyAppDelegate *delegate = [NSApp delegate];
   
   [delegate.selectedDatasetView clustererChanged];
-  [delegate reloadSelectedDatasetViewImage];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 - (void) clusterDataset:(DivvyDataset *)dataset

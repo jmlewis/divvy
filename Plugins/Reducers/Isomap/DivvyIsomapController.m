@@ -16,7 +16,7 @@
 -(IBAction) changeK:(id)sender {
     DivvyAppDelegate *delegate = [NSApp delegate];
     [delegate.selectedDatasetView  reducerChanged];
-    [delegate reloadSelectedDatasetViewImage];
+    [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 @end

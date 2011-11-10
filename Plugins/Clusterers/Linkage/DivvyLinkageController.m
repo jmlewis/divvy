@@ -15,7 +15,7 @@
 -(IBAction) changeParameter:(id)sender {
   DivvyAppDelegate *delegate = [NSApp delegate];
   [delegate.selectedDatasetView  clustererChanged];
-  [delegate reloadSelectedDatasetViewImage];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 @end

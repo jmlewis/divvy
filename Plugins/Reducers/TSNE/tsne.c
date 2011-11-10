@@ -19,7 +19,7 @@ dispatch_queue_t queue;
 void perform_tsne(float* X, int D, int N, float* Y, int no_dims, float perplexity) {
     
     // Initialize libdispatch
-    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
 	
 	// Set learning parameters
 	int max_iter = 1000, stop_lying_iter = 100;
