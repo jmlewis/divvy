@@ -436,7 +436,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   }
   managedObjectContext = [[NSManagedObjectContext alloc] init];
   [managedObjectContext setPersistentStoreCoordinator: coordinator];
-  [managedObjectContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
+  [managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   
   return managedObjectContext;
 }

@@ -36,7 +36,8 @@
   NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
   [moc setUndoManager:nil];
   [moc setPersistentStoreCoordinator: delegate.persistentStoreCoordinator];
-  [moc setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
+  // In case an earlier version sneaks into the store due to a depndency miss in the operation queue
+  [moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   
   NSError *error = nil;
   DivvyDatasetView *datasetView = (DivvyDatasetView *)[moc existingObjectWithID:datasetViewID error:&error];
