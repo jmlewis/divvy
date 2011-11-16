@@ -21,6 +21,8 @@
 @property (retain) IBOutlet DivvyDatasetsPanel *datasetsPanel;
 @property (retain) IBOutlet DivvyDatasetViewPanel *datasetViewPanel;
 
-- (IBAction)editDatasetViews:sender;
+- (IBAction)editDatasetViews:(id)sender;
+
+- (void) imageBrowser:(IKImageBrowserView *)aBrowser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event;
 
 @end

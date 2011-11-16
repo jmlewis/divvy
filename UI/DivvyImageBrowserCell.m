@@ -23,8 +23,8 @@
 		CALayer *selectionLayer = [CALayer layer];
 		selectionLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
 		
-		const CGFloat fillComponents[4] = {0.371, 0.465, 0.824, 0.0};
-		const CGFloat strokeComponents[4] = {0.371, 0.465, 0.824, 1.0};
+		const CGFloat fillComponents[4] = {0.33, 0.66, 1.0, 0.0};
+		const CGFloat strokeComponents[4] = {0.33, 0.66, 1.0, 1.0};
 		
 		//set a background color
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -39,7 +39,7 @@
         
         CFRelease(colorSpace);
     
-		[selectionLayer setBorderWidth:4.0];
+		[selectionLayer setBorderWidth:5.0];
 		[selectionLayer setCornerRadius:5];
 		
 		return selectionLayer;
@@ -52,7 +52,7 @@
 
 - (NSRect) selectionFrame
 {
-	return NSInsetRect([self frame], -7.0, -7.0);
+	return NSInsetRect([self frame], -8.0, -8.0);
 }
 
 @end

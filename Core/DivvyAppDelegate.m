@@ -41,6 +41,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 @synthesize datasetViewPanelController;
 @synthesize datasetsPanelController;
 @synthesize datasetWindowController;
+@synthesize datasetViewContextMenu;
 
 @synthesize selectedDataset;
 @synthesize selectedDatasetView;
@@ -149,6 +150,64 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 
 - (IBAction) openHelp:(NSString *)url {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
+}
+
+- (IBAction)exportVisualization:(id)sender {
+  NSArray *fileTypes = [NSArray arrayWithObject:@"png"];
+  NSSavePanel *savePanel = [NSSavePanel savePanel];
+
+  [savePanel setAllowedFileTypes:fileTypes];
+  
+  [savePanel beginSheetModalForWindow:datasetWindowController.window completionHandler:^(NSInteger result) {
+    if (result == NSFileHandlingPanelOKButton) {
+      NSData *imageData = self.selectedDatasetView.renderedImage.TIFFRepresentation;
+      NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:imageData];
+      imageData = [imageRep representationUsingType:NSPNGFileType properties:nil];
+      [imageData writeToURL:savePanel.URL atomically:NO];   
+    }
+  }];
+}
+
+- (IBAction)exportData:(id)sender {
+  NSArray *fileTypes = [NSArray arrayWithObject:@"csv"];
+  NSSavePanel *savePanel = [NSSavePanel savePanel];
+  NSMenuItem *menuItem = (NSMenuItem *)sender;
+  [savePanel setAllowedFileTypes:fileTypes];
+  
+  [savePanel beginSheetModalForWindow:datasetWindowController.window completionHandler:^(NSInteger result) {
+    if (result == NSFileHandlingPanelOKButton) {
+      DivvyDatasetView *datasetView = self.selectedDatasetView;
+      NSData *csvData;
+      int n, d;
+      n = datasetView.dataset.n.intValue;
+
+      if (menuItem.tag == 0) { // Reduction
+        csvData = (NSData *)[datasetView.reducerResults objectAtIndex:[datasetView.reducers indexOfObject:datasetView.selectedReducer]];
+        d = datasetView.selectedReducer.d.intValue;
+      }
+      else { // Clustering
+        csvData = (NSData *)[datasetView.clustererResults objectAtIndex:[datasetView.clusterers indexOfObject:datasetView.selectedClusterer]];
+        d = 1;
+      }
+      
+      NSMutableString *csvString = [NSMutableString string];
+      
+      
+      // Each line is a dimension, columns are samples
+      for (int i = 0; i < d; i++) {
+        for (int j = 0; j < n; j++) {
+          if (menuItem.tag == 0) {
+            [csvString appendFormat:@"%f%@", ((float *)csvData.bytes)[j * d + i], (j < n - i ? @"," : @"")];
+          } else {
+            [csvString appendFormat:@"%d%@", ((int *)csvData.bytes)[j * d + i], (j < n - i ? @"," : @"")];
+          }
+        }
+        [csvString appendString:@"\n"];
+      }
+      
+      [csvString writeToURL:savePanel.URL atomically:NO encoding:NSASCIIStringEncoding error:nil];
+    }
+  }];
 }
 
 - (id)init
@@ -555,6 +614,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   [datasetsPanelController release];
   [datasetViewPanelController release];
   [datasetWindowController release];
+  [datasetViewContextMenu release];
   
   [selectedDatasets release];
   

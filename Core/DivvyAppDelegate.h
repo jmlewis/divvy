@@ -23,6 +23,7 @@
 @property (nonatomic, retain) DivvyDatasetViewPanel *datasetViewPanelController;
 @property (nonatomic, retain) DivvyDatasetsPanel *datasetsPanelController;
 @property (nonatomic, retain) DivvyDatasetWindow *datasetWindowController;
+@property (nonatomic, retain) IBOutlet NSMenu *datasetViewContextMenu;
 
 @property (nonatomic, assign) DivvyDataset *selectedDataset;
 @property (nonatomic, assign) DivvyDatasetView *selectedDatasetView;
@@ -44,9 +45,12 @@
 @property (nonatomic, retain) NSNumber *version;
 @property (nonatomic, retain) NSImage *processingImage;
 
-- (IBAction)saveAction:sender;
-- (IBAction)openDatasets:sender;
-- (IBAction)closeDatasets:sender;
+- (IBAction)saveAction:(id)sender;
+- (IBAction)openDatasets:(id)sender;
+- (IBAction)closeDatasets:(id)sender;
+
+- (IBAction)exportVisualization:(id)sender;
+- (IBAction)exportData:(id)sender;
 
 - (IBAction) openHelp:url;
 

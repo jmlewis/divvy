@@ -71,6 +71,12 @@
   return max;
 }
 
+- (void) imageBrowser:(IKImageBrowserView *)aBrowser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event {
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  
+  [NSMenu popUpContextMenu:delegate.datasetViewContextMenu withEvent:event forView:aBrowser];
+}
+
 - (void) dealloc {
   [self.datasetViewsBrowser release];
   [self.datasetViewsArrayController release];
