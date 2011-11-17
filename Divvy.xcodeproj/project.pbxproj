@@ -43,6 +43,16 @@
 		D704B89A13E1F088002692E9 /* DivvyDataset.h in Headers */ = {isa = PBXBuildFile; fileRef = D7764F44137B4A9900F7F49F /* DivvyDataset.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D704B89F13E1F0F6002692E9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		D71D5F3914609FBC003DA34F /* Divvy.icns in Resources */ = {isa = PBXBuildFile; fileRef = D71D5F3814609FBC003DA34F /* Divvy.icns */; };
+		D727E5881475B8E600702544 /* DivvyKMeans.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D730D23F13B5271A00E01F31 /* DivvyKMeans.plugin */; };
+		D727E5891475B8E600702544 /* DivvyScatterPlot.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D704B6A113E08871002692E9 /* DivvyScatterPlot.plugin */; };
+		D727E58A1475B8E600702544 /* DivvyNilClusterer.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D704B88713E1ED5E002692E9 /* DivvyNilClusterer.plugin */; };
+		D727E58B1475B8E600702544 /* DivvyNilReducer.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D7A24D8413F32039001AD337 /* DivvyNilReducer.plugin */; };
+		D727E58C1475B8E600702544 /* DivvyZhu.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D7A24D8E13F3204A001AD337 /* DivvyZhu.plugin */; };
+		D727E58D1475B8E600702544 /* DivvyPCA.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0D55DC5D13FA9FCA000ADAFB /* DivvyPCA.plugin */; };
+		D727E58E1475B8E600702544 /* DivvyTSNE.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0D9C419113FD007100E59675 /* DivvyTSNE.plugin */; };
+		D727E58F1475B8E600702544 /* DivvyLinkage.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D7A250971402E788001AD337 /* DivvyLinkage.plugin */; };
+		D727E5901475B8E600702544 /* DivvyIsomap.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0D86ADF31428990F00877901 /* DivvyIsomap.plugin */; };
+		D727E5911475B8E600702544 /* DivvyNilPointVisualizer.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D792E59314292C120084626A /* DivvyNilPointVisualizer.plugin */; };
 		D72E1D0E116FC6F8000D3D95 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D72E1D0D116FC6F8000D3D95 /* OpenGL.framework */; };
 		D730D24D13B527E800E01F31 /* DivvyClusterer.h in Headers */ = {isa = PBXBuildFile; fileRef = D73A292813B26AC60046EDE1 /* DivvyClusterer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D730D24E13B527E800E01F31 /* DivvyDatasetVisualizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D7716124138C3D1200C70C36 /* DivvyDatasetVisualizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1154,6 +1164,16 @@
 				D7764F5D137B4CDE00F7F49F /* DatasetWindow.xib in Resources */,
 				D7AADA5014465C800041E6F1 /* processing.png in Resources */,
 				D71D5F3914609FBC003DA34F /* Divvy.icns in Resources */,
+				D727E5881475B8E600702544 /* DivvyKMeans.plugin in Resources */,
+				D727E5891475B8E600702544 /* DivvyScatterPlot.plugin in Resources */,
+				D727E58A1475B8E600702544 /* DivvyNilClusterer.plugin in Resources */,
+				D727E58B1475B8E600702544 /* DivvyNilReducer.plugin in Resources */,
+				D727E58C1475B8E600702544 /* DivvyZhu.plugin in Resources */,
+				D727E58D1475B8E600702544 /* DivvyPCA.plugin in Resources */,
+				D727E58E1475B8E600702544 /* DivvyTSNE.plugin in Resources */,
+				D727E58F1475B8E600702544 /* DivvyLinkage.plugin in Resources */,
+				D727E5901475B8E600702544 /* DivvyIsomap.plugin in Resources */,
+				D727E5911475B8E600702544 /* DivvyNilPointVisualizer.plugin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,1 +1,1 @@
-After you initially build Divvy, move all of the .plugin bundles in the build products directory to ~/Library/Application Support/Divvy/. This will give Divvy a set of initial plugins that you can use to play around with the data in Sample Datasets/.
+Welcome to Divvy! Build Divvy in Xcode 3 or 4 on Mac OS X 10.6 or 10.7 and then play around with the data in Sample Datasets/. Right click on any dataset view to export your results as .csv or the view as .png. Visit us on the web at (divvy.ucsd.edu)[http://divvy.ucsd.edu].

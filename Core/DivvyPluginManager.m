@@ -35,18 +35,18 @@
 {
   if (!(self = [super init])) return nil;
   
-  NSString *applicationSupportDirectory = [self applicationSupportDirectory];
-  
   //Find the plugins
   NSFileManager *fileManager = [NSFileManager defaultManager];
-  NSArray *plugins = [fileManager contentsOfDirectoryAtPath:applicationSupportDirectory error:nil];
+  NSString *bundleFolder = [[NSBundle mainBundle] bundlePath];
+  bundleFolder = [bundleFolder stringByAppendingString:@"/Contents/Resources/"];
+  NSArray *plugins = [fileManager contentsOfDirectoryAtPath:bundleFolder error:nil];
   
   //Load all of the plugins
   NSMutableArray *loadArray = [NSMutableArray array];
   for (NSString *pluginPath in plugins) {
     if (![pluginPath hasSuffix:@".plugin"]) continue;
 
-    NSString *bundlePath = [applicationSupportDirectory stringByAppendingFormat:@"/%@", pluginPath];
+    NSString *bundlePath = [bundleFolder stringByAppendingString:pluginPath];
     
     NSBundle *pluginBundle = [NSBundle bundleWithPath:bundlePath];
     Class principalClass = [pluginBundle principalClass];
