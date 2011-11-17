@@ -76,25 +76,23 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   
   NSManagedObjectID *datasetViewID = datasetView.objectID;
   DivvyDatasetViewOperation *datasetViewOperation = [[DivvyDatasetViewOperation alloc] initWithObjectID:datasetViewID];
-  DivvyDatasetViewOperation *existingOperation = nil;
   
   // Check for existing operations on the same dataset view
   // The one with a completion block is the final one
   for (DivvyDatasetViewOperation *op in operationQueue.operations)
-    if (op.completionBlock != nil && op.datasetViewID == datasetViewID)
-      existingOperation = [op retain];
-  
-  if (existingOperation) {
-    existingOperation.completionBlock = nil;
-    [datasetViewOperation addDependency:existingOperation];
-    [existingOperation release];
-  }
+    if (op.completionBlock != nil && op.datasetViewID == datasetViewID) {
+      op.completionBlock = nil;
+      [datasetViewOperation addDependency:op];
+    }
   
   // Reload the DatasetView image in main thread once processing is complete.
   [datasetViewOperation setCompletionBlock:^{
-    dispatch_async(dispatch_get_main_queue(), ^{      
+    dispatch_async(dispatch_get_main_queue(), ^{
       // Pull the changes from the persistent store
       [self.managedObjectContext refreshObject:datasetView mergeChanges:YES];
+      // Catch updates to selectedReducer.d -- this is the only other thing that can change
+      // in a DatasetViewOperation
+      [self.managedObjectContext refreshObject:datasetView.selectedReducer mergeChanges:YES];
       
       // Unset the processing image
       [datasetView reloadImage];
@@ -136,6 +134,8 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
       [dataset loadDataAtURL:[filesToOpen objectAtIndex:i]];
     }
   }
+  NSError *error = nil;
+  [managedObjectContext save:&error];
 }
 
 - (IBAction) closeDatasets:(id)sender {
@@ -146,6 +146,8 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
       [managedObjectContext deleteObject:datasetView];
     [managedObjectContext deleteObject:dataset];
   }
+  NSError *error = nil;
+  [managedObjectContext save:&error];
 }
 
 - (IBAction) openHelp:(NSString *)url {
