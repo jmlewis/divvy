@@ -1,1 +1,3 @@
 Welcome to Divvy! Build Divvy in Xcode 3 or 4 on Mac OS X 10.6 or 10.7 and then play around with the data in Sample Datasets/. Right click on any dataset view to export your results as .csv or the view as .png. Visit Divvy on the web at http://divvy.ucsd.edu for demo videos and more (coming soon).
+
+This project used to be hosted at http://code.google.com/p/ucsd-divvy/ -- you can find some more info and old commits there.
