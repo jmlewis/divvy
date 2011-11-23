@@ -31,6 +31,8 @@
   return self;
 }
 
+// If we're moving from high d to lower d, adjust the scatter dimensions and sliders
+// to compensate, even if  scatter plot is not the current visualizer.
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   DivvyAppDelegate *delegate = [NSApp delegate];
   
@@ -40,21 +42,16 @@
     NSArray *sliders = [NSArray arrayWithObjects:xAxisSlider, yAxisSlider, nil];
     
     for(NSSlider *slider in sliders) {
-      int value = [slider intValue];
-      
       slider.maxValue = d;
       slider.numberOfTickMarks = d + 1;
-      if (value > d)
-        slider.intValue = d;
     }
-    
-    // If we're moving from low d to higher d, the NSSlider binding for the xAxis and yAxis values fire before this does.
-    // The following code updates the slider positions to compensate. Maybe there's a better way to do this.
     for (id <DivvyDatasetVisualizer> datasetVisualizer in delegate.selectedDatasetView.datasetVisualizers) {
       if ([datasetVisualizer isKindOfClass:[DivvyScatterPlot class]]) {
         DivvyScatterPlot *scatterPlot = datasetVisualizer;
-        xAxisSlider.intValue = scatterPlot.xAxis.intValue;
-        yAxisSlider.intValue = scatterPlot.yAxis.intValue;
+        if (scatterPlot.xAxis.intValue > d)
+          scatterPlot.xAxis = [NSNumber numberWithInt:d];
+        if (scatterPlot.yAxis.intValue > d)
+          scatterPlot.yAxis = [NSNumber numberWithInt:d];
       }
     }
   }
