@@ -290,7 +290,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
       NSArray *datasets = [self.datasetsPanelController.datasetsArrayController arrangedObjects];
       newDataset = [datasets objectAtIndex:[self.selectedDatasets lastIndex]];
 
-      NSIndexSet *cachedIndexes = newDataset.selectedDatasetViews;
+      NSIndexSet *cachedIndexes = [newDataset.selectedDatasetViews retain];
       
       // Don't update the selectedDatasetViews until after the ImageBrowser has nuked them and they've been restored
       [self removeObserver:self forKeyPath:@"selectedDataset.selectedDatasetViews"];
@@ -298,6 +298,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
       [self addObserver:self forKeyPath:@"selectedDataset.selectedDatasetViews" options:0 context:nil];
       
       self.selectedDataset.selectedDatasetViews = cachedIndexes;
+      [cachedIndexes release];
     }
   }
   
