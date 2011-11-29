@@ -1,10 +1,13 @@
 //
 //  DivvyDatasetView.m
-//  Divvy
 //
-//  Created by Joshua Lewis on 5/16/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Written in 2011 by Joshua Lewis at the UC San Diego Natural Computation Lab,
+//  PI Virginia de Sa, supported by NSF Award SES #0963071.
+//  Copyright 2011, UC San Diego Natural Computation Lab. All rights reserved.
+//  Licensed under the MIT License. http://www.opensource.org/licenses/mit-license.php
 //
+//  Find the Divvy project on the web at http://divvy.ucsd.edu
+
 
 #import "DivvyDatasetView.h"
 
@@ -53,6 +56,43 @@
 
 @synthesize renderedImage;
 
+
+#pragma mark -
+#pragma mark 'IKImageBrowserItem' Protocol Methods
+-(NSString *) imageTitle {
+  return @"DivvyDatasetView";
+}
+
+- (NSString*) imageUID {
+  
+  // return uniqueID if it exists.
+  NSString* uniqueID = self.uniqueID;
+  if ( uniqueID ) return uniqueID;
+  [self generateUniqueID];
+  return self.uniqueID;
+}
+
+- (NSString *) imageRepresentationType {
+  return IKImageBrowserNSImageRepresentationType;
+}
+
+- (id) imageRepresentation {
+  return self.image;
+}
+
+- (NSUInteger) imageVersion {
+  return [[self version] unsignedIntValue];
+}
+
+#pragma mark -
+#pragma mark 'IKImageBrowserItem' support
+- (void) generateUniqueID {
+  
+  NSString* uniqueID = self.uniqueID;
+  if ( uniqueID != nil ) return;
+  self.uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
+}
+
 - (void) setProcessingImage {
   DivvyAppDelegate *delegate = [NSApp delegate];
   
@@ -67,7 +107,79 @@
   self.version = delegate.version;
 }
 
+#pragma mark -
+#pragma mark Plugin management
+- (void) createPlugins {
+  // Could be cleaned up a bit
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  NSManagedObjectContext* moc = self.managedObjectContext;
+  NSManagedObjectModel* mom = delegate.managedObjectModel;
+  NSArray *pluginTypes = delegate.pluginTypes;
+  NSArray *pluginDefaults = delegate.pluginDefaults;
+  
+  for(NSString *pluginType in pluginTypes) {
+    NSMutableArray *plugins = [NSMutableArray array];
+    NSMutableArray *pluginIDs = [NSMutableArray array];
+    [self setValue:plugins forKey:[NSString stringWithFormat:@"%@s", pluginType]];
+    [self setValue:pluginIDs forKey:[NSString stringWithFormat:@"%@IDs", pluginType]];
+    
+    for(NSEntityDescription *anEntityDescription in [mom entities])
+      if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {
+        
+        id anEntity = [NSEntityDescription insertNewObjectForEntityForName:anEntityDescription.name inManagedObjectContext:moc];
+        
+        [[self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]] addObject:anEntity];
+        [[self valueForKey:[NSString stringWithFormat:@"%@IDs", pluginType]] addObject:[anEntity valueForKey:[NSString stringWithFormat:@"%@ID", pluginType]]];
+        
+        if([anEntityDescription.name isEqual:[pluginDefaults objectAtIndex:[pluginTypes indexOfObject:pluginType]]]) {
+          [self setValue:anEntity 
+                  forKey:[NSString stringWithFormat:@"selected%@%@", 
+                          [[pluginType substringToIndex:1] capitalizedString], 
+                          [pluginType substringFromIndex:1]]];
+        }
+      }
+    
+    NSMutableArray *pluginResults = [NSMutableArray array];
+    for(id aPlugin in [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]])
+      [pluginResults addObject:[NSNull null]];
+    [self setValue:pluginResults forKey:[NSString stringWithFormat:@"%@Results", pluginType]];
+  }
+}
 
+- (void) updatePlugins {
+  // If there are new plugins since the last time we ran Divvy, add them
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  NSManagedObjectContext* moc = delegate.managedObjectContext;
+  NSManagedObjectModel* mom = delegate.managedObjectModel;
+  NSArray *pluginTypes = delegate.pluginTypes;
+  
+  for(NSString *pluginType in pluginTypes) {
+    NSMutableArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
+    NSMutableArray *pluginIDs = [self valueForKey:[NSString stringWithFormat:@"%@IDs", pluginType]];
+    NSMutableArray *pluginResults = [self valueForKey:[NSString stringWithFormat:@"%@Results", pluginType]];
+    
+    for(NSEntityDescription *anEntityDescription in [mom entities])
+      if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {
+        BOOL entityExists = FALSE;
+        
+        for(NSManagedObject *aPlugin in plugins)
+          if ([aPlugin.entity isEqual:anEntityDescription])
+            entityExists = TRUE;
+        
+        if(!entityExists) {
+          id anEntity = [NSEntityDescription insertNewObjectForEntityForName:anEntityDescription.name inManagedObjectContext:moc];
+          
+          [plugins addObject:anEntity];
+          [pluginIDs addObject:[anEntity valueForKey:[NSString stringWithFormat:@"%@ID", pluginType]]];
+          [pluginResults addObject:[NSNull null]];
+        }
+      }
+  }
+}
+
+#pragma mark -
+#pragma mark Invalidate and recompute plugin results
+// This is the main recomputation method--it is the main call in DivvyDatasetOperation
 - (void) checkForNullPluginResults {
   // We require a specific order, so we don't use the delegate version
   // Make this a (constant?) member of DatasetView so we don't have to recalculate it every time
@@ -259,8 +371,7 @@
 }
 
 #pragma mark -
-#pragma mark Core Data Methods
-
+#pragma mark Core Data awake
 - (void) awakeFromInsert {
   [super awakeFromInsert];
   
@@ -321,74 +432,6 @@
   }
 }
 
-- (void) createPlugins {
-  // Could be cleaned up a bit
-  DivvyAppDelegate *delegate = [NSApp delegate];
-  NSManagedObjectContext* moc = self.managedObjectContext;
-  NSManagedObjectModel* mom = delegate.managedObjectModel;
-  NSArray *pluginTypes = delegate.pluginTypes;
-  NSArray *pluginDefaults = delegate.pluginDefaults;
-  
-  for(NSString *pluginType in pluginTypes) {
-    NSMutableArray *plugins = [NSMutableArray array];
-    NSMutableArray *pluginIDs = [NSMutableArray array];
-    [self setValue:plugins forKey:[NSString stringWithFormat:@"%@s", pluginType]];
-    [self setValue:pluginIDs forKey:[NSString stringWithFormat:@"%@IDs", pluginType]];
-    
-    for(NSEntityDescription *anEntityDescription in [mom entities])
-      if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {
-        
-        id anEntity = [NSEntityDescription insertNewObjectForEntityForName:anEntityDescription.name inManagedObjectContext:moc];
-        
-        [[self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]] addObject:anEntity];
-        [[self valueForKey:[NSString stringWithFormat:@"%@IDs", pluginType]] addObject:[anEntity valueForKey:[NSString stringWithFormat:@"%@ID", pluginType]]];
-        
-        if([anEntityDescription.name isEqual:[pluginDefaults objectAtIndex:[pluginTypes indexOfObject:pluginType]]]) {
-          [self setValue:anEntity 
-                  forKey:[NSString stringWithFormat:@"selected%@%@", 
-                          [[pluginType substringToIndex:1] capitalizedString], 
-                          [pluginType substringFromIndex:1]]];
-        }
-      }
-    
-    NSMutableArray *pluginResults = [NSMutableArray array];
-    for(id aPlugin in [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]])
-      [pluginResults addObject:[NSNull null]];
-    [self setValue:pluginResults forKey:[NSString stringWithFormat:@"%@Results", pluginType]];
-  }
-}
-
-- (void) updatePlugins {
-  // If there are new plugins since the last time we ran Divvy, add them
-  DivvyAppDelegate *delegate = [NSApp delegate];
-  NSManagedObjectContext* moc = delegate.managedObjectContext;
-  NSManagedObjectModel* mom = delegate.managedObjectModel;
-  NSArray *pluginTypes = delegate.pluginTypes;
-  
-  for(NSString *pluginType in pluginTypes) {
-    NSMutableArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
-    NSMutableArray *pluginIDs = [self valueForKey:[NSString stringWithFormat:@"%@IDs", pluginType]];
-    NSMutableArray *pluginResults = [self valueForKey:[NSString stringWithFormat:@"%@Results", pluginType]];
-    
-    for(NSEntityDescription *anEntityDescription in [mom entities])
-      if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {
-        BOOL entityExists = FALSE;
-        
-        for(NSManagedObject *aPlugin in plugins)
-          if ([aPlugin.entity isEqual:anEntityDescription])
-            entityExists = TRUE;
-      
-        if(!entityExists) {
-          id anEntity = [NSEntityDescription insertNewObjectForEntityForName:anEntityDescription.name inManagedObjectContext:moc];
-          
-          [plugins addObject:anEntity];
-          [pluginIDs addObject:[anEntity valueForKey:[NSString stringWithFormat:@"%@ID", pluginType]]];
-          [pluginResults addObject:[NSNull null]];
-        }
-      }
-  }
-}
-
 - (void) setSelectedDatasetVisualizer:(id <DivvyDatasetVisualizer>)aDatasetVisualizer {
   self.selectedDatasetVisualizerID = aDatasetVisualizer.datasetVisualizerID;
   selectedDatasetVisualizer = aDatasetVisualizer;
@@ -409,44 +452,7 @@
   selectedReducer = aReducer;
 }
 
-#pragma mark -
-#pragma mark 'IKImageBrowserItem' Protocol Methods
-
--(NSString *) imageTitle {
-  return @"Temp";
-}
-
-- (NSString*) imageUID {
-  
-  // return uniqueID if it exists.
-  NSString* uniqueID = self.uniqueID;
-  if ( uniqueID ) return uniqueID;
-  [self generateUniqueID];
-  return self.uniqueID;
-}
-
-- (NSString *) imageRepresentationType {
-  return IKImageBrowserNSImageRepresentationType;
-}
-
-- (id) imageRepresentation {
-  return self.image;
-}
-
-- (NSUInteger) imageVersion {
-  return [[self version] unsignedIntValue];
-}
-
-#pragma mark -
-#pragma mark Private
-
-- (void) generateUniqueID {
-  
-  NSString* uniqueID = self.uniqueID;
-  if ( uniqueID != nil ) return;
-  self.uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
-}
-
+// I think this is unecessary, or should be in a will turn into fault method
 - (void) dealloc {
   
   // Core Data properties automatically managed.

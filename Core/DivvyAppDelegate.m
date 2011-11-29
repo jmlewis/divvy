@@ -1,10 +1,12 @@
 //
 //  DivvyAppDelegate.m
-//  Divvy
 //
-//  Created by Joshua Lewis on 4/5/10.
-//  Copyright 2010 UCSD. All rights reserved.
+//  Written in 2011 by Joshua Lewis at the UC San Diego Natural Computation Lab,
+//  PI Virginia de Sa, supported by NSF Award SES #0963071.
+//  Copyright 2011, UC San Diego Natural Computation Lab. All rights reserved.
+//  Licensed under the MIT License. http://www.opensource.org/licenses/mit-license.php
 //
+//  Find the Divvy project on the web at http://divvy.ucsd.edu
 
 #import "DivvyAppDelegate.h"
 
@@ -63,6 +65,8 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 @synthesize version;
 @synthesize processingImage;
 
+#pragma mark -
+#pragma mark Handle application-wide messages
 - (void) reloadDatasetView:(DivvyDatasetView *)datasetView {
   [datasetView setProcessingImage];
   
@@ -105,16 +109,8 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   [operationQueue addOperation:datasetViewOperation];
   [datasetViewOperation release];
   
+  // Refresh to show processing image
   [self.datasetWindowController.datasetViewsBrowser reloadData];
-}
-
-- (NSArray *)defaultSortDescriptors {
-  return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]];
-}
-
-- (NSNumber *)version {
-  self.version = [NSNumber numberWithInt:[version intValue] + 1];
-  return version;
 }
 
 - (IBAction) openDatasets:(id)sender {
@@ -148,10 +144,6 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   }
   NSError *error = nil;
   [managedObjectContext save:&error];
-}
-
-- (IBAction) openHelp:(NSString *)url {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
 }
 
 - (IBAction)exportVisualization:(id)sender {
@@ -212,74 +204,27 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   }];
 }
 
-- (id)init
-{
-  if (!(self = [super init])) return nil;
-  
-  pluginTypes = [[NSArray alloc] initWithObjects:kDivvyDatasetVisualizer, kDivvyPointVisualizer, kDivvyClusterer, kDivvyReducer, nil];
-  pluginDefaults = [[NSArray alloc] initWithObjects:kDivvyDefaultDatasetVisualizer, kDivvyDefaultPointVisualizer, kDivvyDefaultClusterer, kDivvyDefaultReducer, nil];
-  
-  pluginManager = [DivvyPluginManager shared];
-  
-  operationQueue = [[NSOperationQueue alloc] init];
-  //[operationQueue setMaxConcurrentOperationCount:###base this on number of cores/threads per core?###]
-  
-  version = [NSNumber numberWithInt:0];
-  
-  return self;
+// Plugins can define a help URL--normally a web page--this opens it when the ? button is pressed
+- (IBAction) openHelp:(NSString *)url {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  self.processingImage = [[[NSImage alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"processing" withExtension:@"png"]] autorelease];  
-  
-  DivvyDatasetWindow *datasetWindow;
-  datasetWindow = [[DivvyDatasetWindow alloc] initWithWindowNibName:@"DatasetWindow"];
-  [datasetWindow showWindow:nil];
-  self.datasetWindowController = datasetWindow;
-  self.datasetsPanelController = datasetWindow.datasetsPanel;
-  self.datasetViewPanelController = datasetWindow.datasetViewPanel;
-  [datasetWindow release];
-  
-  // Load the datasets from the managed object context early so that we can set the saved selection in applicationDidFinishLaunching
-  NSError *error = nil;
-  [self.datasetsPanelController.datasetsArrayController fetchWithRequest:nil merge:NO error:&error];
-  
-  NSEntityDescription *datasetViewEntityDescription = [self.managedObjectModel.entitiesByName objectForKey:@"DatasetView"];
-  NSFetchRequest *datasetViewRequest = [[[NSFetchRequest alloc] init] autorelease];
-  [datasetViewRequest setEntity:datasetViewEntityDescription];
-  NSArray *datasetViewArray = [self.managedObjectContext executeFetchRequest:datasetViewRequest error:&error];
-  
-  // Fetch the dataset views and start drawing them
-  for (DivvyDatasetView *datasetView in datasetViewArray) {
-    [datasetView updatePlugins]; // Check if there are any new plugins since last time Divvy launched
-    [self reloadDatasetView:datasetView];
-  }
-
-  [self.datasetViewPanelController loadPluginViewControllers];
-  
-  // Connect to delegateSettings
-  NSEntityDescription *delegateSettingsEntityDescription = [self.managedObjectModel.entitiesByName objectForKey:@"DelegateSettings"];
-  NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-  [request setEntity:delegateSettingsEntityDescription];
-  NSArray *delegateSettingsArray = [self.managedObjectContext executeFetchRequest:request error:&error];
-  
-  if(delegateSettingsArray.count == 0)
-    self.delegateSettings = [NSEntityDescription insertNewObjectForEntityForName:delegateSettingsEntityDescription.name inManagedObjectContext:self.managedObjectContext];
-  else {
-    self.delegateSettings = [delegateSettingsArray objectAtIndex:0];
-  }
-  
-  [self addObserver:self forKeyPath:@"selectedDatasets" options:0 context:nil];
-  [self addObserver:self forKeyPath:@"selectedDataset.selectedDatasetViews" options:0 context:nil];
-  
-  if(self.delegateSettings.selectedDatasets)
-    self.selectedDatasets = self.delegateSettings.selectedDatasets;
-  else
-    [self.datasetViewPanelController reflow];
-
+// Image browser cells need to update their version to have the browser reload them.
+// Due to concurrency it's easier to just globally track versions here.
+- (NSNumber *)version {
+  self.version = [NSNumber numberWithInt:[version intValue] + 1];
+  return version;
 }
 
-// This stuff needs to be cleaned up, but it's an improvement over catching UI events
+// Hack to get datasets to sort reasonably.
+- (NSArray *)defaultSortDescriptors {
+  return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]];
+}
+
+#pragma mark -
+#pragma mark Update selection variables using KVO
+// This stuff needs to be cleaned up, but it's an improvement over catching UI events.
+// The observers are added in applicationDidFinishLaunching
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   if([keyPath isEqual:@"selectedDatasets"]) {
     DivvyDataset *newDataset;
@@ -319,13 +264,8 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   }
 }
 
-/**
- Returns the support directory for the application, used to store the Core Data
- store file.  This code uses a directory named "Divvy" for
- the content, either in the NSApplicationSupportDirectory location or (if the
- former cannot be found), the system's temporary directory.
- */
-
+#pragma mark -
+#pragma mark Core Data support
 - (NSString *)applicationSupportDirectory {
   
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
@@ -333,11 +273,6 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   return [basePath stringByAppendingPathComponent:@"Divvy"];
 }
 
-
-/**
- Creates, retains, and returns the managed object model for the application 
- by merging all of the models found in the application bundle.
- */
 
 - (NSManagedObjectModel *)managedObjectModel {
   
@@ -352,19 +287,10 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   return managedObjectModel;
 }
 
-
-/**
- Returns the persistent store coordinator for the application.  This 
- implementation will create and return a coordinator, having added the 
- store for the application to it.  (The directory for the store is created, 
- if necessary.)
- */
-
 - (NSPersistentStoreCoordinator *) persistentStoreCoordinator {
   
   if (persistentStoreCoordinator) return persistentStoreCoordinator;
   
-  //NSString *storeType = NSBinaryStoreType;
   NSString *storeType = NSSQLiteStoreType;
   
   NSManagedObjectModel *mom = [self managedObjectModel];
@@ -478,11 +404,6 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   return persistentStoreCoordinator;
 }
 
-/**
- Returns the managed object context for the application (which is already
- bound to the persistent store coordinator for the application.) 
- */
-
 - (NSManagedObjectContext *) managedObjectContext {
   
   if (managedObjectContext) return managedObjectContext;
@@ -503,47 +424,88 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   return managedObjectContext;
 }
 
-/**
- Returns the NSUndoManager for the application.  In this case, the manager
- returned is that of the managed object context for the application.
- */
-
 - (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window {
   return [[self managedObjectContext] undoManager];
 }
 
-
-/**
- Performs the save action for the application, which is to send the save:
- message to the application's managed object context.  Any encountered errors
- are presented to the user.
- */
-
-- (IBAction) saveAction:(id)sender {
+#pragma mark -
+#pragma mark Init/dealloc &c.
+- (id)init
+{
+  if (!(self = [super init])) return nil;
   
+  pluginTypes = [[NSArray alloc] initWithObjects:kDivvyDatasetVisualizer, kDivvyPointVisualizer, kDivvyClusterer, kDivvyReducer, nil];
+  pluginDefaults = [[NSArray alloc] initWithObjects:kDivvyDefaultDatasetVisualizer, kDivvyDefaultPointVisualizer, kDivvyDefaultClusterer, kDivvyDefaultReducer, nil];
+  
+  pluginManager = [DivvyPluginManager shared];
+  
+  operationQueue = [[NSOperationQueue alloc] init];
+  //[operationQueue setMaxConcurrentOperationCount:24] // Base this on number of cores/threads per core?
+  
+  version = [NSNumber numberWithInt:0];
+  
+  return self;
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  self.processingImage = [[[NSImage alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"processing" withExtension:@"png"]] autorelease];  
+  
+  // Load UI
+  DivvyDatasetWindow *datasetWindow;
+  datasetWindow = [[DivvyDatasetWindow alloc] initWithWindowNibName:@"DatasetWindow"];
+  [datasetWindow showWindow:nil];
+  self.datasetWindowController = datasetWindow;
+  self.datasetsPanelController = datasetWindow.datasetsPanel;
+  self.datasetViewPanelController = datasetWindow.datasetViewPanel;
+  [datasetWindow release];
+  
+  // Load the datasets from the managed object context early so that we can set the saved selection in applicationDidFinishLaunching
   NSError *error = nil;
+  [self.datasetsPanelController.datasetsArrayController fetchWithRequest:nil merge:NO error:&error];
   
-  if (![[self managedObjectContext] commitEditing]) {
-    NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
+  NSEntityDescription *datasetViewEntityDescription = [self.managedObjectModel.entitiesByName objectForKey:@"DatasetView"];
+  NSFetchRequest *datasetViewRequest = [[[NSFetchRequest alloc] init] autorelease];
+  [datasetViewRequest setEntity:datasetViewEntityDescription];
+  NSArray *datasetViewArray = [self.managedObjectContext executeFetchRequest:datasetViewRequest error:&error];
+  
+  // Fetch the dataset views and start drawing them
+  for (DivvyDatasetView *datasetView in datasetViewArray) {
+    [datasetView updatePlugins]; // Check if there are any new plugins since last time Divvy launched
+    [self reloadDatasetView:datasetView];
   }
   
-  if (![[self managedObjectContext] save:&error]) {
-    [[NSApplication sharedApplication] presentError:error];
+  [self.datasetViewPanelController loadPluginViewControllers];
+  
+  // Connect to delegateSettings
+  NSEntityDescription *delegateSettingsEntityDescription = [self.managedObjectModel.entitiesByName objectForKey:@"DelegateSettings"];
+  NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+  [request setEntity:delegateSettingsEntityDescription];
+  NSArray *delegateSettingsArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+  
+  if(delegateSettingsArray.count == 0)
+    self.delegateSettings = [NSEntityDescription insertNewObjectForEntityForName:delegateSettingsEntityDescription.name inManagedObjectContext:self.managedObjectContext];
+  else {
+    self.delegateSettings = [delegateSettingsArray objectAtIndex:0];
   }
+  
+  [self addObserver:self forKeyPath:@"selectedDatasets" options:0 context:nil];
+  [self addObserver:self forKeyPath:@"selectedDataset.selectedDatasetViews" options:0 context:nil];
+  
+  if(self.delegateSettings.selectedDatasets)
+    self.selectedDatasets = self.delegateSettings.selectedDatasets;
+  else
+    [self.datasetViewPanelController reflow];
+  
 }
 
 
-/**
- Implementation of the applicationShouldTerminate: method, used here to
- handle the saving of changes in the application managed object context
- before the application terminates.
- */
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {    
   // Save the selected datasets.
   self.delegateSettings.selectedDatasets = self.selectedDatasets;
   
   // Don't save all the images between sessions--it makes things slow and takes up a lot of disk
+  // Maybe we can do this by internally representing images with .pngs.
   unsigned int i;
   NSMutableArray *results;
   for(DivvyDataset *dataset in self.datasetsPanelController.datasetsArrayController.arrangedObjects)
@@ -574,16 +536,6 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   
   NSError *error = nil;
   if (![managedObjectContext save:&error]) {
-    
-    // This error handling simply presents error information in a panel with an 
-    // "Ok" button, which does not include any attempt at error recovery (meaning, 
-    // attempting to fix the error.)  As a result, this implementation will 
-    // present the information to the user and then follow up with a panel asking 
-    // if the user wishes to "Quit Anyway", without saving the changes.
-    
-    // Typically, this process should be altered to include application-specific 
-    // recovery steps.  
-    
     BOOL result = [sender presentError:error];
     if (result) return NSTerminateCancel;
     
@@ -607,11 +559,6 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   
   return NSTerminateNow;
 }
-
-
-/**
- Implementation of dealloc, to release the retained variables.
- */
 
 - (void)dealloc {
   [datasetsPanelController release];
