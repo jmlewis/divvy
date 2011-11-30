@@ -1,10 +1,13 @@
 //
 //  DivvyDatasetWindow.m
-//  Divvy
+//  
+//  Written in 2011 by Joshua Lewis at the UC San Diego Natural Computation Lab,
+//  PI Virginia de Sa, supported by NSF Award SES #0963071.
+//  Copyright 2011, UC San Diego Natural Computation Lab. All rights reserved.
+//  Licensed under the MIT License. http://www.opensource.org/licenses/mit-license.php
 //
-//  Created by Joshua Lewis on 5/12/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+//  Find the Divvy project on the web at http://divvy.ucsd.edu
+
 
 #import "DivvyDatasetWindow.h"
 
@@ -32,15 +35,8 @@
 @synthesize datasetsPanel;
 @synthesize datasetViewPanel;
 
-- (void) loadWindow {
-  [super loadWindow];
-    
-  NSSortDescriptor *dateCreatedDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES] autorelease];
-  NSArray *sortDescriptors = [NSArray arrayWithObjects:dateCreatedDescriptor, nil];
-  
-  [datasetViewsArrayController setSortDescriptors:sortDescriptors];
-}
-
+#pragma mark -
+#pragma mark UI events
 - (IBAction)editDatasetViews:(id)sender {
   DivvyAppDelegate *delegate = [NSApp delegate];
   
@@ -58,7 +54,16 @@
   }
 }
 
-// Don't let our views completely obscure each other
+- (void) imageBrowser:(IKImageBrowserView *)aBrowser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event {
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  
+  [NSMenu popUpContextMenu:delegate.datasetViewContextMenu withEvent:event forView:aBrowser];
+}
+
+
+#pragma mark -
+#pragma mark Constrain panel subviews
+// Don't let subviews completely obscure each other
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex {
   CGFloat min = 150.f;
   
@@ -71,10 +76,15 @@
   return max;
 }
 
-- (void) imageBrowser:(IKImageBrowserView *)aBrowser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event {
-  DivvyAppDelegate *delegate = [NSApp delegate];
+#pragma mark -
+#pragma mark loadWindow/dealloc
+- (void) loadWindow {
+  [super loadWindow];
   
-  [NSMenu popUpContextMenu:delegate.datasetViewContextMenu withEvent:event forView:aBrowser];
+  NSSortDescriptor *dateCreatedDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES] autorelease];
+  NSArray *sortDescriptors = [NSArray arrayWithObjects:dateCreatedDescriptor, nil];
+  
+  [datasetViewsArrayController setSortDescriptors:sortDescriptors];
 }
 
 - (void) dealloc {

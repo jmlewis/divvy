@@ -1,10 +1,13 @@
 //
 //  DivvyDatasetPanel.m
-//  Divvy
+//  
+//  Written in 2011 by Joshua Lewis at the UC San Diego Natural Computation Lab,
+//  PI Virginia de Sa, supported by NSF Award SES #0963071.
+//  Copyright 2011, UC San Diego Natural Computation Lab. All rights reserved.
+//  Licensed under the MIT License. http://www.opensource.org/licenses/mit-license.php
 //
-//  Created by Joshua Lewis on 5/12/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+//  Find the Divvy project on the web at http://divvy.ucsd.edu
+
 
 #import "DivvyAppDelegate.h"
 #import "DivvyDatasetsPanel.h"

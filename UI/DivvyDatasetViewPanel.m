@@ -1,10 +1,12 @@
 //
 //  DivvyDatasetViewPanel.m
-//  Divvy
+//  
+//  Written in 2011 by Joshua Lewis at the UC San Diego Natural Computation Lab,
+//  PI Virginia de Sa, supported by NSF Award SES #0963071.
+//  Copyright 2011, UC San Diego Natural Computation Lab. All rights reserved.
+//  Licensed under the MIT License. http://www.opensource.org/licenses/mit-license.php
 //
-//  Created by Joshua Lewis on 6/24/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+//  Find the Divvy project on the web at http://divvy.ucsd.edu
 
 #import "DivvyDatasetViewPanel.h"
 #import "DivvyAppDelegate.h"
@@ -43,29 +45,8 @@
 @synthesize clustererViewControllers;
 @synthesize reducerViewControllers;
 
-- (void) loadPluginViewControllers {
-  DivvyAppDelegate *delegate = [NSApp delegate];
-  NSArray *pluginTypes = delegate.pluginTypes;
-
-  for(NSString *pluginType in pluginTypes) {
-    NSMutableArray *pluginViewControllers = [NSMutableArray array];
-    [self setValue:pluginViewControllers forKey:[NSString stringWithFormat:@"%@ViewControllers", pluginType]];
-    
-    for(NSEntityDescription *anEntityDescription in [[[NSApp delegate] managedObjectModel] entities])
-      if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {        
-        Class controller = NSClassFromString([NSString stringWithFormat:@"%@%@%@", @"Divvy", anEntityDescription.name, @"Controller"]);
-        
-        id controllerInstance = [[controller alloc] init];
-        [pluginViewControllers addObject:controllerInstance];
-        [controllerInstance release];
-        
-        NSString *nibName = [NSString stringWithFormat:@"%@%@", @"Divvy", anEntityDescription.name];
-        [NSBundle loadNibNamed:nibName owner:controllerInstance];
-      }
-  }
-}
-
-
+#pragma mark -
+#pragma mark UI events
 - (IBAction) datasetVisualizerSelect:(id)sender {
   [self reflow];
   
@@ -111,6 +92,8 @@
   [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
+#pragma mark -
+#pragma mark Redraw panel when state changes
 - (void) reflow {
   DivvyAppDelegate *delegate = [NSApp delegate];
   NSArray *pluginTypes = delegate.pluginTypes;
@@ -195,6 +178,31 @@
   NSRect selectViewFrame = [selectViewTextField frame];
   selectViewFrame.origin.y = 20.f;
   [selectViewTextField setFrame:selectViewFrame];
+}
+
+#pragma mark -
+#pragma mark load/dealloc
+// Called in applicationDidFinishLaunching
+- (void) loadPluginViewControllers {
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  NSArray *pluginTypes = delegate.pluginTypes;
+  
+  for(NSString *pluginType in pluginTypes) {
+    NSMutableArray *pluginViewControllers = [NSMutableArray array];
+    [self setValue:pluginViewControllers forKey:[NSString stringWithFormat:@"%@ViewControllers", pluginType]];
+    
+    for(NSEntityDescription *anEntityDescription in [[[NSApp delegate] managedObjectModel] entities])
+      if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {        
+        Class controller = NSClassFromString([NSString stringWithFormat:@"%@%@%@", @"Divvy", anEntityDescription.name, @"Controller"]);
+        
+        id controllerInstance = [[controller alloc] init];
+        [pluginViewControllers addObject:controllerInstance];
+        [controllerInstance release];
+        
+        NSString *nibName = [NSString stringWithFormat:@"%@%@", @"Divvy", anEntityDescription.name];
+        [NSBundle loadNibNamed:nibName owner:controllerInstance];
+      }
+  }
 }
 
 - (void) dealloc {

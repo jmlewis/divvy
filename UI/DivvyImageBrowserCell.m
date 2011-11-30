@@ -1,13 +1,15 @@
 //
 //  DivvyImageBrowserCell.m
-//  Divvy
+//  
+//  Written in 2011 by Joshua Lewis at the UC San Diego Natural Computation Lab,
+//  PI Virginia de Sa, supported by NSF Award SES #0963071.
+//  Copyright 2011, UC San Diego Natural Computation Lab. All rights reserved.
+//  Licensed under the MIT License. http://www.opensource.org/licenses/mit-license.php
 //
-//  Created by Joshua Lewis on 10/25/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+//  Find the Divvy project on the web at http://divvy.ucsd.edu
+
 
 #import "DivvyImageBrowserCell.h"
-
 
 @implementation DivvyImageBrowserCell
 
@@ -19,20 +21,14 @@
 
 	if(type == IKImageBrowserCellSelectionLayer){
     
-		//create a selection layer
+		// Create a selection layer
 		CALayer *selectionLayer = [CALayer layer];
 		selectionLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
 		
-		const CGFloat fillComponents[4] = {0.33, 0.66, 1.0, 0.0};
 		const CGFloat strokeComponents[4] = {0.33, 0.66, 1.0, 1.0};
 		
-		//set a background color
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-		color = CGColorCreate(colorSpace, fillComponents);
-		[selectionLayer setBackgroundColor:color];
-		CFRelease(color);
-		
-		//set a border color
+		// Set a border color
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 		color = CGColorCreate(colorSpace, strokeComponents);
 		[selectionLayer setBorderColor:color];
 		CFRelease(color);
