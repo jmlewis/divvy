@@ -14,20 +14,27 @@
 @implementation DivvyHeaderView
 
 - (id)initWithFrame:(NSRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
+  self = [super initWithFrame:frame];
+  if (self) {
+    // Initialization code here.
+  }
+  return self;
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-  NSColor *startingColor = [NSColor colorWithCalibratedRed:0.85f green:0.85f blue:0.85f alpha:1.0f];
-  NSColor *endingColor = [NSColor colorWithCalibratedRed:0.7f green:0.7f blue:0.7f alpha:1.0f];  
+  NSColor *headerColor = [NSColor colorWithCalibratedRed:0.87f green:0.87f blue:0.87f alpha:1.0f];
+  NSColor *borderColor = [NSColor colorWithCalibratedRed:0.6f green:0.6f blue:0.6f alpha:1.0f];
   
-  NSGradient* aGradient = [[NSGradient alloc]
-                           initWithStartingColor:startingColor
-                           endingColor:endingColor];
-  [aGradient drawInRect:[self bounds] angle:270];}
+  [headerColor drawSwatchInRect:self.bounds];
+  
+  [borderColor setStroke];
+  NSBezierPath* aPath = [NSBezierPath bezierPath];
+  
+  [aPath moveToPoint:NSMakePoint(self.bounds.origin.x, self.bounds.origin.y)];
+  [aPath lineToPoint:NSMakePoint(self.bounds.origin.x + self.bounds.size.width, self.bounds.origin.y)];
+  [aPath moveToPoint:NSMakePoint(self.bounds.origin.x, self.bounds.origin.y + self.bounds.size.height)];
+  [aPath lineToPoint:NSMakePoint(self.bounds.origin.x + self.bounds.size.width, self.bounds.origin.y + self.bounds.size.height)];
+  [aPath stroke];
+}
 
 @end

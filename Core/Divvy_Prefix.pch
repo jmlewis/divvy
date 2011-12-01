@@ -1,6 +1,7 @@
 //
 // Prefix header for all source files of the 'Divvy' target in the 'Divvy' project
-//
+// Also the prefix header for all plugins.
+
 
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
