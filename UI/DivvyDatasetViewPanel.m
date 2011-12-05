@@ -101,7 +101,7 @@
   NSRect topFrame = self.view.frame;
   NSRect documentFrame = [self.scrollView.documentView frame];
   
-  float y = 0.f; // Go from the top down
+  float y = -1.f; // Go from the top down, minus the top border pixel
   float headerBuffer = 0.f; // Buffer between bottom of header and top of view
   
   // Need to set documentFrame height before positioning the subviews
@@ -134,7 +134,7 @@
     }
   }
 
-  y += delegate.selectedDatasetView ? 0.f : 50.f; // Top border, with room for select label if nothing's selected
+  y += delegate.selectedDatasetView ? -1.f : 50.f; // Top border, with room for select label if nothing's selected
   
   
   documentFrame.origin.y = topFrame.origin.y + topFrame.size.height - y;
