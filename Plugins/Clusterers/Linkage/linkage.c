@@ -22,7 +22,7 @@ void linkage(float *data, unsigned int n, unsigned int d, unsigned int k, unsign
 }
 
 
-// This needs to be cleaned up and rewritten to support complete and average linkage
+// This needs to be cleaned up and rewritten to support single, complete and average linkage
 void dendrogram(int N, int complete, float *distance, dendrite *result) {
 	int i, j, k;
 	int * nearest = (int *)malloc((N - 1) * sizeof(int));
