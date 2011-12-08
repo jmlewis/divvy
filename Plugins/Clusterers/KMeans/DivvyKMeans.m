@@ -1,10 +1,14 @@
 //
+//
 //  DivvyKMeans.m
-//  Divvy
 //
-//  Created by Joshua Lewis on 6/2/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Written in 2011 by Joshua Lewis at the UC San Diego Natural Computation Lab,
+//  PI Virginia de Sa, supported by NSF Award SES #0963071.
+//  Copyright 2011, UC San Diego Natural Computation Lab. All rights reserved.
+//  Licensed under the MIT License. http://www.opensource.org/licenses/mit-license.php
 //
+//  Find the Divvy project on the web at http://divvy.ucsd.edu
+
 
 #import "DivvyKMeans.h"
 
@@ -13,7 +17,6 @@
 #import "DivvyDatasetView.h"
 
 #include "kmeans.h"
-
 
 @implementation DivvyKMeans
 
@@ -62,10 +65,12 @@
 - (void) clusterDataset:(DivvyDataset *)dataset
              assignment:(NSData *)assignment {
   
+  // Map Objective-C parameters to the parameters of the C function
   kmeans([dataset floatData], 
          [[dataset n] unsignedIntValue], 
          [[dataset d] unsignedIntValue], 
          [[self k] unsignedIntValue],
+         [[self numRestarts] unsignedIntValue],
          (int *)[assignment bytes]);
 }
 
