@@ -37,7 +37,6 @@
   
 	float *newReducedData = (float*) [reducedData bytes];
     float cur_perplexity = [[self perplexity] floatValue];
-    printf("perplexity = %f\n", cur_perplexity);
     perform_tsne([dataset floatData], 
 				[[dataset d] unsignedIntValue], 
 				[[dataset n] unsignedIntValue], 

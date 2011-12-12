@@ -31,7 +31,7 @@ struct IsomapImpl {};
 }
 
 - (void) calculateD:(DivvyDataset *)dataset {
-    // Isomap always stays with its default of 2
+    // Isomap always stays with its default of 10
 }
 
 - (void) reduceDataset:(DivvyDataset *)dataset
@@ -43,7 +43,15 @@ struct IsomapImpl {};
     run_isomap([dataset floatData], 
                [[dataset n] unsignedIntValue], 
                [[dataset d] unsignedIntValue], 
-               newReducedData, [self.d unsignedIntValue], cur_k);     // this code is in C++
+               newReducedData, [self.d unsignedIntValue], cur_k);     // this code is in C++    
+    
+//	// Print out reduced data
+//	for(int i = 0; i < [[dataset n] unsignedIntValue]; i++) {
+//        for(int j = 0; j < [self.d unsignedIntValue]; j++) {
+//            printf("%f,", newReducedData[j * [[dataset n] unsignedIntValue] + i]);
+//        }
+//        printf("\n");
+//    }
 }
 
 

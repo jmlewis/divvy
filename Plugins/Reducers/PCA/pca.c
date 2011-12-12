@@ -60,17 +60,20 @@ void reduce_data(float* X, int D, int N, float* Y, int no_dims) {
 	lwork = (int) wkopt;
 	float* work = (float*) malloc(lwork * sizeof(float));	
 	ssyev_((char*) "V", (char*) "U", &n, C, &lda, lambda, work, &lwork, &info);				// eigenvectors for real, symmetric matrix
-
+    // NOTE: ssyev outputs eigenvalues in ascending order!
+    
 	// Project data onto first eigenvectors (C' * X, using BLAS)
 	//cblas_sgemm(CblasRowMajor, CblasTrans, CblasNoTrans, no_dims, N, D, 1.0, C, no_dims, XX, N, 0.0, Y, N);
-	
+    	
 	// Project data onto first eigenvectors (without BLAS)
 	for(int n = 0; n < N; n++) {
-		for(int d1 = 0; d1 < no_dims; d1++) {
-			Y[n * no_dims + d1] = 0.0;
+        int count_d = 0;
+		for(int d1 = D - 1; d1 >= D - no_dims; d1--) {
+			Y[n * no_dims + count_d] = 0.0;
 			for(int d2 = 0; d2 < D; d2++) {
-				Y[n * no_dims + d1] += XX[n * no_dims + d2] * C[d1 * D + d2];
+				Y[n * no_dims + count_d] += XX[n * no_dims + d2] * C[d1 * D + d2];
 			}
+            count_d++;
 		}
 	}
 	

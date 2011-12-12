@@ -40,14 +40,6 @@
 				[[dataset d] unsignedIntValue], 
 				[[dataset n] unsignedIntValue], 
 				newReducedData, [self.d unsignedIntValue]);
-	
-	// Print out reduced data
-	/*for(int i = 0; i < [[dataset n] unsignedIntValue]; i++) {
-		for(int j = 0; j < [self.d unsignedIntValue]; j++) {
-			printf("%f,", newReducedData[j * [[dataset n] unsignedIntValue] + i]);
-		}
-		printf("\n");
-	}*/
 }
 
 @end

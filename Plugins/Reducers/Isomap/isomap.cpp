@@ -116,19 +116,45 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
     int n = N, lda = N, lwork = -1, info;
 	float wkopt;
 	float* lambda = (float*) malloc(N * sizeof(float));
-  std::printf("N = %d, D = %d, no_dims = %d, n = %d, lda = %d, K = %d\n", N, D, no_dims, n, lda, K);
 	ssyev_((char*) "V", (char*) "U", &n, gD, &lda, lambda, &wkopt, &lwork, &info); // gets optimal size of working memory
 	lwork = (int) wkopt;
 	float* work = (float*) malloc(lwork * sizeof(float));	
 	ssyev_((char*) "V", (char*) "U", &n, gD, &lda, lambda, work, &lwork, &info);   // eigenvectors for real, symmetric matrix
+    // NOTE: ssyev outputs eigenvalues in ascending order!
     
     // Compute final embedding
     for(int n = 0; n < N; n++) {
-		for(int d = 0; d < no_dims; d++) {
-            Y[n * no_dims + d] = gD[d * N + n] * sqrt(lambda[d]);
-            std::printf("%f, ", Y[n * no_dims + d]);
+        int count_d = 0;
+		for(int d = N - 1; d >= N - no_dims; d--) {
+            Y[n * no_dims + count_d] = gD[d * N + n] * sqrt(lambda[d]);
+            count_d++;
 		}
-        std::printf("\n");
+	}
+    
+    // Normalize data to have a minimum value of zero
+	float* min_val = (float*) calloc(no_dims, sizeof(float));
+	for(int n = 0; n < N; n++) {
+		for(int d = 0; d < no_dims; d++) {
+			if(n == 0 || Y[n * no_dims + d] < min_val[d]) min_val[d] = Y[n * no_dims + d];
+		}
+	}
+	for(int n = 0; n < N; n++) {
+		for(int d = 0; d < no_dims; d++) {
+			Y[n * no_dims + d] -= min_val[d];
+		}
+	}
+	
+	// Normalize data to have a maximum value of one
+	float* max_val = (float*) calloc(no_dims, sizeof(float));
+	for(int n = 0; n < N; n++) {
+		for(int d = 0; d < no_dims; d++) {
+			if(n == 0 || Y[n * no_dims + d] > max_val[d]) max_val[d] = Y[n * no_dims + d];
+		}
+	}
+	for(int n = 0; n < N; n++) {
+		for(int d = 0; d < no_dims; d++) {
+			Y[n * no_dims + d] /= max_val[d];
+		}
 	}
     
     // Clean up memory
