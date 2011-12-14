@@ -11,6 +11,7 @@
 #include <math.h>
 #include <float.h>
 #include <iostream>
+#include <queue>
 #include <Accelerate/Accelerate.h>
 
 void dodijk_sparse(long int M,
@@ -69,9 +70,56 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
         }
         jcs[n + 1] = jcs[n] + K;
     }
+    int orig_N = N;
     
     // Select largest connected component
-    // ...
+    double* new_sr;
+    int *new_irs, *new_jcs;
+    int max_ind, max_count;
+    int* comp_no = (int*) malloc(N * sizeof(int));
+    find_connected_components(irs, N, K, comp_no);
+    find_largest_connected_component(comp_no, N, &max_ind, &max_count);
+
+    // Only select part of the data when graph is not completely connected
+    if(max_count < N) {
+        
+        // Count number of removed instances before index n
+        int counter = 0;
+        int* rem_counts = (int*) calloc(N, sizeof(int));
+        for(int n = 0; n < N; n++) {
+            if(comp_no[n] != max_ind) counter++;
+            rem_counts[n] = counter;
+        }
+        
+        // Build new sparse matrix
+        int new_n = 0;
+        new_sr  = (double*) malloc(max_count * K   * sizeof(double));
+        new_irs =    (int*) malloc(max_count * K   * sizeof(int));
+        new_jcs =    (int*) malloc((max_count + 1) * sizeof(int));
+        new_jcs[0] = 0;
+        for(int n = 0; n < N; n++) {
+            if(comp_no[n] == max_ind) {
+                for(int k = 0; k < K; k++) {
+                    new_sr[ new_n * K + k] =  sr[n * K + k];
+                    new_irs[new_n * K + k] = irs[n * K + k] - rem_counts[irs[n * K + k]];
+                }
+                new_n++;
+                new_jcs[new_n] = new_jcs[new_n - 1] + K;                
+            }
+        }
+        
+        // Clean up old matrix
+        N = max_count;
+        free(rem_counts);
+        free(sr);
+        free(irs);
+        free(jcs);
+    }
+    else {
+        new_sr  = sr;
+        new_irs = irs;
+        new_jcs = jcs;
+    }
     
     // Perform Dijkstra's algorithm
     HeapNode *A = NULL;
@@ -84,7 +132,7 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
             return;
         }     
         theHeap->ClearHeapOwnership();     
-        dodijk_sparse(N, N, i, Psmall, Dsmall, sr, irs, jcs, A, theHeap);
+        dodijk_sparse(N, N, i, Psmall, Dsmall, new_sr, new_irs, new_jcs, A, theHeap);
         for(int j = 0; j < N; j++) {
             *(gD + j * N + i) = (float) *(Dsmall + j);
         }
@@ -123,22 +171,31 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
     // NOTE: ssyev outputs eigenvalues in ascending order!
     
     // Compute final embedding
-    for(int n = 0; n < N; n++) {
-        int count_d = 0;
-		for(int d = N - 1; d >= N - no_dims; d--) {
-            Y[n * no_dims + count_d] = gD[d * N + n] * sqrt(lambda[d]);
-            count_d++;
-		}
+    int cur_n = 0;
+    for(int n = 0; n < orig_N; n++) {
+        if(comp_no[n] == max_ind) {
+            int count_d = 0;
+            for(int d = N - 1; d >= N - no_dims; d--) {
+                Y[n * no_dims + count_d] = gD[d * N + cur_n] * sqrt(lambda[d]);
+                count_d++;
+            }
+            cur_n++;
+        }
+        else {
+            for(int d = 0; d < no_dims; d++) {
+                Y[n * no_dims + d] = NAN;
+            }
+        }
 	}
     
     // Normalize data to have a minimum value of zero
 	float* min_val = (float*) calloc(no_dims, sizeof(float));
-	for(int n = 0; n < N; n++) {
+	for(int n = 0; n < orig_N; n++) {
 		for(int d = 0; d < no_dims; d++) {
-			if(n == 0 || Y[n * no_dims + d] < min_val[d]) min_val[d] = Y[n * no_dims + d];
+			if(Y[n * no_dims + d] != NAN && Y[n * no_dims + d] < min_val[d]) min_val[d] = Y[n * no_dims + d];
 		}
 	}
-	for(int n = 0; n < N; n++) {
+	for(int n = 0; n < orig_N; n++) {
 		for(int d = 0; d < no_dims; d++) {
 			Y[n * no_dims + d] -= min_val[d];
 		}
@@ -146,12 +203,12 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
 	
 	// Normalize data to have a maximum value of one
 	float* max_val = (float*) calloc(no_dims, sizeof(float));
-	for(int n = 0; n < N; n++) {
+	for(int n = 0; n < orig_N; n++) {
 		for(int d = 0; d < no_dims; d++) {
-			if(n == 0 || Y[n * no_dims + d] > max_val[d]) max_val[d] = Y[n * no_dims + d];
+			if(Y[n * no_dims + d] != NAN && Y[n * no_dims + d] > max_val[d]) max_val[d] = Y[n * no_dims + d];
 		}
 	}
-	for(int n = 0; n < N; n++) {
+	for(int n = 0; n < orig_N; n++) {
 		for(int d = 0; d < no_dims; d++) {
 			Y[n * no_dims + d] /= max_val[d];
 		}
@@ -159,12 +216,73 @@ void run_isomap(float* X, int N, int D, float* Y, int no_dims, int K) {
     
     // Clean up memory
     free(DD);
-    free(sr);
-    free(irs);
-    free(jcs);
+    free(new_sr);
+    free(new_irs);
+    free(new_jcs);
+    free(comp_no);
     free(gD);
     free(Dsmall);
     free(Psmall);
     free(lambda);
     free(work);
+}
+
+void find_connected_components(int* irs, int N, int K, int* comp_no) {
+    
+    // Initialize some variables
+    int cur_comp = 0;
+    for(int n = 0; n < N; n++) comp_no[n] = 0;
+    
+    // Loop over vertices
+    for(int n = 0; n < N; n++) {
+        if(comp_no[n] == 0) {                               // vertex not yet assigned to a component
+            cur_comp++;
+            
+            // Perform breadth-first search
+            std::queue<int> q;
+            q.push(n);                                      // push root vertex onto queue
+            comp_no[n] = cur_comp;                          // mark root vertex
+            while(!q.empty()) {
+                
+                // Get, remove, and mark current vertex
+                int cur = q.front();
+                q.pop();
+                
+                // Loop over all children of current vertex
+                for(int k = 0; k < K; k++) {
+                    if(comp_no[irs[cur * K + k]] == 0) {     // only add vertices we did not see before
+                        q.push(irs[cur * K + k]);
+                        comp_no[irs[cur * K + k]] = cur_comp;
+                    }
+                }                
+            }
+        }
+    }
+}
+
+void find_largest_connected_component(int* comp_no, int N, int* max_ind, int* max_count) {
+    
+    // Find number of components
+    int no_comp = 0;
+    for(int n = 0; n < N; n++) {
+        if(comp_no[n] > no_comp) no_comp = comp_no[n];
+    }
+    
+    // Compute size of each component
+    int* counts = (int*) calloc(no_comp, sizeof(int));
+    for(int n = 0; n < N; n++) {
+        counts[comp_no[n] - 1]++;
+    }
+    
+    // Find largest component
+    *max_ind = 0, *max_count = 0;
+    for(int i = 0; i < no_comp; i++) {
+        if(counts[i] > *max_count) {
+            *max_count = counts[i];
+            *max_ind = i + 1;
+        }
+    }
+    
+    // Clean up
+    free(counts);
 }
