@@ -16,152 +16,91 @@ void linkage(float *data, unsigned int n, unsigned int d, unsigned int k, unsign
   distance(n, d, data, distance_out);
   dendrogram(n, complete, distance_out, dendrogram_out);
   assignLaunch(dendrogram_out, k, n, assignment);
-  
+    
   free(distance_out);
   free(dendrogram_out);
 }
 
-
-// This needs to be cleaned up and rewritten to support single, complete and average linkage
 void dendrogram(int N, int complete, float *distance, dendrite *result) {
-	int i, j, k;
-	int * nearest = (int *)malloc((N - 1) * sizeof(int));
-	int * bookkeep = (int *)malloc(N * sizeof(int));
-	int * ncopy = (int *)malloc((N - 1) * sizeof(int));
-	float * minima = (float *)malloc((N - 1) * sizeof(float));
-	float min = FLT_MAX;
-	float ndist;
-	int mindex = 0, groupA, groupB;
+	int i, j;
+  
+  float *minima = (float *)malloc((N - 1) * sizeof(float));
+	int *nearest_neighbors = (int *)malloc(N * sizeof(int)); // Use N due to memory reuse below
 	
-	//step 1: make two arrays of size n-1: row minima and nearest neighbors
-	for(i = 0; i < N - 1; i++) {
-		min = FLT_MAX;
-		for(j = i + 1; j < N; j++) 
-			if (distance[j*(j-1)/2+i] < min) {
-				min = distance[j*(j-1)/2 +i];
-				mindex = j;
+  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);  
+  
+	// Find nearest neighbors
+	dispatch_apply(N - 1, queue, ^(size_t i) {
+		minima[i] = FLT_MAX;
+		for(int j = i + 1; j < N; j++) 
+			if (distance[j * (j - 1) / 2 + i] < minima[i]) {
+				minima[i] = distance[j * (j - 1) / 2 + i];
+				nearest_neighbors[i] = j;
 			}
-		minima[i] = min;
-		nearest[i] = mindex;
-		ncopy[i] = mindex;
+	});
+	
+  // Join the two closest clusters in each iteration
+	for (j = 0; j < N - 1; j++) {
+		result[j].distance = FLT_MAX;
+		
+    // Find the minimum distance
+		for (i = 0; i < N - 1; i++) {
+			if (minima[i] < result[j].distance) {
+				result[j].distance = minima[i];
+				result[j].i = i;
+			}
+		}
+		result[j].j = nearest_neighbors[result[j].i];
+    
+    // Update distances
+    dispatch_apply(N, queue, ^(size_t i) {
+      int indexI, indexJ; // Indices into the upper triangular distance matrix (sometimes to the non-existent diagonal, but we ignore those cases)
+      indexI = i <= result[j].i ? result[j].i * (result[j].i - 1) / 2 + i : i * (i - 1) / 2 + result[j].i;
+      indexJ = i <= result[j].j ? result[j].j * (result[j].j - 1) / 2 + i : i * (i - 1) / 2 + result[j].j;
+      
+      if (i == result[j].i)
+        distance[indexJ] = FLT_MAX; // Remove D(i, j)
+      else if (i != result[j].j) { // We've already removed D(i, j), so ignore this case
+        if (distance[indexI] > distance[indexJ]) distance[indexI] = distance[indexJ]; // Take shorter distances
+        distance[indexJ] = FLT_MAX; // Remove all j distances
+      }
+    });
+      
+    // This point can no longer be joined
+    minima[result[j].j] = FLT_MAX;
+    
+    // Find a new nearest neighbor for i + j
+    minima[result[j].i] = FLT_MAX;
+		for (i = result[j].i + 1; i < N; i++) {
+      if (distance[i * (i - 1) / 2 + result[j].i] < minima[result[j].i]) {
+        minima[result[j].i] = distance[i * (i - 1) / 2 + result[j].i];
+        nearest_neighbors[result[j].i] = i;
+      }
+		}
+    
+    // Update j's neighbors to reference i
+    dispatch_apply(N - 1, queue, ^(size_t i) {
+      if (nearest_neighbors[i] == result[j].j) nearest_neighbors[i] = result[j].i;
+    });
 	}
-	
-	for(i = 0; i < N; i++)
-		bookkeep[i] = i;
-	
-	//	for(i = 0; i < (N-1); i++)
-	//		printf("%i \t", i);
-	//	printf("\t\t\t");
-	//	for(i = 0; i < N; i++)
-	//		printf("%i \t", i);
-	//	printf("\t\t\t");
-	//	for(i = 0; i < (N-1); i++)
-	//		printf("%i \t", i);
-	//	printf("\n\n");
-	
-	// steps 2-5
-	for (j = 0; j < (N-1); j++) {
-		//for (i = 0; i < N - 1; i++)
-		//printf("%i %f \n", nearest[i], minima[i]);
-		min = FLT_MAX;
-		//find minimum and index of minimum in minima
-		for (i = 0; i < (N-1); i++) {
-			if (minima[i] < min) {
-				min = minima[i];
-				mindex = i;
-			}
-		}
-		
-		result[j].i = bookkeep[mindex];
-		result[j].j = nearest[mindex];
-		result[j].distance = min;
-		
-		if(nearest[mindex] > N - 1) // check for group origin and switch if necessary
-			for(i = 0; i < N - 1; i++) {
-				if(bookkeep[i] == nearest[mindex] && i < mindex) {
-					result[j].i = result[j].j;
-					result[j].j = bookkeep[mindex];
-					ncopy[i] = mindex;
-					mindex = i;
-				}
-				if(bookkeep[i] == nearest[mindex] && i < ncopy[mindex])
-					ncopy[mindex] = i;
-			}
-		
-		//		for(i = 0; i < (N-1); i++)
-		//			printf("%i \t", nearest[i]);
-		//		printf("\t\t\t");
-		//		for(i = 0; i < N; i++)
-		//			printf("%i \t", bookkeep[i]);
-		//		printf("\t\t\t");
-		//		for(i = 0; i < (N-1); i++)
-		//			printf("%i \t", minima[i] == FLT_MAX);
-		//		printf("\n");
-		
-		groupA = bookkeep[mindex];
-		groupB = bookkeep[ncopy[mindex]];
-		
-		//absorb cluster and update nearest neighbors
-		for (i = 0; i < (N-1); i++) {
-			//	printf("%i %i %i \n", nearest[i], ncopy[mindex], bookkeep[mindex]);
-			if ((nearest[i] == groupA || nearest[i] == groupB) && i != mindex && i != ncopy[mindex])
-				nearest[i] = N + j;				
-		}
-		
-		for(i = 0; i < N; i++) {
-			if (bookkeep[i] == groupA || bookkeep[i] == groupB)
-				bookkeep[i] = N + j;
-			if (i > ncopy[mindex]) {
-				ndist = distance[i*(i-1)/2 + ncopy[mindex]];
-				if ((complete ? ndist > distance[i*(i-1)/2 + mindex] : ndist < distance[i*(i-1)/2 + mindex]))
-					distance[i*(i-1)/2 + mindex] = ndist;
-			}
-			if(i > mindex && i < ncopy[mindex]) {
-        if(complete)
-          ndist = fmax(distance[i*(i-1)/2 + mindex], distance[ncopy[mindex] * (ncopy[mindex] - 1) / 2 + i]);
-        else
-          ndist = fmin(distance[i*(i-1)/2 + mindex], distance[ncopy[mindex] * (ncopy[mindex] - 1) / 2 + i]);
-				distance[i*(i-1)/2 + mindex] = ndist;
-				//distance[ncopy[mindex] * (ncopy[mindex] - 1) / 2 + i] = ndist;
-			}
-			if(i < mindex && i < ncopy[mindex]) {
-        if(complete)
-          ndist = fmax(distance[mindex * (mindex - 1) / 2 + i], distance[ncopy[mindex] * (ncopy[mindex] - 1) / 2 + i]);
-        else
-          ndist = fmin(distance[mindex * (mindex - 1) / 2 + i], distance[ncopy[mindex] * (ncopy[mindex] - 1) / 2 + i]);
-				distance[mindex * (mindex - 1) / 2 + i] = ndist;
-				//distance[ncopy[mindex] * (ncopy[mindex] - 1) / 2 + i] = ndist;
-			}
-		}
-		
-		//replace minima[NN[i]] with FLT_MAX
-		minima[ncopy[mindex]] = FLT_MAX;
-		distance[ncopy[mindex]*(ncopy[mindex]-1)/2 + mindex] = FLT_MAX;
-		
-		//		for (i = 0; i < N-1; i++)
-		//			if (bookkeep[i] == N + j && i != mindex)
-		//				minima[i] = FLT_MAX;
-		
-		//find new minimum of row i
-		i = mindex;
-		min = FLT_MAX;
-		for (k = i + 1; k < N; k++)
-			if (distance[k*(k-1)/2 + i] < min && minima[k] != FLT_MAX) {
-				min = distance[k*(k-1)/2 +i];
-				mindex = k;
-				//printf("%i %i %i \t",i,  k, ncopy[i]);
-			}
-		//printf("\n");
-		minima[i] = min;
-		nearest[i] = bookkeep[mindex];
-		ncopy[i] = mindex;
-		
-	}		
+  
+  // Add group numbers for assign, reuse nearest_neighbors memory for convenience to track groups
+  nearest_neighbors[N - 1] = 0; // Clear out the memory uninitialized from above
+  for(i = 0; i < N - 1; i++) {
+    int baseGroup = -1;
+    if (nearest_neighbors[result[i].i] > N - 1)
+      baseGroup = nearest_neighbors[result[i].i];
+    
+    nearest_neighbors[result[i].i] = N + i; // Group number
+    
+    if (baseGroup > N - 1)
+      result[i].i = baseGroup;
+    if (nearest_neighbors[result[i].j] > N - 1)
+      result[i].j = nearest_neighbors[result[i].j];
+  }
 	
 	free(minima);
-	free(ncopy);
-	free(nearest);
-	free(bookkeep);
+	free(nearest_neighbors);
 	return;
 }
 

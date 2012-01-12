@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
+#include <dispatch/dispatch.h>
 
 #include "distance.h"
 

@@ -7,7 +7,10 @@
 //
 
 #import "DivvyLinkage.h"
+
+#import "DivvyAppDelegate.h"
 #import "DivvyDataset.h"
+#import "DivvyDatasetView.h"
 
 #include "linkage.h"
 
@@ -21,9 +24,32 @@
 @dynamic isComplete;
 
 - (void) awakeFromInsert {
-  [super awakeFromInsert];
+  [super awakeFromInsert];  
   
   self.clustererID = [[NSProcessInfo processInfo] globallyUniqueString];
+  
+  [self addObservers];
+}
+
+- (void) awakeFromFetch {
+  [super awakeFromFetch];
+  
+  [self addObservers];
+}
+
+- (void) addObservers {
+  [self addObserver:self forKeyPath:@"k" options:0 context:nil];
+}
+
+- (void) willTurnIntoFault {
+  [self removeObserver:self forKeyPath:@"k"];
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  
+  [delegate.selectedDatasetView clustererChanged];
+  [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
 - (void) clusterDataset:(DivvyDataset *)dataset

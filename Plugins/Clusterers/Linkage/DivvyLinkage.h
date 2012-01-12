@@ -18,4 +18,7 @@
 @property (nonatomic, retain) NSNumber *k;
 @property (nonatomic, retain) NSNumber *isComplete;
 
+//  Add observers that send the delegate appropriate messages when parameters change.
+- (void) addObservers;
+
 @end
