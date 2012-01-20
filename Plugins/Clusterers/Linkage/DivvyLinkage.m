@@ -39,10 +39,12 @@
 
 - (void) addObservers {
   [self addObserver:self forKeyPath:@"k" options:0 context:nil];
+  [self addObserver:self forKeyPath:@"isComplete" options:0 context:nil];
 }
 
 - (void) willTurnIntoFault {
   [self removeObserver:self forKeyPath:@"k"];
+  [self removeObserver:self forKeyPath:@"isComplete"];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

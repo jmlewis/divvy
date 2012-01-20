@@ -61,7 +61,10 @@ void dendrogram(int N, int complete, float *distance, dendrite *result) {
       if (i == result[j].i)
         distance[indexJ] = FLT_MAX; // Remove D(i, j)
       else if (i != result[j].j) { // We've already removed D(i, j), so ignore this case
-        if (distance[indexI] > distance[indexJ]) distance[indexI] = distance[indexJ]; // Take shorter distances
+        if (complete)
+          if (distance[indexI] < distance[indexJ]) distance[indexI] = distance[indexJ]; // Take longer distances
+        else
+          if (distance[indexI] > distance[indexJ]) distance[indexI] = distance[indexJ]; // Take shorter distances
         distance[indexJ] = FLT_MAX; // Remove all j distances
       }
     });
