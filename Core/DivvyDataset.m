@@ -36,6 +36,24 @@
   
   self.n = [NSNumber numberWithUnsignedInt:n];
   self.d = [NSNumber numberWithUnsignedInt:d];
+  
+  bool nanInf = false;
+  
+  // Look for NaNs & Infs
+  for (int i = 0; i < n * d; i++)
+    if (isnan(self.floatData[i]) || isinf(self.floatData[i])) {
+      self.floatData[i] = 0.f;
+      nanInf = true;
+    }
+  
+  if (nanInf) {
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"This dataset contains the values NaN or Inf."];
+    [alert setInformativeText:@"Divvy has relpaced the values with 0.0."];
+    [alert addButtonWithTitle:@"OK"];
+    [alert runModal];
+    [alert release];
+  }
 }
 
 - (float *) floatData {
