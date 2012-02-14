@@ -318,6 +318,7 @@
 		D7965141143140BF00BE63D5 /* DivvyFlippedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyFlippedView.m; sourceTree = "<group>"; };
 		D796519014326B8500BE63D5 /* DivvyDelegateSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyDelegateSettings.h; sourceTree = "<group>"; };
 		D796519114326B8500BE63D5 /* DivvyDelegateSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyDelegateSettings.m; sourceTree = "<group>"; };
+		D79787A114E46B0F00B784A1 /* Divvy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Divvy.entitlements; sourceTree = "<group>"; };
 		D7A24D8413F32039001AD337 /* DivvyNilReducer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyNilReducer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7A24D8513F32039001AD337 /* DivvyNilReducer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DivvyNilReducer-Info.plist"; sourceTree = "<group>"; };
 		D7A24D8E13F3204A001AD337 /* DivvyZhu.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyZhu.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -590,6 +591,7 @@
 		29B97314FDCFA39411CA2CEA /* Divvy */ = {
 			isa = PBXGroup;
 			children = (
+				D79787A114E46B0F00B784A1 /* Divvy.entitlements */,
 				D7642A6613F4EE5200F1CE56 /* Dataset Visualizers */,
 				D7642A6713F4EE5F00F1CE56 /* Point Visualizers */,
 				D7642A6813F4EE6C00F1CE56 /* Clusterers */,
@@ -1622,6 +1624,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Divvy.entitlements;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1645,6 +1648,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Divvy.entitlements;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_MODEL_TUNING = G5;
