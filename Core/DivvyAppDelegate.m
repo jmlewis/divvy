@@ -409,13 +409,22 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   if (managedObjectContext) return managedObjectContext;
   
   NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-  if (!coordinator) {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setValue:@"Failed to initialize the store" forKey:NSLocalizedDescriptionKey];
-    [dict setValue:@"There was an error building up the data file." forKey:NSLocalizedFailureReasonErrorKey];
-    NSError *error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
-    [[NSApplication sharedApplication] presentError:error];
-    return nil;
+  if (!coordinator) { // Try deleting storedata
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *applicationSupportDirectory = [self applicationSupportDirectory];
+    NSError *error;
+    
+    [fileManager removeItemAtPath:applicationSupportDirectory error:&error];
+    
+    coordinator = [self persistentStoreCoordinator];
+    if (!coordinator) { // That wasn't the problem--go ahead and present the error
+      NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+      [dict setValue:@"Failed to initialize the store" forKey:NSLocalizedDescriptionKey];
+      [dict setValue:@"There was an error building up the data file." forKey:NSLocalizedFailureReasonErrorKey];
+      NSError *error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
+      [[NSApplication sharedApplication] presentError:error];
+      return nil;
+    }
   }
   managedObjectContext = [[NSManagedObjectContext alloc] init];
   [managedObjectContext setPersistentStoreCoordinator: coordinator];
