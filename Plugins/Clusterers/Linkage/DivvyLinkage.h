@@ -15,6 +15,8 @@
 @property (nonatomic, retain) NSString *clustererID;
 @property (nonatomic, retain) NSString *name;
 
+@property (nonatomic, retain) NSString *helpURL;
+
 @property (nonatomic, retain) NSNumber *k;
 @property (nonatomic, retain) NSNumber *isComplete;
 

@@ -20,6 +20,8 @@
 @dynamic clustererID;
 @dynamic name;
 
+@dynamic helpURL;
+
 @dynamic k;
 @dynamic isComplete;
 

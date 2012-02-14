@@ -18,8 +18,9 @@ struct IsomapImpl {};
 @dynamic reducerID;
 @dynamic name;
 
-@dynamic d;
+@dynamic helpURL;
 
+@dynamic d;
 @dynamic k;
 
 

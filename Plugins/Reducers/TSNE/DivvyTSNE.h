@@ -15,8 +15,9 @@
 @property (nonatomic, retain) NSString *reducerID;
 @property (nonatomic, retain) NSString *name;
 
-@property (nonatomic, retain) NSNumber *d;
+@property (nonatomic, retain) NSString *helpURL;
 
+@property (nonatomic, retain) NSNumber *d;
 @property (nonatomic, retain) NSNumber *perplexity;
 
 @end

@@ -16,6 +16,8 @@
 @property (nonatomic, retain) NSString *datasetVisualizerID;
 @property (nonatomic, retain) NSString *name;
 
+@property (nonatomic, retain) NSString *helpURL;
+
 @property (nonatomic, retain) NSNumber *xAxis;
 @property (nonatomic, retain) NSNumber *yAxis;
 @property (nonatomic, retain) NSNumber *pointSize;

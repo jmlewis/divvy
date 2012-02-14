@@ -17,6 +17,8 @@
 @dynamic reducerID;
 @dynamic name;
 
+@dynamic helpURL;
+
 @dynamic d;
 
 - (void) awakeFromInsert {

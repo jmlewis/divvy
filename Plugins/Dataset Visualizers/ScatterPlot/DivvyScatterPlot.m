@@ -20,6 +20,8 @@
 @dynamic datasetVisualizerID;
 @dynamic name;
 
+@dynamic helpURL;
+
 @dynamic xAxis;
 @dynamic yAxis;
 @dynamic pointSize;
