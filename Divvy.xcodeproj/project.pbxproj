@@ -591,7 +591,6 @@
 		29B97314FDCFA39411CA2CEA /* Divvy */ = {
 			isa = PBXGroup;
 			children = (
-				D79787A114E46B0F00B784A1 /* Divvy.entitlements */,
 				D7642A6613F4EE5200F1CE56 /* Dataset Visualizers */,
 				D7642A6713F4EE5F00F1CE56 /* Point Visualizers */,
 				D7642A6813F4EE6C00F1CE56 /* Clusterers */,
@@ -622,6 +621,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D79787A114E46B0F00B784A1 /* Divvy.entitlements */,
 				D71D5F3814609FBC003DA34F /* Divvy.icns */,
 				D7AADA4F14465C800041E6F1 /* processing.png */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
