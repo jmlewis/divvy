@@ -42,7 +42,9 @@
   
   NSInteger selectedSegment = [sender selectedSegment];
   NSInteger clickedSegmentTag = [[sender cell] tagForSegment:selectedSegment];
-
+  
+  NSError *error;
+  
   if (clickedSegmentTag == 0) { // Add button
     DivvyDatasetView *datasetView = [NSEntityDescription insertNewObjectForEntityForName:@"DatasetView" inManagedObjectContext:delegate.managedObjectContext];
     datasetView.dataset = delegate.selectedDataset;
@@ -52,6 +54,8 @@
     for (id datasetView in [self.datasetViewsArrayController selectedObjects])
       [delegate.managedObjectContext deleteObject:datasetView];
   }
+  
+  [delegate.managedObjectContext save:&error];
 }
 
 - (void) imageBrowser:(IKImageBrowserView *)aBrowser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event {
