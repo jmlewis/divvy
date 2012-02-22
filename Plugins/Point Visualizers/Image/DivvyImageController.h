@@ -1,5 +1,5 @@
 //
-//  DivvyZhuController.h
+//  DivvyImageController.h
 //  Divvy
 //
 //  Created by Joshua Lewis on 8/10/11.
@@ -9,8 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface DivvyZhuController : NSViewController
-
-- (IBAction) changeLineWidth:(id)sender;
+@interface DivvyImageController : NSViewController
 
 @end

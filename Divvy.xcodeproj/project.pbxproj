@@ -46,7 +46,6 @@
 		D727E5891475B8E600702544 /* DivvyScatterPlot.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D704B6A113E08871002692E9 /* DivvyScatterPlot.plugin */; };
 		D727E58A1475B8E600702544 /* DivvyNilClusterer.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D704B88713E1ED5E002692E9 /* DivvyNilClusterer.plugin */; };
 		D727E58B1475B8E600702544 /* DivvyNilReducer.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D7A24D8413F32039001AD337 /* DivvyNilReducer.plugin */; };
-		D727E58C1475B8E600702544 /* DivvyZhu.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D7A24D8E13F3204A001AD337 /* DivvyZhu.plugin */; };
 		D727E58D1475B8E600702544 /* DivvyPCA.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0D55DC5D13FA9FCA000ADAFB /* DivvyPCA.plugin */; };
 		D727E58E1475B8E600702544 /* DivvyTSNE.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0D9C419113FD007100E59675 /* DivvyTSNE.plugin */; };
 		D727E58F1475B8E600702544 /* DivvyLinkage.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D7A250971402E788001AD337 /* DivvyLinkage.plugin */; };
@@ -85,16 +84,11 @@
 		D7964FA1142BD4DF00BE63D5 /* DivvyDatasetView.h in Headers */ = {isa = PBXBuildFile; fileRef = D7DD8BDF1381DEBA00DADC35 /* DivvyDatasetView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7965142143140BF00BE63D5 /* DivvyFlippedView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7965141143140BF00BE63D5 /* DivvyFlippedView.m */; };
 		D796519214326B8500BE63D5 /* DivvyDelegateSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = D796519114326B8500BE63D5 /* DivvyDelegateSettings.m */; };
-		D7A24D9613F320AE001AD337 /* DivvyZhu.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D7A24D9513F320AE001AD337 /* DivvyZhu.xcdatamodel */; };
-		D7A24D9913F3212F001AD337 /* DivvyZhu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7A24D9813F3212F001AD337 /* DivvyZhu.xib */; };
-		D7A24D9C13F3214D001AD337 /* DivvyZhuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A24D9B13F3214D001AD337 /* DivvyZhuController.m */; };
 		D7A24D9F13F32192001AD337 /* DivvyNilReducer.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A24D9E13F32192001AD337 /* DivvyNilReducer.m */; };
 		D7A24DA213F3219F001AD337 /* DivvyNilReducerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A24DA113F3219F001AD337 /* DivvyNilReducerController.m */; };
 		D7A24DA413F321AC001AD337 /* DivvyNilReducer.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7A24DA313F321AC001AD337 /* DivvyNilReducer.xib */; };
 		D7A24DA613F321B9001AD337 /* DivvyNilReducer.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D7A24DA513F321B9001AD337 /* DivvyNilReducer.xcdatamodel */; };
 		D7A24DAB13F322A8001AD337 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		D7A24DAE13F322B4001AD337 /* DivvyZhu.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1946813981F5B00BF1EC7 /* DivvyZhu.m */; };
-		D7A24DAF13F322BC001AD337 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		D7A250AA1402E7F0001AD337 /* DivvyLinkage.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D7A250A91402E7F0001AD337 /* DivvyLinkage.xcdatamodel */; };
 		D7A250AC1402E836001AD337 /* DivvyLinkage.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7A250AB1402E836001AD337 /* DivvyLinkage.xib */; };
 		D7A250AF1402E845001AD337 /* DivvyLinkage.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A250AE1402E845001AD337 /* DivvyLinkage.m */; };
@@ -112,6 +106,11 @@
 		D7B4561114576A3F00A21CB4 /* DivvyImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B4561014576A3F00A21CB4 /* DivvyImageBrowserCell.m */; };
 		D7B78CBE116A8FEE00D363A2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B78CBD116A8FEE00D363A2 /* QuartzCore.framework */; };
 		D7BC2DB211790CE700A37DF2 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BC2DB111790CE700A37DF2 /* OpenCL.framework */; };
+		D7C00F1614F5692C00C7AF52 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7C00F1514F5692C00C7AF52 /* Cocoa.framework */; };
+		D7C00F2114F56A0F00C7AF52 /* DivvyImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1946813981F5B00BF1EC7 /* DivvyImage.m */; };
+		D7C00F2214F56A0F00C7AF52 /* DivvyImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A24D9B13F3214D001AD337 /* DivvyImageController.m */; };
+		D7C00F2314F56A1D00C7AF52 /* DivvyImage.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D7A24D9513F320AE001AD337 /* DivvyImage.xcdatamodel */; };
+		D7C00F2414F56A2200C7AF52 /* DivvyImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7A24D9813F3212F001AD337 /* DivvyImage.xib */; };
 		D7D027681445038600D2CB6D /* DivvyPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = D7D027671445038600D2CB6D /* DivvyPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7DBFEDE146887BA00E8F783 /* DivvyDatasetViewOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DBFEDD146887BA00E8F783 /* DivvyDatasetViewOperation.m */; };
 		D7DD89C4137C70A400DADC35 /* DivvyDatasetsPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DD89C3137C70A400DADC35 /* DivvyDatasetsPanel.m */; };
@@ -177,13 +176,6 @@
 			remoteGlobalIDString = D7A24D8313F32039001AD337;
 			remoteInfo = DivvyNilReducer;
 		};
-		D7A24DA913F3225C001AD337 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D7A24D8D13F3204A001AD337;
-			remoteInfo = DivvyZhu;
-		};
 		D7A250F71402F7E2001AD337 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -197,6 +189,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D730D23313B526A800E01F31;
 			remoteInfo = DivvyPlugin;
+		};
+		D7C00F2514F56A3800C7AF52 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D7C00F1314F5692C00C7AF52;
+			remoteInfo = DivvyImage;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -321,13 +320,12 @@
 		D79787A114E46B0F00B784A1 /* Divvy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Divvy.entitlements; sourceTree = "<group>"; };
 		D7A24D8413F32039001AD337 /* DivvyNilReducer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyNilReducer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7A24D8513F32039001AD337 /* DivvyNilReducer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DivvyNilReducer-Info.plist"; sourceTree = "<group>"; };
-		D7A24D8E13F3204A001AD337 /* DivvyZhu.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyZhu.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7A24D8F13F3204A001AD337 /* DivvyZhu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DivvyZhu-Info.plist"; sourceTree = "<group>"; };
-		D7A24D9513F320AE001AD337 /* DivvyZhu.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = DivvyZhu.xcdatamodel; sourceTree = "<group>"; };
+		D7A24D8F13F3204A001AD337 /* DivvyImage-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DivvyImage-Info.plist"; sourceTree = "<group>"; };
+		D7A24D9513F320AE001AD337 /* DivvyImage.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = DivvyImage.xcdatamodel; sourceTree = "<group>"; };
 		D7A24D9713F32105001AD337 /* DivvyPCA.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = DivvyPCA.xcdatamodel; sourceTree = "<group>"; };
-		D7A24D9813F3212F001AD337 /* DivvyZhu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DivvyZhu.xib; sourceTree = "<group>"; };
-		D7A24D9A13F3214D001AD337 /* DivvyZhuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyZhuController.h; sourceTree = "<group>"; };
-		D7A24D9B13F3214D001AD337 /* DivvyZhuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyZhuController.m; sourceTree = "<group>"; };
+		D7A24D9813F3212F001AD337 /* DivvyImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DivvyImage.xib; sourceTree = "<group>"; };
+		D7A24D9A13F3214D001AD337 /* DivvyImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyImageController.h; sourceTree = "<group>"; };
+		D7A24D9B13F3214D001AD337 /* DivvyImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyImageController.m; sourceTree = "<group>"; };
 		D7A24D9D13F32192001AD337 /* DivvyNilReducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyNilReducer.h; sourceTree = "<group>"; };
 		D7A24D9E13F32192001AD337 /* DivvyNilReducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyNilReducer.m; sourceTree = "<group>"; };
 		D7A24DA013F3219F001AD337 /* DivvyNilReducerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyNilReducerController.h; sourceTree = "<group>"; };
@@ -352,8 +350,8 @@
 		D7AADA8C144660120041E6F1 /* DivvyHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyHeaderView.h; sourceTree = "<group>"; };
 		D7AADA8D144660120041E6F1 /* DivvyHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyHeaderView.m; sourceTree = "<group>"; };
 		D7B1943E13981BF200BF1EC7 /* DivvyPointVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyPointVisualizer.h; sourceTree = "<group>"; };
-		D7B1946713981F5B00BF1EC7 /* DivvyZhu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyZhu.h; sourceTree = "<group>"; };
-		D7B1946813981F5B00BF1EC7 /* DivvyZhu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyZhu.m; sourceTree = "<group>"; };
+		D7B1946713981F5B00BF1EC7 /* DivvyImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyImage.h; sourceTree = "<group>"; };
+		D7B1946813981F5B00BF1EC7 /* DivvyImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyImage.m; sourceTree = "<group>"; };
 		D7B1956D13983D4C00BF1EC7 /* DivvyKMeans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyKMeans.h; sourceTree = "<group>"; };
 		D7B1956E13983D4C00BF1EC7 /* DivvyKMeans.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyKMeans.m; sourceTree = "<group>"; };
 		D7B1957313983DC200BF1EC7 /* DivvyReducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyReducer.h; sourceTree = "<group>"; };
@@ -367,6 +365,8 @@
 		D7BC2CFA1178FF2000A37DF2 /* assignment.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = assignment.cl; sourceTree = "<group>"; };
 		D7BC2CFB1178FF2000A37DF2 /* move.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = move.cl; sourceTree = "<group>"; };
 		D7BC2DB111790CE700A37DF2 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
+		D7C00F1414F5692C00C7AF52 /* DivvyImage.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyImage.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7C00F1514F5692C00C7AF52 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D7D027671445038600D2CB6D /* DivvyPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyPlugin.h; sourceTree = "<group>"; };
 		D7DBFEDC146887BA00E8F783 /* DivvyDatasetViewOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyDatasetViewOperation.h; sourceTree = "<group>"; };
 		D7DBFEDD146887BA00E8F783 /* DivvyDatasetViewOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyDatasetViewOperation.m; sourceTree = "<group>"; };
@@ -471,20 +471,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D7A24D8C13F3204A001AD337 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D7A24DAF13F322BC001AD337 /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D7A250951402E788001AD337 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				D7A251291402F88A001AD337 /* Cocoa.framework in Frameworks */,
 				D7A251051402F878001AD337 /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7C00F1114F5692C00C7AF52 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7C00F1614F5692C00C7AF52 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,12 +578,12 @@
 				D704B6A113E08871002692E9 /* DivvyScatterPlot.plugin */,
 				D704B88713E1ED5E002692E9 /* DivvyNilClusterer.plugin */,
 				D7A24D8413F32039001AD337 /* DivvyNilReducer.plugin */,
-				D7A24D8E13F3204A001AD337 /* DivvyZhu.plugin */,
 				0D55DC5D13FA9FCA000ADAFB /* DivvyPCA.plugin */,
 				0D9C419113FD007100E59675 /* DivvyTSNE.plugin */,
 				D7A250971402E788001AD337 /* DivvyLinkage.plugin */,
 				0D86ADF31428990F00877901 /* DivvyIsomap.plugin */,
 				D792E59314292C120084626A /* DivvyNilPointVisualizer.plugin */,
+				D7C00F1414F5692C00C7AF52 /* DivvyImage.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -636,6 +636,7 @@
 			children = (
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				0DA603CB142897BA008B1727 /* CoreFoundation.framework */,
+				D7C00F1514F5692C00C7AF52 /* Cocoa.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -703,18 +704,18 @@
 			path = ScatterPlot;
 			sourceTree = "<group>";
 		};
-		D730D24C13B5278700E01F31 /* Zhu */ = {
+		D730D24C13B5278700E01F31 /* Image */ = {
 			isa = PBXGroup;
 			children = (
-				D7A24D8F13F3204A001AD337 /* DivvyZhu-Info.plist */,
-				D7B1946713981F5B00BF1EC7 /* DivvyZhu.h */,
-				D7B1946813981F5B00BF1EC7 /* DivvyZhu.m */,
-				D7A24D9513F320AE001AD337 /* DivvyZhu.xcdatamodel */,
-				D7A24D9813F3212F001AD337 /* DivvyZhu.xib */,
-				D7A24D9A13F3214D001AD337 /* DivvyZhuController.h */,
-				D7A24D9B13F3214D001AD337 /* DivvyZhuController.m */,
+				D7A24D8F13F3204A001AD337 /* DivvyImage-Info.plist */,
+				D7B1946713981F5B00BF1EC7 /* DivvyImage.h */,
+				D7B1946813981F5B00BF1EC7 /* DivvyImage.m */,
+				D7A24D9513F320AE001AD337 /* DivvyImage.xcdatamodel */,
+				D7A24D9813F3212F001AD337 /* DivvyImage.xib */,
+				D7A24D9A13F3214D001AD337 /* DivvyImageController.h */,
+				D7A24D9B13F3214D001AD337 /* DivvyImageController.m */,
 			);
-			path = Zhu;
+			path = Image;
 			sourceTree = "<group>";
 		};
 		D73A292713B26A760046EDE1 /* Protocols */ = {
@@ -744,7 +745,7 @@
 			isa = PBXGroup;
 			children = (
 				D7A2501B13F58627001AD337 /* NilPointVisualizer */,
-				D730D24C13B5278700E01F31 /* Zhu */,
+				D730D24C13B5278700E01F31 /* Image */,
 			);
 			name = "Point Visualizers";
 			path = "Plugins/Point Visualizers";
@@ -942,12 +943,12 @@
 				D704B6AA13E088B1002692E9 /* PBXTargetDependency */,
 				D704B89713E1F057002692E9 /* PBXTargetDependency */,
 				D7A24DA813F3225C001AD337 /* PBXTargetDependency */,
-				D7A24DAA13F3225C001AD337 /* PBXTargetDependency */,
 				0D55DCAD13FAA0D2000ADAFB /* PBXTargetDependency */,
 				0DC7D5751461AB52001D57BF /* PBXTargetDependency */,
 				D751AC9D13FD7E780089FAAE /* PBXTargetDependency */,
 				D7A250F81402F7E2001AD337 /* PBXTargetDependency */,
 				D792E59A14292C1E0084626A /* PBXTargetDependency */,
+				D7C00F2614F56A3800C7AF52 /* PBXTargetDependency */,
 			);
 			name = Divvy;
 			productInstallPath = "$(HOME)/Applications";
@@ -1059,23 +1060,6 @@
 			productReference = D7A24D8413F32039001AD337 /* DivvyNilReducer.plugin */;
 			productType = "com.apple.product-type.bundle";
 		};
-		D7A24D8D13F3204A001AD337 /* DivvyZhu */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D7A24D9313F3204A001AD337 /* Build configuration list for PBXNativeTarget "DivvyZhu" */;
-			buildPhases = (
-				D7A24D8A13F3204A001AD337 /* Resources */,
-				D7A24D8B13F3204A001AD337 /* Sources */,
-				D7A24D8C13F3204A001AD337 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DivvyZhu;
-			productName = DivvyZhu;
-			productReference = D7A24D8E13F3204A001AD337 /* DivvyZhu.plugin */;
-			productType = "com.apple.product-type.bundle";
-		};
 		D7A250961402E788001AD337 /* DivvyLinkage */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7A2509C1402E788001AD337 /* Build configuration list for PBXNativeTarget "DivvyLinkage" */;
@@ -1091,6 +1075,23 @@
 			name = DivvyLinkage;
 			productName = DivvyLinkage;
 			productReference = D7A250971402E788001AD337 /* DivvyLinkage.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+		D7C00F1314F5692C00C7AF52 /* DivvyImage */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7C00F1E14F5692C00C7AF52 /* Build configuration list for PBXNativeTarget "DivvyImage" */;
+			buildPhases = (
+				D7C00F1014F5692C00C7AF52 /* Sources */,
+				D7C00F1114F5692C00C7AF52 /* Frameworks */,
+				D7C00F1214F5692C00C7AF52 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DivvyImage;
+			productName = DivvyImage;
+			productReference = D7C00F1414F5692C00C7AF52 /* DivvyImage.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -1122,12 +1123,12 @@
 				D704B6A013E08871002692E9 /* DivvyScatterPlot */,
 				D704B88613E1ED5E002692E9 /* DivvyNilClusterer */,
 				D7A24D8313F32039001AD337 /* DivvyNilReducer */,
-				D7A24D8D13F3204A001AD337 /* DivvyZhu */,
 				0D55DC5C13FA9FCA000ADAFB /* DivvyPCA */,
 				0D9C419013FD007100E59675 /* DivvyTSNE */,
 				D7A250961402E788001AD337 /* DivvyLinkage */,
 				0D86ADE51428990F00877901 /* DivvyIsomap */,
 				D792E59214292C120084626A /* DivvyNilPointVisualizer */,
+				D7C00F1314F5692C00C7AF52 /* DivvyImage */,
 			);
 		};
 /* End PBXProject section */
@@ -1170,7 +1171,6 @@
 				D727E5891475B8E600702544 /* DivvyScatterPlot.plugin in Resources */,
 				D727E58A1475B8E600702544 /* DivvyNilClusterer.plugin in Resources */,
 				D727E58B1475B8E600702544 /* DivvyNilReducer.plugin in Resources */,
-				D727E58C1475B8E600702544 /* DivvyZhu.plugin in Resources */,
 				D727E58D1475B8E600702544 /* DivvyPCA.plugin in Resources */,
 				D727E58E1475B8E600702544 /* DivvyTSNE.plugin in Resources */,
 				D727E58F1475B8E600702544 /* DivvyLinkage.plugin in Resources */,
@@ -1226,19 +1226,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D7A24D8A13F3204A001AD337 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D7A24D9913F3212F001AD337 /* DivvyZhu.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D7A250931402E788001AD337 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				D7A250AC1402E836001AD337 /* DivvyLinkage.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7C00F1214F5692C00C7AF52 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7C00F2414F56A2200C7AF52 /* DivvyImage.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1359,16 +1359,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D7A24D8B13F3204A001AD337 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D7A24D9613F320AE001AD337 /* DivvyZhu.xcdatamodel in Sources */,
-				D7A24DAE13F322B4001AD337 /* DivvyZhu.m in Sources */,
-				D7A24D9C13F3214D001AD337 /* DivvyZhuController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D7A250941402E788001AD337 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1379,6 +1369,16 @@
 				D7A250B51402E863001AD337 /* linkage.c in Sources */,
 				D7A250C41402EA16001AD337 /* distance.c in Sources */,
 				D7A2512E1402F8BD001AD337 /* indexing.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7C00F1014F5692C00C7AF52 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7C00F2314F56A1D00C7AF52 /* DivvyImage.xcdatamodel in Sources */,
+				D7C00F2114F56A0F00C7AF52 /* DivvyImage.m in Sources */,
+				D7C00F2214F56A0F00C7AF52 /* DivvyImageController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1425,11 +1425,6 @@
 			target = D7A24D8313F32039001AD337 /* DivvyNilReducer */;
 			targetProxy = D7A24DA713F3225C001AD337 /* PBXContainerItemProxy */;
 		};
-		D7A24DAA13F3225C001AD337 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D7A24D8D13F3204A001AD337 /* DivvyZhu */;
-			targetProxy = D7A24DA913F3225C001AD337 /* PBXContainerItemProxy */;
-		};
 		D7A250F81402F7E2001AD337 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D7A250961402E788001AD337 /* DivvyLinkage */;
@@ -1439,6 +1434,11 @@
 			isa = PBXTargetDependency;
 			target = D730D23313B526A800E01F31 /* DivvyPlugin */;
 			targetProxy = D7ACDA30145B67AD0067CE1E /* PBXContainerItemProxy */;
+		};
+		D7C00F2614F56A3800C7AF52 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D7C00F1314F5692C00C7AF52 /* DivvyImage */;
+			targetProxy = D7C00F2514F56A3800C7AF52 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1972,52 +1972,6 @@
 			};
 			name = Release;
 		};
-		D7A24D9113F3204A001AD337 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
-				INFOPLIST_FILE = "Plugins/Point Visualizers/Zhu/DivvyZhu-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PRODUCT_NAME = DivvyZhu;
-				WRAPPER_EXTENSION = plugin;
-			};
-			name = Debug;
-		};
-		D7A24D9213F3204A001AD337 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
-				INFOPLIST_FILE = "Plugins/Point Visualizers/Zhu/DivvyZhu-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PRODUCT_NAME = DivvyZhu;
-				WRAPPER_EXTENSION = plugin;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		D7A2509A1402E788001AD337 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2061,6 +2015,52 @@
 				PRODUCT_NAME = DivvyLinkage;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		D7C00F1F14F5692C00C7AF52 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "Plugins/Point Visualizers/Image/DivvyImage-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		D7C00F2014F5692C00C7AF52 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Core/Divvy_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "Plugins/Point Visualizers/Image/DivvyImage-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
 		};
@@ -2166,15 +2166,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D7A24D9313F3204A001AD337 /* Build configuration list for PBXNativeTarget "DivvyZhu" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D7A24D9113F3204A001AD337 /* Debug */,
-				D7A24D9213F3204A001AD337 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		D7A2509C1402E788001AD337 /* Build configuration list for PBXNativeTarget "DivvyLinkage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2183,6 +2174,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D7C00F1E14F5692C00C7AF52 /* Build configuration list for PBXNativeTarget "DivvyImage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7C00F1F14F5692C00C7AF52 /* Debug */,
+				D7C00F2014F5692C00C7AF52 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
