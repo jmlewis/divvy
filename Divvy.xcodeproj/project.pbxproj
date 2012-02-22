@@ -111,6 +111,7 @@
 		D7C00F2214F56A0F00C7AF52 /* DivvyImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A24D9B13F3214D001AD337 /* DivvyImageController.m */; };
 		D7C00F2314F56A1D00C7AF52 /* DivvyImage.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D7A24D9513F320AE001AD337 /* DivvyImage.xcdatamodel */; };
 		D7C00F2414F56A2200C7AF52 /* DivvyImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7A24D9813F3212F001AD337 /* DivvyImage.xib */; };
+		D7C00F2814F56CC700C7AF52 /* DivvyImage.plugin in Resources */ = {isa = PBXBuildFile; fileRef = D7C00F1414F5692C00C7AF52 /* DivvyImage.plugin */; };
 		D7D027681445038600D2CB6D /* DivvyPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = D7D027671445038600D2CB6D /* DivvyPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7DBFEDE146887BA00E8F783 /* DivvyDatasetViewOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DBFEDD146887BA00E8F783 /* DivvyDatasetViewOperation.m */; };
 		D7DD89C4137C70A400DADC35 /* DivvyDatasetsPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DD89C3137C70A400DADC35 /* DivvyDatasetsPanel.m */; };
@@ -365,7 +366,7 @@
 		D7BC2CFA1178FF2000A37DF2 /* assignment.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = assignment.cl; sourceTree = "<group>"; };
 		D7BC2CFB1178FF2000A37DF2 /* move.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = move.cl; sourceTree = "<group>"; };
 		D7BC2DB111790CE700A37DF2 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
-		D7C00F1414F5692C00C7AF52 /* DivvyImage.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyImage.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7C00F1414F5692C00C7AF52 /* DivvyImage.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyImage.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7C00F1514F5692C00C7AF52 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D7D027671445038600D2CB6D /* DivvyPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyPlugin.h; sourceTree = "<group>"; };
 		D7DBFEDC146887BA00E8F783 /* DivvyDatasetViewOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyDatasetViewOperation.h; sourceTree = "<group>"; };
@@ -583,7 +584,7 @@
 				D7A250971402E788001AD337 /* DivvyLinkage.plugin */,
 				0D86ADF31428990F00877901 /* DivvyIsomap.plugin */,
 				D792E59314292C120084626A /* DivvyNilPointVisualizer.plugin */,
-				D7C00F1414F5692C00C7AF52 /* DivvyImage.bundle */,
+				D7C00F1414F5692C00C7AF52 /* DivvyImage.plugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1091,7 +1092,7 @@
 			);
 			name = DivvyImage;
 			productName = DivvyImage;
-			productReference = D7C00F1414F5692C00C7AF52 /* DivvyImage.bundle */;
+			productReference = D7C00F1414F5692C00C7AF52 /* DivvyImage.plugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -1176,6 +1177,7 @@
 				D727E58F1475B8E600702544 /* DivvyLinkage.plugin in Resources */,
 				D727E5901475B8E600702544 /* DivvyIsomap.plugin in Resources */,
 				D727E5911475B8E600702544 /* DivvyNilPointVisualizer.plugin in Resources */,
+				D7C00F2814F56CC700C7AF52 /* DivvyImage.plugin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2040,7 +2042,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
 		};
@@ -2060,7 +2062,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;
 		};
