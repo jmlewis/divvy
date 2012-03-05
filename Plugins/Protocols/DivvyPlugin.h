@@ -8,6 +8,7 @@
 //
 //  Find the Divvy project on the web at http://divvy.ucsd.edu
 
+@class DivvyDataset;
 
 //  Defined in DivvyAppDelegate.m
 extern NSString * const kDivvyDatasetVisualizer;
@@ -28,5 +29,7 @@ extern NSString * const kDivvyDefaultReducer;
 @optional
 //  Define this if you want the little question mark bubble for your plugin to work.
 - (NSString *) helpURL;
+//  For plugins that calculate possible parameter values based on dataset characteristics.
+- (void) changeDataset:(DivvyDataset *)newDataset;
 
 @end

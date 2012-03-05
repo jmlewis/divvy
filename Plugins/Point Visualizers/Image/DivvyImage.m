@@ -12,12 +12,24 @@
 #import "DivvyDataset.h"
 #import "DivvyDatasetView.h"
 
+#import "dispatch/dispatch.h"
+
 @implementation DivvyImage
 
 @dynamic pointVisualizerID;
 @dynamic name;
 
+@dynamic n;
+@dynamic numberOfSamples;
+@dynamic indices;
+
+@dynamic imageHeight;
+@dynamic imageHeights;
+
 @dynamic rotation;
+@dynamic magnification;
+
+@dynamic blackIsTransparent;
 
 - (void) awakeFromInsert {
   [super awakeFromInsert];
@@ -35,19 +47,57 @@
 }
 
 - (void) addObservers {
+  [self addObserver:self forKeyPath:@"numberOfSamples" options:0 context:nil];
+  [self addObserver:self forKeyPath:@"imageHeight" options:0 context:nil];
   [self addObserver:self forKeyPath:@"rotation" options:0 context:nil];
+  [self addObserver:self forKeyPath:@"magnification" options:0 context:nil];
+  [self addObserver:self forKeyPath:@"blackIsTransparent" options:0 context:nil];
 }
 
 - (void) willTurnIntoFault {
+  [self removeObserver:self forKeyPath:@"numberOfSamples"];
+  [self removeObserver:self forKeyPath:@"imageHeight"];
   [self removeObserver:self forKeyPath:@"rotation"];
-  
+  [self removeObserver:self forKeyPath:@"magnification"];
+  [self removeObserver:self forKeyPath:@"blackIsTransparent"];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  if ([keyPath isEqual:@"numberOfSamples"])
+    [self resample];
   DivvyAppDelegate *delegate = [NSApp delegate];
-  
   [delegate.selectedDatasetView  pointVisualizerChanged];
   [delegate reloadDatasetView:delegate.selectedDatasetView];
+}
+
+- (void) changeDataset:(DivvyDataset *)newDataset {
+  self.n = [NSNumber numberWithInt:newDataset.n.intValue];
+  
+  NSMutableArray *heights = [NSMutableArray array];
+  
+  for (int i = floor(sqrt(newDataset.d.doubleValue)); i > 0; i--) {
+    int test = newDataset.d.intValue % i;
+    if (test == 0)
+      [heights addObject:[NSNumber numberWithInt:i]];
+  }
+  
+  self.imageHeights = heights;
+  
+  [self removeObserver:self forKeyPath:@"imageHeight"]; // Don't trigger a redraw here
+  self.imageHeight = [heights objectAtIndex:0]; // Largest height
+  [self addObserver:self forKeyPath:@"imageHeight" options:0 context:nil];  
+  
+  [self resample];
+}
+
+- (void) resample {
+  int numSamples = self.numberOfSamples.intValue;
+  int *newIndices = malloc(numSamples * sizeof(int));
+  
+  for (int i = 0; i < self.numberOfSamples.intValue; i++)
+    newIndices[i] = rand() % self.n.intValue;
+  
+  self.indices = [NSData dataWithBytesNoCopy:newIndices length:numSamples * sizeof(int) freeWhenDone:YES];
 }
 
 - (void) drawImage:(NSImage *) image 
@@ -56,66 +106,83 @@
 
   float *embedding = (float *)[reducedData bytes];
   float *data = dataset.floatData;
-  float *imageData;
-  unsigned int n = dataset.n.unsignedIntValue;
+  unsigned int d = dataset.d.unsignedIntValue;
+  
+  float *normalizedImageData;
+  int *indices = (int *)self.indices.bytes;;
   
   NSRect bounds = image.alignmentRect;
   NSRect rect;
-  float x, y, rectSize, maxValue;
-  int imageWidth, imageHeight;
-  rectSize = 80.0f;
-  maxValue = FLT_MIN;
-  imageWidth = 32;
-  imageHeight = 32;
+  float x, y;
+  int width, height;
+  int planes = 2; // Brightness and alpha
+  height = self.imageHeight.intValue;
+  width = d / height;
   
-  rect.size.width = rectSize;
-  rect.size.height = rectSize;
+  rect.size.width = width * self.magnification.intValue;
+  rect.size.height = height * self.magnification.intValue;
 
-  [image lockFocus];
-
-  int index;
-  for(int i = 0; i < 30; i++) {
-    index = rand() % n;
-    imageData = &data[index * dataset.d.unsignedIntValue];
+  int numSamples = self.numberOfSamples.intValue;
+  
+  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+  
+  int numBytes = numSamples * d * planes * sizeof(float);
+  normalizedImageData = (float *)malloc(numBytes);
+  
+  dispatch_apply(numSamples, queue, ^(size_t i) {
+    float maxValue = FLT_MIN;
+    float *imageData = &data[indices[i] * d];
+    int offset = i * d * planes;
     
     // Find the white point
-    for(int j = 0; j < imageWidth * imageHeight; j++)
+    for(int j = 0; j < width * height; j++)
       if(imageData[j] > maxValue)
         maxValue = imageData[j];
     
+    int index;
+    
     // Normalize and rotate
-    float *normalizedImageData = (float *)malloc(imageWidth * imageHeight * sizeof(float));
-    for(int j = 0; j < imageHeight; j++)
-      for(int k = 0; k < imageWidth; k++) {
+    for(int j = 0; j < height; j++)
+      for(int k = 0; k < width; k++) {
         switch (self.rotation.intValue) {
           case DivvyRotationNone:
-            normalizedImageData[k * imageHeight + j] = imageData[k * imageHeight + j] / maxValue;
+            index = k * height * 2 + 2 * j + offset;
             break;
           case DivvyRotation90:
-            normalizedImageData[j * imageWidth + k] = imageData[k * imageHeight + j] / maxValue;
+            index = j * height * 2 + 2 * k + offset;
             break;
           case DivvyRotation180:
-            normalizedImageData[k * imageHeight + (imageWidth - j - 1)] = imageData[k * imageHeight + j] / maxValue;
+            index = k * height * 2 + (2 * (width - j - 1)) + offset;
             break;
           case DivvyRotation270:
-            normalizedImageData[(imageHeight - j - 1) * imageWidth + k] = imageData[k * imageHeight + j] / maxValue;
+            index = (height - j - 1) * height * 2 + (2 * k) + offset;
             break;
         }
+        normalizedImageData[index] = imageData[k * height + j] / maxValue;
+        if(self.blackIsTransparent.boolValue && normalizedImageData[index] < 0.05f)
+          normalizedImageData[index + 1] = 0.0f;
+        else
+          normalizedImageData[index + 1] = 1.0f;
       }
+  });
+    
+  [image lockFocus];
+  
+  for (int i = 0; i < numSamples; i++) {
+    x = embedding[indices[i] * 2];
+    y = embedding[indices[i] * 2 + 1];
+    rect.origin.x = bounds.size.width * x - rect.size.width / 2;
+    rect.origin.y = bounds.size.height * y - rect.size.height / 2;
+    
+    unsigned char *sampleData = (unsigned char *)&normalizedImageData[i * d * planes];
 
-    
-    x = embedding[index * 2];
-    y = embedding[index * 2 + 1];
-    rect.origin.x = bounds.size.width * x - rectSize / 2;
-    rect.origin.y = bounds.size.height * y - rectSize / 2;
-    
     NSBitmapImageRep *rep = [NSBitmapImageRep alloc];
-    [rep initWithBitmapDataPlanes:(unsigned char **)&normalizedImageData
-                       pixelsWide:32 
-                       pixelsHigh:32
+    [rep initWithBitmapDataPlanes:&sampleData
+                       pixelsWide:width 
+                       pixelsHigh:height
                     bitsPerSample:8 * sizeof(float)
-                  samplesPerPixel:1
-                         hasAlpha:NO
+                  samplesPerPixel:planes
+                         hasAlpha:YES
                          isPlanar:NO
                    colorSpaceName:NSCalibratedWhiteColorSpace
                      bitmapFormat:NSFloatingPointSamplesBitmapFormat
@@ -126,10 +193,8 @@
     // I think this is needed for scaling to fit rect, but it seems heavy
     NSImage *sample = [[[NSImage alloc] initWithCGImage:[rep CGImage] size:NSZeroSize] autorelease];
     [sample drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-    
-    free(normalizedImageData);
   }
-  
+
   [image unlockFocus];
 }
 

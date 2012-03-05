@@ -137,13 +137,15 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 - (IBAction) closeDatasets:(id)sender {
   NSArray *datasets = [self.datasetsPanelController.datasetsArrayController arrangedObjects];
   
+  NSError *error = nil;
+  
   for (id dataset in [datasets objectsAtIndexes:self.selectedDatasets]) {
     for (id datasetView in [[dataset datasetViews] allObjects])
       [managedObjectContext deleteObject:datasetView];
+      [managedObjectContext save:&error];
     [managedObjectContext deleteObject:dataset];
+    [managedObjectContext save:&error];
   }
-  NSError *error = nil;
-  [managedObjectContext save:&error];
 }
 
 - (IBAction)exportVisualization:(id)sender {

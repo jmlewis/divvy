@@ -11,4 +11,10 @@
 
 @interface DivvyImageController : NSViewController
 
+@property (retain) IBOutlet NSArrayController *imageHeights;
+@property (retain) IBOutlet NSObjectController *imageHeight;
+
+- (IBAction) imageHeightSelect:(id)sender;
+- (IBAction) resample:(id)sender;
+
 @end

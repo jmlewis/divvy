@@ -21,6 +21,11 @@
 #import "DivvyClusterer.h"
 #import "DivvyReducer.h"
 
+// Support for the dataset custom accessor.
+@interface DivvyDatasetView (PrimitiveAccessors)
+- (void)setPrimitiveDataset:(DivvyDataset *)newDataset;
+@end
+
 @implementation DivvyDatasetView
 
 @dynamic uniqueID;
@@ -168,6 +173,11 @@
         
         if(!entityExists) {
           id anEntity = [NSEntityDescription insertNewObjectForEntityForName:anEntityDescription.name inManagedObjectContext:moc];
+          
+          // Set dataset if the plugin responds to changeDataset.
+          if ([anEntity respondsToSelector:@selector(changeDataset:)]) {
+            [anEntity changeDataset:self.dataset];
+          }
           
           [plugins addObject:anEntity];
           [pluginIDs addObject:[anEntity valueForKey:[NSString stringWithFormat:@"%@ID", pluginType]]];
@@ -424,6 +434,7 @@
           
           for(id aPlugin in pluginArray) { // Should only be one
             [plugins addObject:aPlugin];
+            
             if([[self valueForKey:selectedPluginIDString] isEqual:[aPlugin valueForKey:pluginIDString]])
               [self setValue:aPlugin forKey:selectedPluginString];
           }
@@ -450,6 +461,24 @@
 - (void) setSelectedReducer:(id <DivvyReducer>)aReducer {
   self.selectedReducerID = aReducer.reducerID;
   selectedReducer = aReducer;
+}
+
+- (void) setDataset:(DivvyDataset *)newDataset {
+  [self willChangeValueForKey:@"dataset"];
+  [self setPrimitiveDataset:newDataset];
+
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  NSArray *pluginTypes = [delegate pluginTypes];
+  
+  for(NSString *pluginType in pluginTypes) {
+    NSArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
+    // Set dataset if the plugin responds to changeDataset.
+    for (id aPlugin in plugins)
+      if ([aPlugin respondsToSelector:@selector(changeDataset:)])
+        [aPlugin changeDataset:newDataset];
+  }
+  
+  [self didChangeValueForKey:@"dataset"];
 }
 
 // I think this is unecessary, or should be in a will turn into fault method

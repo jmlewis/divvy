@@ -18,17 +18,23 @@ enum {
   DivvyRotation180 = 2,
   DivvyRotation270 = 3
 };
-typedef NSNumber DivvyRotation;
 
 @property (nonatomic, retain) NSString *pointVisualizerID;
 @property (nonatomic, retain) NSString *name;
 
-@property (nonatomic, retain) NSNumber *numSamples;
-@property (nonatomic, retain) NSNumber *imageHeight;
-@property (nonatomic, retain) DivvyRotation *rotation;
+@property (nonatomic, retain) NSNumber *n;
+@property (nonatomic, retain) NSNumber *numberOfSamples;
+@property (nonatomic, retain) NSData *indices;
 
-@property (nonatomic, retain) NSData *samples;
+@property (nonatomic, retain) NSArray *imageHeights;
+@property (nonatomic, retain) NSNumber *imageHeight;
+
+@property (nonatomic, retain) NSNumber *rotation;
+@property (nonatomic, retain) NSNumber *magnification;
+
+@property (nonatomic, retain) NSNumber *blackIsTransparent;
 
 - (void) addObservers;
+- (void) resample;
 
 @end
