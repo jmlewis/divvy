@@ -51,6 +51,10 @@
 @property (nonatomic, retain) NSArray *clustererResults;
 @property (nonatomic, retain) NSArray *reducerResults;
 
+//  Cache the current set of point locations for coordination between the
+//  dataset visualizer and point visualizer.
+@property (nonatomic, retain) NSData *pointLocations;
+
 //  Refernces to the actual plugin objects
 @property (nonatomic, retain) NSMutableArray *datasetVisualizers;
 @property (nonatomic, retain) NSMutableArray *pointVisualizers;

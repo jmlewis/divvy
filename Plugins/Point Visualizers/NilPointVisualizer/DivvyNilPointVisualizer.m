@@ -23,8 +23,10 @@
 }
 
 - (void) drawImage:(NSImage *) image 
+    pointLocations:(NSData *)pointLocations
        reducedData:(NSData *)reducedData
-           dataset:(DivvyDataset *)dataset {
+           dataset:(DivvyDataset *)dataset
+        assignment:(NSData *)assignment {
   // Just leave the image alone
 }
 

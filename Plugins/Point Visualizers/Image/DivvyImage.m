@@ -101,19 +101,19 @@
 }
 
 - (void) drawImage:(NSImage *) image 
+    pointLocations:(NSData *)pointLocations
        reducedData:(NSData *)reducedData
-           dataset:(DivvyDataset *)dataset {
+           dataset:(DivvyDataset *)dataset
+        assignment:(NSData *)assignment {
 
-  float *embedding = (float *)[reducedData bytes];
+  float *locations = (float *)[pointLocations bytes];
   float *data = dataset.floatData;
   unsigned int d = dataset.d.unsignedIntValue;
   
   float *normalizedImageData;
   int *indices = (int *)self.indices.bytes;;
   
-  NSRect bounds = image.alignmentRect;
   NSRect rect;
-  float x, y;
   int width, height;
   int planes = 2; // Brightness and alpha
   height = self.imageHeight.intValue;
@@ -169,10 +169,9 @@
   [image lockFocus];
   
   for (int i = 0; i < numSamples; i++) {
-    x = embedding[indices[i] * 2];
-    y = embedding[indices[i] * 2 + 1];
-    rect.origin.x = bounds.size.width * x - rect.size.width / 2;
-    rect.origin.y = bounds.size.height * y - rect.size.height / 2;
+    // Center images on their coordinates in the dataset visualization
+    rect.origin.x = locations[2 * indices[i]] - rect.size.width / 2;
+    rect.origin.y = locations[2 * indices[i] + 1] - rect.size.height / 2;
     
     unsigned char *sampleData = (unsigned char *)&normalizedImageData[i * d * planes];
 

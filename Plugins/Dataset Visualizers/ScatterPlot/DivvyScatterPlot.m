@@ -61,12 +61,13 @@
 }
 
 - (void) drawImage:(NSImage *) image 
+    pointLocations:(NSData *)pointLocations
        reducedData:(NSData *)reducedData
-          reducedD:(NSNumber *)reducedD
            dataset:(DivvyDataset *)dataset
         assignment:(NSData *)assignment {
   
   float *data = (float *)[reducedData bytes];
+  float *locations = (float *)[pointLocations bytes];
   int *cluster_assignment = (int *)[assignment bytes];
   unsigned int n = [[dataset n] unsignedIntValue];
 
@@ -85,8 +86,8 @@
 
   NSRect rect;
 
-  float x, y, rectSize;
-  int d = [reducedD intValue];
+  float rectSize;
+  int d = reducedData.length / (n * sizeof(float));
   int xD = [self.xAxis intValue];
   int yD = [self.yAxis intValue];
   rectSize = [self.pointSize floatValue];
@@ -104,15 +105,9 @@
   rect.size.height = rectSize;
   
   for(int i = 0; i < n; i++) {
-    x = data[i * d + xD];
-    y = data[i * d + yD];
-
-    // x and y are guaranteed to be between 0 and 1
-    x = bounds.size.width * x;
-    y = bounds.size.height * y;
-
-    rect.origin.x = x;
-    rect.origin.y = y;
+    // The reduced data are guaranteed to be between 0 and 1
+    rect.origin.x = locations[2 * i] = data[i * d + xD] * bounds.size.width;
+    rect.origin.y = locations[2 * i + 1] = data[i * d + yD] * bounds.size.height;
 
     [(NSColor *)[clusterColors objectAtIndex:cluster_assignment[i]] set];
     NSRectFill(rect); // Make this a NSRectFillListWithColors in the future

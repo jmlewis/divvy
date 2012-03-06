@@ -49,6 +49,8 @@
 @dynamic clustererResults;
 @dynamic reducerResults;
 
+@dynamic pointLocations;
+
 @synthesize datasetVisualizers;
 @synthesize pointVisualizers;
 @synthesize clusterers;
@@ -259,10 +261,10 @@
     
     NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
     NSImage *newImage = [[NSImage alloc] initWithSize:imageSize];
-    
+        
     [self.selectedDatasetVisualizer drawImage:newImage
+                               pointLocations:self.pointLocations
                                   reducedData:reducerResult
-                                     reducedD:self.selectedReducer.d
                                       dataset:self.dataset
                                    assignment:clustererResult];
 
@@ -275,26 +277,34 @@
     
     [newImage release];
   }
+  
+  [self pointVisualizerChanged];
 }
 
 - (void) pointVisualizerUpdate {
   int pointVisualizerIndex = [self.pointVisualizers indexOfObject:self.selectedPointVisualizer];
+  int clustererIndex = [self.clusterers indexOfObject:self.selectedClusterer];
   int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];  
   
   // If the current reducer result is null, there's another computation pending and we don't have to draw
   NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
+  NSData *clustererResult = [self.clustererResults objectAtIndex:clustererIndex];
   
-  if(reducerResult != (NSData *)[NSNull null]) {
+  if(reducerResult != (NSData *)[NSNull null] && clustererResult != (NSData *)[NSNull null]) {
     [reducerResult retain];
+    [clustererResult retain];
     
     NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
     NSImage *newImage = [[NSImage alloc] initWithSize:imageSize];
     
     [self.selectedPointVisualizer drawImage:newImage
+                             pointLocations:self.pointLocations
                                 reducedData:reducerResult
-                                    dataset:self.dataset];
+                                    dataset:self.dataset
+                                 assignment:clustererResult];
     
     [reducerResult release];
+    [clustererResult release];
     
     NSMutableArray *results = [self.pointVisualizerResults mutableCopy];
     [results replaceObjectAtIndex:pointVisualizerIndex withObject:newImage];
@@ -321,6 +331,7 @@
   [newData release];
   
   [self datasetVisualizerChanged];
+  [self pointVisualizerChanged];
 }
 
 - (void) reducerUpdate {
@@ -477,6 +488,11 @@
       if ([aPlugin respondsToSelector:@selector(changeDataset:)])
         [aPlugin changeDataset:newDataset];
   }
+  
+  // Allocate memory for caching point locations
+  int length = 2 * self.dataset.n.intValue * sizeof(float);
+  float *locations = malloc(length);
+  self.pointLocations = [NSData dataWithBytesNoCopy:locations length:length freeWhenDone:YES];
   
   [self didChangeValueForKey:@"dataset"];
 }

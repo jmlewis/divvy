@@ -17,9 +17,10 @@
 @protocol DivvyDatasetVisualizer <NSObject, DivvyPlugin>
 
 - (NSString *) datasetVisualizerID;
+
 - (void) drawImage:(NSImage *) image
+    pointLocations:(NSData *) pointLocations
        reducedData:(NSData *)reducedData
-          reducedD:(NSNumber *)d
            dataset:(DivvyDataset *)dataset
         assignment:(NSData *)assignment;
 
