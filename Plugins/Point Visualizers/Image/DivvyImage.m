@@ -115,13 +115,10 @@
   
   NSRect rect;
   int width, height;
-  int planes = 2; // Brightness and alpha
   height = self.imageHeight.intValue;
   width = d / height;
   
-  rect.size.width = width * self.magnification.intValue;
-  rect.size.height = height * self.magnification.intValue;
-
+  int planes = 2; // Brightness and alpha
   int numSamples = self.numberOfSamples.intValue;
   
   dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
@@ -141,21 +138,21 @@
     
     int index;
     
-    // Normalize and rotate
+    // Normalize and rotate (NSBitmapImageRep wants images in row major format)
     for(int j = 0; j < height; j++)
       for(int k = 0; k < width; k++) {
         switch (self.rotation.intValue) {
           case DivvyRotationNone:
-            index = k * height * 2 + 2 * j + offset;
+            index = k * planes + j * width * planes + offset;
             break;
           case DivvyRotation90:
-            index = j * height * 2 + 2 * k + offset;
+            index = k * height * planes + (height - j - 1) * planes + offset;
             break;
           case DivvyRotation180:
-            index = k * height * 2 + (2 * (width - j - 1)) + offset;
+            index = (width - k - 1) * planes + (height - j - 1) * width * planes + offset;
             break;
           case DivvyRotation270:
-            index = (height - j - 1) * height * 2 + (2 * k) + offset;
+            index = (width - k - 1) * height * planes + j * planes + offset;
             break;
         }
         normalizedImageData[index] = imageData[k * height + j] / maxValue;
@@ -165,7 +162,24 @@
           normalizedImageData[index + 1] = 1.0f;
       }
   });
-    
+  
+  
+  int temp;
+  switch (self.rotation.intValue) {
+    case DivvyRotation90:
+    case DivvyRotation270:
+      temp = height;
+      height = width;
+      width = temp;
+      break;
+    case DivvyRotationNone:
+    case DivvyRotation180:
+      break;
+  }
+  
+  rect.size.width = width * self.magnification.intValue;
+  rect.size.height = height * self.magnification.intValue;
+  
   [image lockFocus];
   
   for (int i = 0; i < numSamples; i++) {
