@@ -1,6 +1,6 @@
 Welcome to Divvy! Build Divvy in Xcode 3 or 4 on Mac OS X 10.6 or 10.7 and then play around with the data in Sample Datasets/. Right click on any dataset view to export your results as .csv or the view as .png. Export data from Matlab or R using the scripts in Exporters/. Visit Divvy on the web at http://divvy.ucsd.edu for a demo video and more.
 
-Divvy is a work in progress and some of the plugins are experimental. For example, the Zhu point visualizer is just a proof of concept, to be replaced later with a more fully functional image visualizer. Other plugins, such as tSNE, may take a very long time to compute depending on the size of the dataset. Finally, Divvy currently only works with dense, numeric datasets.
+Divvy works with dense, numeric datasets. Some plugins, such as tSNE, may take a very long time to compute depending on the size of the dataset.
 
 If there is a feature you'd like Divvy to have, or if you'd be interested in contributing code to the project, please email the project leader, Joshua, at (the first four letters of his first name)@cogsci.ucsd.edu. This is our first Objective-C project, and we welcome any suggestions/pull requests related to our design patterns, the internal organization of the application, &c.
 
