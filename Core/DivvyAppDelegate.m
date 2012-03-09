@@ -142,7 +142,6 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   for (id dataset in [datasets objectsAtIndexes:self.selectedDatasets]) {
     for (id datasetView in [[dataset datasetViews] allObjects])
       [managedObjectContext deleteObject:datasetView];
-      [managedObjectContext save:&error];
     [managedObjectContext deleteObject:dataset];
     [managedObjectContext save:&error];
   }

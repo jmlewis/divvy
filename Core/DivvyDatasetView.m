@@ -477,42 +477,26 @@
 - (void) setDataset:(DivvyDataset *)newDataset {
   [self willChangeValueForKey:@"dataset"];
   [self setPrimitiveDataset:newDataset];
-
-  DivvyAppDelegate *delegate = [NSApp delegate];
-  NSArray *pluginTypes = [delegate pluginTypes];
   
-  for(NSString *pluginType in pluginTypes) {
-    NSArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
-    // Set dataset if the plugin responds to changeDataset.
-    for (id aPlugin in plugins)
-      if ([aPlugin respondsToSelector:@selector(changeDataset:)])
-        [aPlugin changeDataset:newDataset];
+  if ([newDataset isNotEqualTo:nil]) {
+    DivvyAppDelegate *delegate = [NSApp delegate];
+    NSArray *pluginTypes = [delegate pluginTypes];
+    
+    for(NSString *pluginType in pluginTypes) {
+      NSArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
+      // Set dataset if the plugin responds to changeDataset.
+      for (id aPlugin in plugins)
+        if ([aPlugin respondsToSelector:@selector(changeDataset:)])
+          [aPlugin changeDataset:newDataset];
+    }
+    
+    // Allocate memory for caching point locations
+    int length = 2 * self.dataset.n.intValue * sizeof(float);
+    float *locations = malloc(length);
+    self.pointLocations = [NSData dataWithBytesNoCopy:locations length:length freeWhenDone:YES];
   }
   
-  // Allocate memory for caching point locations
-  int length = 2 * self.dataset.n.intValue * sizeof(float);
-  float *locations = malloc(length);
-  self.pointLocations = [NSData dataWithBytesNoCopy:locations length:length freeWhenDone:YES];
-  
   [self didChangeValueForKey:@"dataset"];
-}
-
-// I think this is unecessary, or should be in a will turn into fault method
-- (void) dealloc {
-  
-  // Core Data properties automatically managed.
-  // Only release retained & sythesized properties.
-  
-  [version release];
-  
-  [datasetVisualizers release];
-  [pointVisualizers release];
-  [clusterers release];
-  [reducers release];
-  
-  [renderedImage release];
-  
-  [super dealloc];
 }
 
 @end
