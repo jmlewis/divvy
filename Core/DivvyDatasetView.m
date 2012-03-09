@@ -124,6 +124,8 @@
   NSArray *pluginTypes = delegate.pluginTypes;
   NSArray *pluginDefaults = delegate.pluginDefaults;
   
+  NSMutableArray *pointLocations = [NSMutableArray array];
+  
   for(NSString *pluginType in pluginTypes) {
     NSMutableArray *plugins = [NSMutableArray array];
     NSMutableArray *pluginIDs = [NSMutableArray array];
@@ -147,10 +149,14 @@
       }
     
     NSMutableArray *pluginResults = [NSMutableArray array];
-    for(id aPlugin in [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]])
+    for(id aPlugin in [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]]) {
       [pluginResults addObject:[NSNull null]];
+      if ([pluginType isEqualToString:@"datasetVisualizer"])
+        [pointLocations addObject:[NSNull null]];
+    }
     [self setValue:pluginResults forKey:[NSString stringWithFormat:@"%@Results", pluginType]];
   }
+  self.pointLocations = pointLocations;
 }
 
 - (void) updatePlugins {
@@ -160,10 +166,12 @@
   NSManagedObjectModel* mom = delegate.managedObjectModel;
   NSArray *pluginTypes = delegate.pluginTypes;
   
+  NSMutableArray *pointLocations = [self.pointLocations mutableCopy];
+  
   for(NSString *pluginType in pluginTypes) {
     NSMutableArray *plugins = [self valueForKey:[NSString stringWithFormat:@"%@s", pluginType]];
     NSMutableArray *pluginIDs = [self valueForKey:[NSString stringWithFormat:@"%@IDs", pluginType]];
-    NSMutableArray *pluginResults = [self valueForKey:[NSString stringWithFormat:@"%@Results", pluginType]];
+    NSMutableArray *pluginResults = [self valueForKey:[NSString stringWithFormat:@"%@Results", pluginType]]; // These aren't mutable, but this seems to work... (could add mutableCopy logic)
     
     for(NSEntityDescription *anEntityDescription in [mom entities])
       if([anEntityDescription.propertiesByName objectForKey:[NSString stringWithFormat:@"%@ID", pluginType]]) {
@@ -184,8 +192,11 @@
           [plugins addObject:anEntity];
           [pluginIDs addObject:[anEntity valueForKey:[NSString stringWithFormat:@"%@ID", pluginType]]];
           [pluginResults addObject:[NSNull null]];
+          if ([pluginType isEqualToString:@"datasetVisualizer"])
+            [pointLocations addObject:[NSNull null]];
         }
       }
+    self.pointLocations = pointLocations;
   }
 }
 
@@ -261,9 +272,17 @@
     
     NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
     NSImage *newImage = [[NSImage alloc] initWithSize:imageSize];
+
+    // Allocate memory for new point locations (could do this only once in setDataset/updatePlugins...)
+    int numBytes = 2 * [self.dataset.n intValue] * sizeof(int);
+    int *newAssignment = malloc(numBytes);
+    NSData *newData = [[NSData alloc] initWithBytesNoCopy:newAssignment length:numBytes freeWhenDone:YES];
+    NSMutableArray *locations = [self.pointLocations mutableCopy];
+    [locations replaceObjectAtIndex:datasetVisualizerIndex withObject:newData];
+    self.pointLocations = locations;
         
     [self.selectedDatasetVisualizer drawImage:newImage
-                               pointLocations:self.pointLocations
+                               pointLocations:[self.pointLocations objectAtIndex:datasetVisualizerIndex]
                                   reducedData:reducerResult
                                       dataset:self.dataset
                                    assignment:clustererResult];
@@ -282,6 +301,7 @@
 }
 
 - (void) pointVisualizerUpdate {
+  int datasetVisualizerIndex = [self.datasetVisualizers indexOfObject:self.selectedDatasetVisualizer];
   int pointVisualizerIndex = [self.pointVisualizers indexOfObject:self.selectedPointVisualizer];
   int clustererIndex = [self.clusterers indexOfObject:self.selectedClusterer];
   int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];  
@@ -296,9 +316,9 @@
     
     NSSize imageSize = NSMakeSize(1024, 1024); // Size of output image
     NSImage *newImage = [[NSImage alloc] initWithSize:imageSize];
-    
+
     [self.selectedPointVisualizer drawImage:newImage
-                             pointLocations:self.pointLocations
+                             pointLocations:[self.pointLocations objectAtIndex:datasetVisualizerIndex]
                                 reducedData:reducerResult
                                     dataset:self.dataset
                                  assignment:clustererResult];
@@ -478,7 +498,7 @@
   [self willChangeValueForKey:@"dataset"];
   [self setPrimitiveDataset:newDataset];
   
-  if ([newDataset isNotEqualTo:nil]) {
+  if ([newDataset isNotEqualTo:nil]) { // Core Data members are set to nil when deleted from the context
     DivvyAppDelegate *delegate = [NSApp delegate];
     NSArray *pluginTypes = [delegate pluginTypes];
     
@@ -489,11 +509,6 @@
         if ([aPlugin respondsToSelector:@selector(changeDataset:)])
           [aPlugin changeDataset:newDataset];
     }
-    
-    // Allocate memory for caching point locations
-    int length = 2 * self.dataset.n.intValue * sizeof(float);
-    float *locations = malloc(length);
-    self.pointLocations = [NSData dataWithBytesNoCopy:locations length:length freeWhenDone:YES];
   }
   
   [self didChangeValueForKey:@"dataset"];
