@@ -105,7 +105,6 @@
 		D7AADA5014465C800041E6F1 /* processing.png in Resources */ = {isa = PBXBuildFile; fileRef = D7AADA4F14465C800041E6F1 /* processing.png */; };
 		D7AADA8E144660120041E6F1 /* DivvyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AADA8D144660120041E6F1 /* DivvyHeaderView.m */; };
 		D7ACDA48145B67E10067CE1E /* DivvyPlugin.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D730D23413B526A800E01F31 /* DivvyPlugin.framework */; };
-		D7ACDA58145B68120067CE1E /* DivvyPlugin.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D730D23413B526A800E01F31 /* DivvyPlugin.framework */; };
 		D7B4560E14576A3300A21CB4 /* DivvyImageBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B4560D14576A3300A21CB4 /* DivvyImageBrowserView.m */; };
 		D7B4561114576A3F00A21CB4 /* DivvyImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B4561014576A3F00A21CB4 /* DivvyImageBrowserCell.m */; };
 		D7B78CBE116A8FEE00D363A2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B78CBD116A8FEE00D363A2 /* QuartzCore.framework */; };
@@ -205,17 +204,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D7ACDA6E145B68170067CE1E /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D7ACDA58145B68120067CE1E /* DivvyPlugin.framework in Copy Frameworks */,
-			);
-			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D7ACDA6F145B68170067CE1E /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1033,7 +1021,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D730D24413B5271A00E01F31 /* Build configuration list for PBXNativeTarget "DivvyKMeans" */;
 			buildPhases = (
-				D7ACDA6E145B68170067CE1E /* Copy Frameworks */,
 				D730D23B13B5271A00E01F31 /* Resources */,
 				D730D23C13B5271A00E01F31 /* Sources */,
 				D730D23D13B5271A00E01F31 /* Frameworks */,
@@ -1102,9 +1089,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7C00F1E14F5692C00C7AF52 /* Build configuration list for PBXNativeTarget "DivvyImage" */;
 			buildPhases = (
+				D7C00F1214F5692C00C7AF52 /* Resources */,
 				D7C00F1014F5692C00C7AF52 /* Sources */,
 				D7C00F1114F5692C00C7AF52 /* Frameworks */,
-				D7C00F1214F5692C00C7AF52 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1657,7 +1644,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Mac Developer: Joshua Lewis (BLASZKAAN2)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1674,6 +1661,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = Divvy;
+				PROVISIONING_PROFILE = "7521B6D2-99FA-46DD-9F55-C73DBC857589";
 			};
 			name = Debug;
 		};
@@ -1682,7 +1670,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Joshua Lewis";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_MODEL_TUNING = G5;
@@ -1691,6 +1679,7 @@
 				INFOPLIST_FILE = "Core/Divvy-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = Divvy;
+				PROVISIONING_PROFILE = "F09B080B-AE5C-4CC5-BF0E-3EA1AB84B7B9";
 			};
 			name = Release;
 		};
@@ -1837,6 +1826,7 @@
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "Plugins/Protocols/DivvyPlugin-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				ORDER_FILE = "$(HOME)/Library/Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -1861,7 +1851,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "Plugins/Protocols/DivvyPlugin-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				ORDER_FILE = "$(HOME)/Library/Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
