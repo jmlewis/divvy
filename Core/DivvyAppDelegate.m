@@ -134,6 +134,35 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   [managedObjectContext save:&error];
 }
 
+- (IBAction) openSampleDatasets:(id)sender {
+  DivvyDataset *dataset;
+  NSMenuItem *menuItem = (NSMenuItem *)sender;
+  NSString *datasetName;
+  
+  switch (menuItem.tag) {
+    case 0: // 3D Clusters
+      datasetName = @"3dclust";
+      break;
+    case 1: // Swiss Roll
+      datasetName = @"swissroll";
+      break;
+    case 2: // COIL 20
+      datasetName = @"coil20";
+      break;
+    case 3: // Faces
+      datasetName = @"faces";
+      break;
+    default:
+      return;
+  }
+  
+  dataset = [NSEntityDescription insertNewObjectForEntityForName:@"Dataset" inManagedObjectContext:self.managedObjectContext];
+  [dataset loadDataAtURL:[[NSBundle mainBundle] URLForResource:datasetName withExtension:@"bin"]];
+
+  NSError *error = nil;
+  [managedObjectContext save:&error];
+}
+
 - (IBAction) closeDatasets:(id)sender {
   NSArray *datasets = [self.datasetsPanelController.datasetsArrayController arrangedObjects];
   

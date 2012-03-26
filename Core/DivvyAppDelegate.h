@@ -59,6 +59,7 @@
 
 //  Open and close dataset files
 - (IBAction)openDatasets:(id)sender;
+- (IBAction)openSampleDatasets:(id)sender;
 - (IBAction)closeDatasets:(id)sender;
 
 //  Support for exporting .png and .csv representations of DivvyDatasetViews

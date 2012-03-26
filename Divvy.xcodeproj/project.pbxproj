@@ -74,6 +74,10 @@
 		D7764F46137B4A9900F7F49F /* DivvyDataset.m in Sources */ = {isa = PBXBuildFile; fileRef = D7764F45137B4A9900F7F49F /* DivvyDataset.m */; };
 		D7764F5D137B4CDE00F7F49F /* DatasetWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7764F5C137B4CDE00F7F49F /* DatasetWindow.xib */; };
 		D77DF784118636A2009C1946 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77DF783118636A2009C1946 /* Accelerate.framework */; };
+		D7839096151FE64300422899 /* 3dclust.bin in Resources */ = {isa = PBXBuildFile; fileRef = D7839092151FE61D00422899 /* 3dclust.bin */; };
+		D7839097151FE64300422899 /* coil20.bin in Resources */ = {isa = PBXBuildFile; fileRef = D7839093151FE61D00422899 /* coil20.bin */; };
+		D7839098151FE64300422899 /* faces.bin in Resources */ = {isa = PBXBuildFile; fileRef = D7839094151FE61D00422899 /* faces.bin */; };
+		D7839099151FE64300422899 /* swissroll.bin in Resources */ = {isa = PBXBuildFile; fileRef = D7839095151FE61D00422899 /* swissroll.bin */; };
 		D78CD47413FC718C00390ABD /* Divvy.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D78CD47313FC718C00390ABD /* Divvy.xcdatamodel */; };
 		D792E59D14292C710084626A /* DivvyNilPointVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D792E59C14292C710084626A /* DivvyNilPointVisualizer.m */; };
 		D792E5A014292C7C0084626A /* DivvyNilPointVisualizerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D792E59F14292C7C0084626A /* DivvyNilPointVisualizerController.m */; };
@@ -304,6 +308,10 @@
 		D7764F45137B4A9900F7F49F /* DivvyDataset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyDataset.m; sourceTree = "<group>"; };
 		D7764F5C137B4CDE00F7F49F /* DatasetWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatasetWindow.xib; sourceTree = "<group>"; };
 		D77DF783118636A2009C1946 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		D7839092151FE61D00422899 /* 3dclust.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = 3dclust.bin; sourceTree = "<group>"; };
+		D7839093151FE61D00422899 /* coil20.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = coil20.bin; sourceTree = "<group>"; };
+		D7839094151FE61D00422899 /* faces.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = faces.bin; sourceTree = "<group>"; };
+		D7839095151FE61D00422899 /* swissroll.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = swissroll.bin; sourceTree = "<group>"; };
 		D78CD47313FC718C00390ABD /* Divvy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Divvy.xcdatamodel; sourceTree = "<group>"; };
 		D792E57B14292A4F0084626A /* DivvyIsomap-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DivvyIsomap-Info.plist"; sourceTree = "<group>"; };
 		D792E59314292C120084626A /* DivvyNilPointVisualizer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyNilPointVisualizer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -592,6 +600,7 @@
 		29B97314FDCFA39411CA2CEA /* Divvy */ = {
 			isa = PBXGroup;
 			children = (
+				D7839091151FE61D00422899 /* Sample Datasets */,
 				D7642A6613F4EE5200F1CE56 /* Dataset Visualizers */,
 				D7642A6713F4EE5F00F1CE56 /* Point Visualizers */,
 				D7642A6813F4EE6C00F1CE56 /* Clusterers */,
@@ -782,6 +791,17 @@
 			);
 			name = Models;
 			path = Core;
+			sourceTree = "<group>";
+		};
+		D7839091151FE61D00422899 /* Sample Datasets */ = {
+			isa = PBXGroup;
+			children = (
+				D7839092151FE61D00422899 /* 3dclust.bin */,
+				D7839093151FE61D00422899 /* coil20.bin */,
+				D7839094151FE61D00422899 /* faces.bin */,
+				D7839095151FE61D00422899 /* swissroll.bin */,
+			);
+			path = "Sample Datasets";
 			sourceTree = "<group>";
 		};
 		D7A24D9413F32053001AD337 /* NilReducer */ = {
@@ -1163,6 +1183,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7839096151FE64300422899 /* 3dclust.bin in Resources */,
+				D7839097151FE64300422899 /* coil20.bin in Resources */,
+				D7839098151FE64300422899 /* faces.bin in Resources */,
+				D7839099151FE64300422899 /* swissroll.bin in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				D7764F5D137B4CDE00F7F49F /* DatasetWindow.xib in Resources */,
@@ -2184,6 +2208,7 @@
 				D7C00F2014F5692C00C7AF52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
