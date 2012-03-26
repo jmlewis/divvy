@@ -1509,6 +1509,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyPCA;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1533,6 +1534,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyPCA;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -1559,6 +1561,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyIsomap;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1583,6 +1586,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyIsomap;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -1613,6 +1617,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyTSNE;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1641,6 +1646,7 @@
 					Accelerate,
 				);
 				PRODUCT_NAME = DivvyTSNE;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -1650,7 +1656,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Divvy.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1674,7 +1681,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Divvy.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_MODEL_TUNING = G5;
@@ -1737,6 +1745,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyScatterPlot;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1759,6 +1768,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyScatterPlot;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -1783,6 +1793,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilClusterer;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1805,6 +1816,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilClusterer;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -1832,6 +1844,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyPlugin;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -1856,6 +1869,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyPlugin;
+				SKIP_INSTALL = YES;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1879,6 +1893,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyKMeans;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1901,6 +1916,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyKMeans;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -1925,6 +1941,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilPointVisualizer;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1947,6 +1964,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilPointVisualizer;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -1971,6 +1989,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilReducer;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -1993,6 +2012,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyNilReducer;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -2017,6 +2037,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyLinkage;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -2039,6 +2060,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = DivvyLinkage;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};
@@ -2066,6 +2088,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -2086,6 +2109,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;
