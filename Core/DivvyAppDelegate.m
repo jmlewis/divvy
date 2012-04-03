@@ -538,7 +538,6 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 }
 
 
-
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {    
   // Save the selected datasets.
   self.delegateSettings.selectedDatasets = self.selectedDatasets;
@@ -597,6 +596,10 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   }
   
   return NSTerminateNow;
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+  return YES;
 }
 
 - (void)dealloc {

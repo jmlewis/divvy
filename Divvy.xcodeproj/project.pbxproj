@@ -104,7 +104,6 @@
 		D7A2512E1402F8BD001AD337 /* indexing.c in Sources */ = {isa = PBXBuildFile; fileRef = D7A2512D1402F8BD001AD337 /* indexing.c */; };
 		D7AADA5014465C800041E6F1 /* processing.png in Resources */ = {isa = PBXBuildFile; fileRef = D7AADA4F14465C800041E6F1 /* processing.png */; };
 		D7AADA8E144660120041E6F1 /* DivvyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AADA8D144660120041E6F1 /* DivvyHeaderView.m */; };
-		D7ACDA48145B67E10067CE1E /* DivvyPlugin.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D730D23413B526A800E01F31 /* DivvyPlugin.framework */; };
 		D7B4560E14576A3300A21CB4 /* DivvyImageBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B4560D14576A3300A21CB4 /* DivvyImageBrowserView.m */; };
 		D7B4561114576A3F00A21CB4 /* DivvyImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B4561014576A3F00A21CB4 /* DivvyImageBrowserCell.m */; };
 		D7B78CBE116A8FEE00D363A2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B78CBD116A8FEE00D363A2 /* QuartzCore.framework */; };
@@ -210,7 +209,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D7ACDA48145B67E10067CE1E /* DivvyPlugin.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
