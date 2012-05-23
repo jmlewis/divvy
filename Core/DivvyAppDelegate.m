@@ -115,7 +115,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 
 - (IBAction) openDatasets:(id)sender {
   int result;
-  NSArray *fileTypes = [NSArray arrayWithObject:@"bin"];
+  NSArray *fileTypes = [NSArray arrayWithObjects:@"bin", @"csv", nil];
   NSOpenPanel *oPanel = [NSOpenPanel openPanel];
   DivvyDataset *dataset;
   

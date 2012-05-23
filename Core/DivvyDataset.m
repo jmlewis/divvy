@@ -25,7 +25,13 @@
   NSString *path = [url path];
   
   self.title = [[path lastPathComponent] stringByDeletingPathExtension];
-  self.data = [NSData dataWithContentsOfFile:path];
+  
+  if ([[path pathExtension] isEqualToString:@"csv"]) {
+    self.data = [self parseCSV:url];
+  } else {
+    self.data = [NSData dataWithContentsOfFile:path];
+  }
+  
   self.selectedDatasetViews = [NSIndexSet indexSet];
   
   unsigned int n;
@@ -58,6 +64,47 @@
 
 - (float *) floatData {
   return (float *)(self.data.bytes + 8); // Offset by 8 bytes to avoid header info
+}
+
+// The following code uses a fragment from the Cocoa for Scientists article "Parsing CSV Data"
+// http://www.macresearch.org/cocoa-scientists-part-xxvi-parsing-csv-data
+- (NSData *) parseCSV:(NSURL *)url {
+  NSError *error;
+  NSStringEncoding enc;
+  NSString *csv = [NSString stringWithContentsOfFile:[url path] usedEncoding:&enc error:&error];
+  
+  unsigned int n;
+  unsigned int d;
+  
+  // Get newline character set
+  NSMutableCharacterSet *newlineCharacterSet = (id)[NSMutableCharacterSet whitespaceAndNewlineCharacterSet];
+  [newlineCharacterSet formIntersectionWithCharacterSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet]];
+
+  NSArray *rows = [csv componentsSeparatedByCharactersInSet:newlineCharacterSet];
+  n = [rows count];
+  if ([[rows lastObject] isEqualToString:@""]) // Trailing newline
+    n--;
+  
+  NSArray *cols = [[rows objectAtIndex:0] componentsSeparatedByString:@","];
+  d = [cols count];
+  
+  // The following might not be that portable...
+  NSMutableData *data = [NSMutableData dataWithCapacity:2 * sizeof(int) + n * d * sizeof(float)];
+  [data appendBytes:&n length:sizeof(int)];
+  [data appendBytes:&d length:sizeof(int)];
+  
+  float val;
+  for (NSString *row in rows) {
+    if (![row isEqualToString:@""]) {
+      cols = [row componentsSeparatedByString:@","];
+      for (NSString *col in cols) {
+        val = [col floatValue];
+        [data appendBytes:&val length:sizeof(float)];
+      }
+    }
+  }
+  
+  return data;
 }
 
 @end
