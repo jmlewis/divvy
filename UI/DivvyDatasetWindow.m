@@ -88,6 +88,8 @@
   NSSortDescriptor *dateCreatedDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES] autorelease];
   NSArray *sortDescriptors = [NSArray arrayWithObjects:dateCreatedDescriptor, nil];
   
+  [datasetViewPanel.scrollView setScrollerStyle:NSScrollerStyleLegacy];
+  
   [datasetViewsArrayController setSortDescriptors:sortDescriptors];
 }
 
