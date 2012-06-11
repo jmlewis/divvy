@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">11D50b</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1138.32</string>
-		<string key="IBDocument.HIToolboxVersion">568.00</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
@@ -13,10 +13,10 @@
 				<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string>com.apple.imagekit.ibplugin</string>
 			</object>
-			<object class="NSMutableArray" key="dict.values">
+			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>1938</string>
-				<string>822</string>
+				<string>2182</string>
+				<string>1117</string>
 			</object>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
@@ -78,7 +78,7 @@
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
-				<string key="NSWindowContentMinSize">{1024, 768}</string>
+				<string key="NSWindowContentMinSize">{800, 300}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -261,7 +261,7 @@
 											<string key="NSFrameSize">{723, 782}</string>
 											<reference key="NSSuperview" ref="791124546"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="464371553"/>
+											<reference key="NSNextKeyView" ref="538648670"/>
 											<bool key="NSViewWantsBestResolutionOpenGLSurface">YES</bool>
 											<bool key="constrainsToOriginalSize">NO</bool>
 											<bool key="cellsHaveSubtitle">NO</bool>
@@ -324,7 +324,7 @@
 							<string key="NSFrame">{{0, 32}, {708, 782}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="538648670"/>
+							<reference key="NSNextKeyView" ref="791124546"/>
 							<int key="NSsFlags">133776</int>
 							<reference key="NSVScroller" ref="464371553"/>
 							<reference key="NSHScroller" ref="538648670"/>
@@ -920,7 +920,7 @@
 															<string key="NSFrameSize">{300, 501}</string>
 															<reference key="NSSuperview" ref="481384061"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="629342238"/>
+															<reference key="NSNextKeyView" ref="361314946"/>
 															<string key="NSClassName">DivvyFlippedView</string>
 														</object>
 													</object>
@@ -960,7 +960,7 @@
 											<string key="NSFrameSize">{317, 536}</string>
 											<reference key="NSSuperview" ref="110957124"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="361314946"/>
+											<reference key="NSNextKeyView" ref="481384061"/>
 											<int key="NSsFlags">133138</int>
 											<reference key="NSVScroller" ref="940077070"/>
 											<reference key="NSHScroller" ref="361314946"/>
@@ -994,7 +994,7 @@
 															<string key="NSFrameSize">{316, 200}</string>
 															<reference key="NSSuperview" ref="842698007"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="1023887483"/>
+															<reference key="NSNextKeyView" ref="88135901"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="974128677">
 																<reference key="NSNextResponder" ref="88135901"/>
@@ -1193,7 +1193,7 @@
 											<string key="NSFrame">{{0, 19}, {318, 218}}</string>
 											<reference key="NSSuperview" ref="464897272"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="88135901"/>
+											<reference key="NSNextKeyView" ref="842698007"/>
 											<int key="NSsFlags">133682</int>
 											<reference key="NSVScroller" ref="1023887483"/>
 											<reference key="NSHScroller" ref="352906061"/>
@@ -1264,7 +1264,6 @@
 							<string key="NSFrame">{{910, 5}, {96, 21}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="217678278">
 								<int key="NSCellFlags">-2079981824</int>
@@ -1323,7 +1322,7 @@
 					<reference key="NSNextKeyView" ref="54051135"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
-				<string key="NSMinSize">{1024, 790}</string>
+				<string key="NSMinSize">{800, 322}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">datasetWindow</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
@@ -2096,7 +2095,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<integer value="1"/>
 									<integer value="1"/>
@@ -2227,7 +2226,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2306,7 +2305,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2335,7 +2334,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2414,7 +2413,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2500,7 +2499,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<integer value="0"/>
 									<boolean value="NO"/>
@@ -2531,7 +2530,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<boolean value="NO"/>
@@ -2561,7 +2560,7 @@
 									<string>NSConditionallySetsEnabled</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>openHelp:</string>
@@ -2591,7 +2590,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2620,7 +2619,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2650,7 +2649,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<integer value="0"/>
 									<boolean value="NO"/>
@@ -2681,7 +2680,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<boolean value="NO"/>
@@ -2711,7 +2710,7 @@
 									<string>NSConditionallySetsEnabled</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>openHelp:</string>
@@ -2741,7 +2740,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2774,7 +2773,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<integer value="0"/>
 									<integer value="0"/>
@@ -2808,7 +2807,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<boolean value="NO"/>
@@ -2839,7 +2838,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<boolean value="NO"/>
@@ -2870,7 +2869,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>NSIsNil</string>
@@ -2900,7 +2899,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSValueTransformerName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<integer value="0"/>
 									<boolean value="NO"/>
@@ -2931,7 +2930,7 @@
 									<string>NSRaisesForNotApplicableKeys</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<boolean value="NO"/>
@@ -2961,7 +2960,7 @@
 									<string>NSConditionallySetsEnabled</string>
 									<string>NSSelectorName</string>
 								</object>
-								<object class="NSMutableArray" key="dict.values">
+								<object class="NSArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<boolean value="NO"/>
 									<string>openHelp:</string>
@@ -3804,7 +3803,7 @@
 					<string>579.IBPluginDependency</string>
 					<string>580.IBPluginDependency</string>
 				</object>
-				<object class="NSMutableArray" key="dict.values">
+				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3929,6 +3928,85 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
+					<string key="className">DivvyAppDelegate</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>closeDatasets:</string>
+							<string>exportData:</string>
+							<string>exportVisualization:</string>
+							<string>openDatasets:</string>
+							<string>openHelp:</string>
+							<string>openSampleDatasets:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>closeDatasets:</string>
+							<string>exportData:</string>
+							<string>exportVisualization:</string>
+							<string>openDatasets:</string>
+							<string>openHelp:</string>
+							<string>openSampleDatasets:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">closeDatasets:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">exportData:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">exportVisualization:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openDatasets:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openHelp:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openSampleDatasets:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">datasetViewContextMenu</string>
+						<string key="NS.object.0">NSMenu</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">datasetViewContextMenu</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">datasetViewContextMenu</string>
+							<string key="candidateClassName">NSMenu</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/DivvyAppDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">DivvyDatasetViewPanel</string>
 					<string key="superclassName">NSViewController</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -3940,7 +4018,7 @@
 							<string>pointVisualizerSelect:</string>
 							<string>reducerSelect:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>id</string>
 							<string>id</string>
@@ -3957,7 +4035,7 @@
 							<string>pointVisualizerSelect:</string>
 							<string>reducerSelect:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">clustererSelect:</string>
@@ -4000,7 +4078,7 @@
 							<string>scrollView</string>
 							<string>selectViewTextField</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSArrayController</string>
 							<string>NSObjectController</string>
@@ -4045,7 +4123,7 @@
 							<string>scrollView</string>
 							<string>selectViewTextField</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">clustererArrayController</string>
@@ -4149,7 +4227,7 @@
 							<string>datasetViewsBrowser</string>
 							<string>datasetsPanel</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>DivvyDatasetViewPanel</string>
 							<string>NSArrayController</string>
@@ -4166,7 +4244,7 @@
 							<string>datasetViewsBrowser</string>
 							<string>datasetsPanel</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">datasetViewPanel</string>
@@ -4212,7 +4290,7 @@
 							<string>datasetsArrayController</string>
 							<string>datasetsTable</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSArrayController</string>
 							<string>NSTableView</string>
@@ -4225,7 +4303,7 @@
 							<string>datasetsArrayController</string>
 							<string>datasetsTable</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">datasetsArrayController</string>
@@ -4266,66 +4344,6 @@
 						<string key="minorKey">./Classes/DivvyImageBrowserView.h</string>
 					</object>
 				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">IKImageBrowserView</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>_dataSource</string>
-							<string>_delegate</string>
-							<string>_dragDestinationDelegate</string>
-							<string>_horizontalScroller</string>
-							<string>_verticalScroller</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>NSScroller</string>
-							<string>NSScroller</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>_dataSource</string>
-							<string>_delegate</string>
-							<string>_dragDestinationDelegate</string>
-							<string>_horizontalScroller</string>
-							<string>_verticalScroller</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_dataSource</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_delegate</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_dragDestinationDelegate</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_horizontalScroller</string>
-								<string key="candidateClassName">NSScroller</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_verticalScroller</string>
-								<string key="candidateClassName">NSScroller</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/IKImageBrowserView.h</string>
-					</object>
-				</object>
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
@@ -4345,7 +4363,7 @@
 				<string>NSMenuMixedState</string>
 				<string>NSRemoveTemplate</string>
 			</object>
-			<object class="NSMutableArray" key="dict.values">
+			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{8, 8}</string>
 				<string>{11, 11}</string>
