@@ -73,6 +73,9 @@
 - (void) setProcessingImage;
 - (void) reloadImage;
 
+// Render a clicked point
+- (void) renderPoint:(NSPoint) point;
+
 //  Make sure that the list of plugins is current and that the plugin objects are
 //  populated on awake from insert and fetch.
 - (void) createPlugins;

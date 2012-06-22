@@ -60,6 +60,34 @@
   [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
+- (NSInteger) pointNearestTo:(NSPoint) point
+                 reducedData:(NSData * )reducedData
+                     dataset:(DivvyDataset *)dataset {
+  
+  float *data = (float *)[reducedData bytes];
+  unsigned int n = [[dataset n] unsignedIntValue];
+  unsigned int d = reducedData.length / (n * sizeof(float));
+  
+  unsigned int xD = [self.xAxis unsignedIntValue];
+  unsigned int yD = [self.yAxis unsignedIntValue];
+  
+  float minDistance = FLT_MAX;
+  float distance;
+  NSInteger index;
+  
+  // Should parallelize this
+  for(int i = 0; i < n; i++) {
+    // The reduced data are guaranteed to be between 0 and 1
+    distance = pow(pow(point.x - data[i * d + xD], 2) + pow(point.y - data[i * d + yD], 2), .5);
+    if (distance < minDistance) {
+      minDistance = distance;
+      index = i;
+    }
+  }
+  
+  return index;
+}
+
 - (void) drawImage:(NSImage *) image 
     pointLocations:(NSData *)pointLocations
        reducedData:(NSData *)reducedData
@@ -87,9 +115,9 @@
   NSRect rect;
 
   float rectSize;
-  int d = reducedData.length / (n * sizeof(float));
-  int xD = [self.xAxis intValue];
-  int yD = [self.yAxis intValue];
+  unsigned int d = reducedData.length / (n * sizeof(float));
+  unsigned int xD = [self.xAxis unsignedIntValue];
+  unsigned int yD = [self.yAxis unsignedIntValue];
   rectSize = [self.pointSize floatValue];
 
   // get the view geometry and fill the background.

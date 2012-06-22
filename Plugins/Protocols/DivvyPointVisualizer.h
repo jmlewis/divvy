@@ -24,4 +24,7 @@
            dataset:(DivvyDataset *)dataset
         assignment:(NSData *)assignment;
 
+@optional
+- (void) drawPoint:(NSImage *) image;
+
 @end

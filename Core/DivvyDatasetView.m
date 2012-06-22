@@ -411,6 +411,18 @@
   return self.renderedImage;
 }
 
+- (void) renderPoint:(NSPoint) point {
+  int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];
+  
+  NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
+
+  NSInteger index = [self.selectedDatasetVisualizer pointNearestTo:point 
+                                                       reducedData:reducerResult
+                                                           dataset:self.dataset];
+  
+  NSLog(@"%ld", index);
+}
+
 #pragma mark -
 #pragma mark Core Data awake
 - (void) awakeFromInsert {

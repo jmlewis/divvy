@@ -24,4 +24,9 @@
            dataset:(DivvyDataset *)dataset
         assignment:(NSData *)assignment;
 
+@optional
+- (NSInteger) pointNearestTo:(NSPoint) point
+                 reducedData:(NSData *)reducedData
+                     dataset:(DivvyDataset *)dataset;
+
 @end

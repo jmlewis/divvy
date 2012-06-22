@@ -111,7 +111,7 @@
   unsigned int d = dataset.d.unsignedIntValue;
   
   float *normalizedImageData;
-  int *indices = (int *)self.indices.bytes;;
+  int *indices = (int *)self.indices.bytes;
   
   NSRect rect;
   int width, height;
