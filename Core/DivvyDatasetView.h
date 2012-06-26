@@ -74,7 +74,7 @@
 - (void) reloadImage;
 
 // Render a clicked point
-- (void) renderPoint:(NSPoint) point;
+- (void) renderPoint:(NSPoint)point inRect:(NSRect)rect ofView:(NSView *)view;
 
 //  Make sure that the list of plugins is current and that the plugin objects are
 //  populated on awake from insert and fetch.

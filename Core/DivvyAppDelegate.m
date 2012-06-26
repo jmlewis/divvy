@@ -45,6 +45,8 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
 @synthesize datasetWindowController;
 @synthesize datasetViewContextMenu;
 
+@synthesize pointPopover;
+
 @synthesize selectedDataset;
 @synthesize selectedDatasetView;
 
@@ -75,7 +77,7 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   if(error) {
     NSString *message = [NSString stringWithFormat:@"%@ [%@]",
                          [error description], ([error userInfo] ? [[error userInfo] description] : @"no user info")];
-    NSLog(@"CBA Failure message: %@", message);        
+    NSLog(@"MOC save failure message (delegate): %@", message);        
   }
   
   NSManagedObjectID *datasetViewID = datasetView.objectID;
@@ -497,6 +499,9 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   self.datasetsPanelController = datasetWindow.datasetsPanel;
   self.datasetViewPanelController = datasetWindow.datasetViewPanel;
   [datasetWindow release];
+  
+  // Load popover
+  [NSBundle loadNibNamed:@"PointPopover" owner:self];
   
   // Load the datasets from the managed object context early so that we can set the saved selection in applicationDidFinishLaunching
   NSError *error = nil;

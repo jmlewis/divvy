@@ -411,16 +411,21 @@
   return self.renderedImage;
 }
 
-- (void) renderPoint:(NSPoint) point {
-  int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];
+- (void) renderPoint:(NSPoint)point inRect:(NSRect)rect ofView:(NSView *)view {
+  //DivvyAppDelegate *delegate = [NSApp delegate];
   
-  NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
+  //int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];
+  
+  //NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
 
-  NSInteger index = [self.selectedDatasetVisualizer pointNearestTo:point 
-                                                       reducedData:reducerResult
-                                                           dataset:self.dataset];
+  //NSInteger index = [self.selectedDatasetVisualizer pointNearestTo:point 
+  //                                                     reducedData:reducerResult
+  //                                                         dataset:self.dataset];
   
-  NSLog(@"%ld", index);
+  //[delegate.pointPopover showRelativeToRect:rect ofView:view preferredEdge:NSMaxXEdge];
+  
+  //NSImageView *popoverView = (NSImageView *)delegate.pointPopover.contentViewController.view;
+  //[popoverView setImage:delegate.processingImage];
 }
 
 #pragma mark -

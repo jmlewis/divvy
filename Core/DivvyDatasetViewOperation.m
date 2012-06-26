@@ -46,7 +46,7 @@
   if(error) {
     NSString *message = [NSString stringWithFormat:@"%@ [%@]",
                          [error description], ([error userInfo] ? [[error userInfo] description] : @"no user info")];
-    NSLog(@"Failure message: %@", message);        
+    NSLog(@"MOC fetch failure message: %@", message);        
   }
   
   [datasetView checkForNullPluginResults];
@@ -55,7 +55,7 @@
   if(error) {
     NSString *message = [NSString stringWithFormat:@"%@ [%@]",
                          [error description], ([error userInfo] ? [[error userInfo] description] : @"no user info")];
-    NSLog(@"ABC Failure message: %@", message);        
+    NSLog(@"MOC save failure message (operation): %@", message);        
   }
 
   [moc release];

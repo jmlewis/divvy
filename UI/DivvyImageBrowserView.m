@@ -35,7 +35,7 @@
     positionInCell.y = (eventLocation.y - cell.frame.origin.y) / cell.frame.size.height;
     
     DivvyDatasetView *view = cell.representedItem;
-    [view renderPoint:positionInCell];
+    [view renderPoint:positionInCell inRect:cell.frame ofView:self];
   }
 }
 

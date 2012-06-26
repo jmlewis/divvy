@@ -28,6 +28,9 @@
 @property (nonatomic, retain) DivvyDatasetWindow *datasetWindowController;
 @property (nonatomic, retain) IBOutlet NSMenu *datasetViewContextMenu;
 
+// Point visualizer popover
+@property (nonatomic, retain) IBOutlet NSPopover *pointPopover;
+
 //  Pointers to the currently selected dataset and dataset view
 @property (nonatomic, assign) DivvyDataset *selectedDataset;
 @property (nonatomic, assign) DivvyDatasetView *selectedDatasetView;
