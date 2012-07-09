@@ -25,6 +25,8 @@
         assignment:(NSData *)assignment;
 
 @optional
-- (void) drawPoint:(NSImage *) image;
+- (void) drawPoint:(NSImage *) image
+             index:(NSInteger) index
+           dataset:(DivvyDataset *)dataset;
 
 @end

@@ -412,20 +412,31 @@
 }
 
 - (void) renderPoint:(NSPoint)point inRect:(NSRect)rect ofView:(NSView *)view {
-  //DivvyAppDelegate *delegate = [NSApp delegate];
+  DivvyAppDelegate *delegate = [NSApp delegate];
+  int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];    
+  NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
+    
+  if ([self.selectedPointVisualizer respondsToSelector:@selector(drawPoint:index:dataset:)]
+      && reducerResult != (NSData *)[NSNull null]
+      && [NSPopover class]) {
   
-  //int reducerIndex = [self.reducers indexOfObject:self.selectedReducer];
-  
-  //NSData *reducerResult = [self.reducerResults objectAtIndex:reducerIndex];
-
-  //NSInteger index = [self.selectedDatasetVisualizer pointNearestTo:point 
-  //                                                     reducedData:reducerResult
-  //                                                         dataset:self.dataset];
-  
-  //[delegate.pointPopover showRelativeToRect:rect ofView:view preferredEdge:NSMaxXEdge];
-  
-  //NSImageView *popoverView = (NSImageView *)delegate.pointPopover.contentViewController.view;
-  //[popoverView setImage:delegate.processingImage];
+    NSInteger index = [self.selectedDatasetVisualizer pointNearestTo:&point 
+                                                         reducedData:reducerResult
+                                                             dataset:self.dataset];
+    
+    rect.origin.x += point.x * rect.size.width;
+    rect.origin.y += point.y * rect.size.height;
+    rect.size.width = rect.size.height = 1;
+    [delegate.pointPopover showRelativeToRect:rect ofView:view preferredEdge:NSMaxXEdge];
+    
+    NSImageView *popoverView = (NSImageView *)delegate.pointPopover.contentViewController.view;
+    
+    NSSize imageSize = NSMakeSize(128, 128); // Default size of output image
+    NSImage *pointImage = [[NSImage alloc] initWithSize:imageSize];
+    [self.selectedPointVisualizer drawPoint:pointImage index:index dataset:self.dataset];
+    [popoverView setImage:pointImage];
+    [pointImage release];
+  }
 }
 
 #pragma mark -

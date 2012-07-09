@@ -500,8 +500,11 @@ NSString * const kDivvyDefaultReducer = @"NilReducer";
   self.datasetViewPanelController = datasetWindow.datasetViewPanel;
   [datasetWindow release];
   
-  // Load popover
-  [NSBundle loadNibNamed:@"PointPopover" owner:self];
+  // Load popover (not present on 10.6)
+  if([NSPopover class]) {
+    [NSBundle loadNibNamed:@"PointPopover" owner:self];
+    [(NSImageView *)self.pointPopover.contentViewController.view setImageScaling:NSScaleToFit];
+  }
   
   // Load the datasets from the managed object context early so that we can set the saved selection in applicationDidFinishLaunching
   NSError *error = nil;

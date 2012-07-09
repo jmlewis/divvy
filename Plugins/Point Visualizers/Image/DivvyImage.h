@@ -37,4 +37,8 @@ enum {
 - (void) addObservers;
 - (void) resample;
 
+- (void) drawPoint:(NSImage *) image
+             index:(NSInteger) index
+           dataset:(DivvyDataset *)dataset;
+
 @end

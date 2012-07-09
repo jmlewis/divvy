@@ -60,8 +60,8 @@
   [delegate reloadDatasetView:delegate.selectedDatasetView];
 }
 
-- (NSInteger) pointNearestTo:(NSPoint) point
-                 reducedData:(NSData * )reducedData
+- (NSInteger) pointNearestTo:(NSPoint *) point
+                 reducedData:(NSData *)reducedData
                      dataset:(DivvyDataset *)dataset {
   
   float *data = (float *)[reducedData bytes];
@@ -78,12 +78,17 @@
   // Should parallelize this
   for(int i = 0; i < n; i++) {
     // The reduced data are guaranteed to be between 0 and 1
-    distance = pow(pow(point.x - data[i * d + xD], 2) + pow(point.y - data[i * d + yD], 2), .5);
+    distance = pow(pow((*point).x - data[i * d + xD], 2) + pow((*point).y - data[i * d + yD], 2), .5);
     if (distance < minDistance) {
       minDistance = distance;
       index = i;
     }
   }
+  
+  // Adjust point to match actual location
+  // Maybe this should be passed through a separate argument
+  (*point).x = data[index * d + xD];
+  (*point).y = data[index * d + yD];
   
   return index;
 }

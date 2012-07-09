@@ -211,4 +211,98 @@
   [image unlockFocus];
 }
 
+- (void) drawPoint:(NSImage *) image
+             index:(NSInteger) index
+           dataset:(DivvyDataset *)dataset {
+  float *data = dataset.floatData;
+  unsigned int d = dataset.d.unsignedIntValue;
+  
+  float *normalizedImageData;
+  
+  NSRect rect;
+  int width, height;
+  height = self.imageHeight.intValue;
+  width = d / height;
+  
+  int planes = 2; // Brightness and alpha
+  
+  int numBytes = d * planes * sizeof(float);
+  normalizedImageData = (float *)malloc(numBytes);
+  
+  float maxValue = FLT_MIN;
+  float *imageData = &data[index * d];
+  
+  // Find the white point
+  for(int j = 0; j < width * height; j++)
+    if(imageData[j] > maxValue)
+      maxValue = imageData[j];
+  
+  int normIndex;
+  
+  // Normalize and rotate (NSBitmapImageRep wants images in row major format)
+  for(int j = 0; j < height; j++)
+    for(int k = 0; k < width; k++) {
+      switch (self.rotation.intValue) {
+        case DivvyRotationNone:
+          normIndex = k * planes + j * width * planes;
+          break;
+        case DivvyRotation90:
+          normIndex = k * height * planes + (height - j - 1) * planes;
+          break;
+        case DivvyRotation180:
+          normIndex = (width - k - 1) * planes + (height - j - 1) * width * planes;
+          break;
+        case DivvyRotation270:
+          normIndex = (width - k - 1) * height * planes + j * planes;
+          break;
+      }
+      normalizedImageData[normIndex] = imageData[k * height + j] / maxValue;
+      if(self.blackIsTransparent.boolValue && normalizedImageData[normIndex] < 0.05f)
+        normalizedImageData[normIndex + 1] = 0.0f;
+      else
+        normalizedImageData[normIndex + 1] = 1.0f;
+    }
+  
+  
+  int temp;
+  switch (self.rotation.intValue) {
+    case DivvyRotation90:
+    case DivvyRotation270:
+      temp = height;
+      height = width;
+      width = temp;
+      break;
+    case DivvyRotationNone:
+    case DivvyRotation180:
+      break;
+  }
+  
+  rect.size.width = image.size.width;
+  rect.size.height = image.size.height;
+  
+  [image lockFocus];
+
+  unsigned char *sampleData = (unsigned char *)normalizedImageData;
+  
+  NSBitmapImageRep *rep = [NSBitmapImageRep alloc];
+  [rep initWithBitmapDataPlanes:&sampleData
+                     pixelsWide:width 
+                     pixelsHigh:height
+                  bitsPerSample:8 * sizeof(float)
+                samplesPerPixel:planes
+                       hasAlpha:YES
+                       isPlanar:NO
+                 colorSpaceName:NSCalibratedWhiteColorSpace
+                   bitmapFormat:NSFloatingPointSamplesBitmapFormat
+                    bytesPerRow:0
+                   bitsPerPixel:0];
+  [rep autorelease];
+  
+  // I think this is needed for scaling to fit rect, but it seems heavy
+  NSImage *sample = [[[NSImage alloc] initWithCGImage:[rep CGImage] size:NSZeroSize] autorelease];
+  [sample drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+  
+  [image unlockFocus];
+}
+
 @end
