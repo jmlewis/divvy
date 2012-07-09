@@ -1642,7 +1642,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1659,7 +1659,6 @@
 					AppKit,
 				);
 				PRODUCT_NAME = Divvy;
-				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1668,7 +1667,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_MODEL_TUNING = G5;
@@ -1677,7 +1676,6 @@
 				INFOPLIST_FILE = "Core/Divvy-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = Divvy;
-				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
