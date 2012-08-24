@@ -124,12 +124,12 @@
   dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
   
   int numBytes = numSamples * d * planes * sizeof(float);
-  normalizedImageData = (float *)malloc(numBytes);
+  normalizedImageData = (float *)malloc(numBytes + 20000); // Add 20kb as a buffer--the math seems right but occasionally there are bad accesses on drawInRect below
   
   dispatch_apply(numSamples, queue, ^(size_t i) {
     float maxValue = FLT_MIN;
     float *imageData = &data[indices[i] * d];
-    int offset = i * d * planes;
+    int offset = (int)i * d * planes;
     
     // Find the white point
     for(int j = 0; j < width * height; j++)
