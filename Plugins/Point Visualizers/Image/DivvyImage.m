@@ -201,11 +201,11 @@
                      bitmapFormat:NSFloatingPointSamplesBitmapFormat
                       bytesPerRow:0
                      bitsPerPixel:0];
-    [rep autorelease];
     
     // I think this is needed for scaling to fit rect, but it seems heavy
     NSImage *sample = [[[NSImage alloc] initWithCGImage:[rep CGImage] size:NSZeroSize] autorelease];
     [sample drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+    [rep autorelease];
   }
 
   [image unlockFocus];
@@ -296,12 +296,11 @@
                    bitmapFormat:NSFloatingPointSamplesBitmapFormat
                     bytesPerRow:0
                    bitsPerPixel:0];
-  [rep autorelease];
-  
   // I think this is needed for scaling to fit rect, but it seems heavy
   NSImage *sample = [[[NSImage alloc] initWithCGImage:[rep CGImage] size:NSZeroSize] autorelease];
   [sample drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-  
+  [rep autorelease];
+
   [image unlockFocus];
 }
 
