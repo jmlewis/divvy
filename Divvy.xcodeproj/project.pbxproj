@@ -71,7 +71,7 @@
 		D751AC8513FD7E030089FAAE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D730D27713B5297E00E01F31 /* Cocoa.framework */; };
 		D755CCB31458A841003F5538 /* DivvyTSNE.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D755CCB21458A841003F5538 /* DivvyTSNE.xcdatamodel */; };
 		D75BF38314981BC000FE66FD /* DivvyIsomap.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = D75BF38214981BC000FE66FD /* DivvyIsomap.xcdatamodel */; };
-		D769B37D15E80D1300B8DCE3 /* Divvy.icns in Resources */ = {isa = PBXBuildFile; fileRef = D769B37C15E80D1300B8DCE3 /* Divvy.icns */; };
+		D769B38215E8106100B8DCE3 /* Divvy.icns in Resources */ = {isa = PBXBuildFile; fileRef = D769B38115E8106100B8DCE3 /* Divvy.icns */; };
 		D7764F46137B4A9900F7F49F /* DivvyDataset.m in Sources */ = {isa = PBXBuildFile; fileRef = D7764F45137B4A9900F7F49F /* DivvyDataset.m */; };
 		D7764F5D137B4CDE00F7F49F /* DatasetWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7764F5C137B4CDE00F7F49F /* DatasetWindow.xib */; };
 		D77DF784118636A2009C1946 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77DF783118636A2009C1946 /* Accelerate.framework */; };
@@ -286,7 +286,7 @@
 		D75BF38214981BC000FE66FD /* DivvyIsomap.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = DivvyIsomap.xcdatamodel; sourceTree = "<group>"; };
 		D76454EF13A6A333000B4038 /* kmeans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kmeans.h; sourceTree = "<group>"; };
 		D76454F013A6A333000B4038 /* kmeans.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; path = kmeans.c; sourceTree = "<group>"; };
-		D769B37C15E80D1300B8DCE3 /* Divvy.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Divvy.icns; path = ../Divvy.icns; sourceTree = "<group>"; };
+		D769B38115E8106100B8DCE3 /* Divvy.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Divvy.icns; path = ../Divvy.icns; sourceTree = "<group>"; };
 		D7716124138C3D1200C70C36 /* DivvyDatasetVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyDatasetVisualizer.h; sourceTree = "<group>"; };
 		D7716140138C409500C70C36 /* DivvyScatterPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyScatterPlot.h; sourceTree = "<group>"; };
 		D7716141138C409500C70C36 /* DivvyScatterPlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyScatterPlot.m; sourceTree = "<group>"; };
@@ -615,7 +615,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D769B37C15E80D1300B8DCE3 /* Divvy.icns */,
+				D769B38115E8106100B8DCE3 /* Divvy.icns */,
 				D79787A114E46B0F00B784A1 /* Divvy.entitlements */,
 				D7AADA4F14465C800041E6F1 /* processing.png */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -1186,7 +1186,7 @@
 				D727E5911475B8E600702544 /* DivvyNilPointVisualizer.plugin in Resources */,
 				D7C00F2814F56CC700C7AF52 /* DivvyImage.plugin in Resources */,
 				D72062001594CE9000722F8F /* PointPopover.xib in Resources */,
-				D769B37D15E80D1300B8DCE3 /* Divvy.icns in Resources */,
+				D769B38215E8106100B8DCE3 /* Divvy.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1648,7 +1648,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Joshua Lewis";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -1666,6 +1666,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = Divvy;
+				PROVISIONING_PROFILE = "F09B080B-AE5C-4CC5-BF0E-3EA1AB84B7B9";
 			};
 			name = Debug;
 		};
@@ -1674,7 +1675,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Resources/Divvy.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Joshua Lewis";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -1684,6 +1685,7 @@
 				INFOPLIST_FILE = "Core/Divvy-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = Divvy;
+				PROVISIONING_PROFILE = "F09B080B-AE5C-4CC5-BF0E-3EA1AB84B7B9";
 			};
 			name = Release;
 		};
