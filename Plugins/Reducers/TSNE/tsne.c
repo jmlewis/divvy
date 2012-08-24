@@ -32,6 +32,9 @@ void perform_tsne(float* X, int D, int N, float* Y, int no_dims, float perplexit
 	float* unnorm_Q = (float*) malloc(N * N * sizeof(float));
 	float* uY       = (float*) calloc(N * no_dims, sizeof(float));	
 	float* dY       = (float*) malloc(N * no_dims * sizeof(float));	
+        
+    // Normalize data to prevent numerical issues
+    normalize_data(X, N, D);
 	
 	// Compute Gaussian affinities
 	compute_gaussian_perplexity(X, N, D, P, perplexity);
@@ -116,7 +119,7 @@ void normalize_data(float* X, int N, int D) {
 	}
 	for(int n = 0; n < N; n++) {
 		for(int d = 0; d < D; d++) {
-			X[n * D + d] /= max_val[d];
+			X[n * D + d] /= (max_val[d] + FLT_MIN);
 		}
 	}	
 }
@@ -180,14 +183,14 @@ void compute_gaussian_perplexity(float* X, int N, int D, float* P, float perplex
 		
 		// Iterate until we found a good perplexity
 		int iter = 0;
-		while(!found && iter < 200) {				
+		while(!found && iter < 50) {				
 			
 			// Compute Gaussian kernel row
 			for(int m = 0; m < N; m++) P[n * N + m] = exp(-beta * DD[n * N + m]);
 			P[n * N + n] = FLT_MIN;			
 			
 			// Compute entropy of current row
-			float sumP = 0.0;
+			float sumP = FLT_MIN;
 			for(int m = 0; m < N; m++) sumP += P[n * N + m];
 			float H = 0.0;
 			for(int m = 0; m < N; m++) H += beta * (DD[n * N + m] * P[n * N + m]);
@@ -220,7 +223,7 @@ void compute_gaussian_perplexity(float* X, int N, int D, float* P, float perplex
 		}
 		
 		// Row normalize P
-		float sumP = 0.0;
+		float sumP = FLT_MIN;
 		for(int m = 0; m < N; m++) sumP += P[n * N + m];
 		for(int m = 0; m < N; m++) P[n * N + m] /= sumP;
 	});
@@ -241,7 +244,7 @@ void compute_gaussian_perplexity(float* X, int N, int D, float* P, float perplex
         P[i] /= sumP;
         P[i] += FLT_MIN;
     }
-	
+    
 	// Clean up memory
 	free(DD);
 }
