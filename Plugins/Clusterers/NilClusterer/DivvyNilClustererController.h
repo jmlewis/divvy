@@ -11,4 +11,7 @@
 
 @interface DivvyNilClustererController : NSViewController
 
+- (IBAction)addLabeling:(id)sender;
+- (void)parseCSV:(NSURL *)url labels:(NSData *)labels;
+
 @end

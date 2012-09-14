@@ -17,6 +17,8 @@
 @dynamic clustererID;
 @dynamic name;
 
+@dynamic labels;
+
 - (void) awakeFromInsert {
   [super awakeFromInsert];
   
@@ -25,8 +27,15 @@
 
 - (void) clusterDataset:(DivvyDataset *)dataset
              assignment:(NSData *)assignment {
+  if(self.labels == NULL) {
+    int length = [dataset.n intValue] * sizeof(int);
+    int *newLabels = malloc(length);
+    self.labels = [NSData dataWithBytesNoCopy:newLabels length:length freeWhenDone:TRUE];
+    for(int i = 0; i < [dataset.n intValue]; i++)
+      ((int *)self.labels.bytes)[i] = 0;
+  }
   for(int i = 0; i < [dataset.n intValue]; i++)
-    ((int *)assignment.bytes)[i] = 0;
+    ((int *)assignment.bytes)[i] = ((int *)self.labels.bytes)[i];
 }
 
 @end

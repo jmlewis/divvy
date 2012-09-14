@@ -16,4 +16,6 @@
 @property (nonatomic, retain) NSString *clustererID;
 @property (nonatomic, retain) NSString *name;
 
+@property (nonatomic, retain) NSData *labels;
+
 @end
