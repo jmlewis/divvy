@@ -15,8 +15,7 @@
 #include <math.h>
 #include <dispatch/dispatch.h>
 
-#include <vecLib/cblas.h>
-#include <vecLib/clapack.h>
+#include <Accelerate/Accelerate.h>
 
 #include "indexing.h"
 
