@@ -1,0 +1,6 @@
+Obtaining data on compute devices
+
+Documentation Links:
+
+Reference for clGetDeviceInfo: http://www.khronos.org/registry/cl/sdk/1.0/docs/man/xhtml/clGetDeviceInfo.html
+Section on querying available compute devices: (link broken)
