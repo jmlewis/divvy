@@ -26,7 +26,7 @@
 //  Parameters specific to gmm.
 @property (nonatomic, retain) NSNumber *k;
 @property (nonatomic, retain) NSNumber *numRestarts;
-@property (nonatomic, retain) NSNumber *initCentroidsFromPointsInDataset; // How to change initialization method?
+@property (nonatomic, retain) NSNumber *initCentroidsFromPointsInDataset;
 @property (nonatomic, retain) NSString *threshold;
 
 //  Add observers that send the delegate appropriate messages when parameters change.

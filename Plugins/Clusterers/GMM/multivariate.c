@@ -80,7 +80,6 @@ double *lowerTriangleInverse(double *C, int dims) {
 }
 
 double *dot(double *A, double *B, int n, int m, int o, int p) {
-    // Precision might not be the best?
     // Matrix A is of size nxm
     // Matrix B is of size oxp
     // m = o
@@ -108,8 +107,6 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
     
     // For each distribution, compute the inverse of covariance matrix and the constant term (includes determinant of cov)
     for(int i = 0; i < k; i++) {
-        
-        //printf("Computing pdf for dist %d \n", i);
         
         double covDet = 1;
         double constant = 0;
@@ -139,14 +136,11 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
         }
         covDet = covDet*covDet;
         
-        //printf("Determinant = %f \n", covDet);
-        
         // Compute the constant term for multivariate gaussian
         constant = sqrt(pow(2 * M_PI, -d) * pow(covDet, -1));
 
         // Add the constant term and the inverse of covariance to the list for all distributions
         *(constants + i) = constant;
-//        printf("Constant %d = %f\n", i,constant);
         for(int j = 0; j < d; j++) {
             for(int k = 0; k < d; k++) {
                 *(covInvs + (i*(d*d) + j*d + k)) = *(covInv + (j*d + k));
@@ -154,9 +148,6 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
         }
         
     }
-    
-    //*constants = *tmpConsts;
-    //*covInvs = *tmpCovIs;
     
     free(tmpMean);
     free(tmpCov);
@@ -181,12 +172,8 @@ double mvnpdf(double *vec, double *mu, double *invcov, double cnst, int d, int j
     }
     
     firstprod = dot(vecMinusMean, invcov, 1, d, d, d);
-    //printf("firstprod Point %d, Mean %d = %f, %f\n", j, l, firstprod[0],firstprod[1]);
     expval = *dot(firstprod, vecMinusMean, 1, d, d, 1);
-    //printf("secondprod Point %d, Mean %d = %f\n", j, l, expval);
     
-    //eExp = expval;
-    //printf("expval Point %d, Mean %d = %f\n", j, l, expval);
     eExp = exp(-0.5 * expval);
     
     return (cnst * eExp);

@@ -21,7 +21,4 @@
 
 - (IBAction)recompute:(id)sender;
 
-//- (IBAction)setThreshold:(NSTextField *)sender;
-//@property (assign) IBOutlet NSTextField *setThreshold;
-
 @end
