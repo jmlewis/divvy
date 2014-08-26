@@ -30,6 +30,8 @@
 @dynamic numRestarts;
 @dynamic initCentroidsFromPointsInDataset;
 @dynamic threshold;
+@dynamic meanInit;
+@dynamic covInit;
 
 - (void) awakeFromInsert {
   [super awakeFromInsert];
@@ -37,7 +39,10 @@
   self.name = @"Gaussian Mixture Model";
   self.clustererID = [[NSProcessInfo processInfo] globallyUniqueString];
   self.threshold = @"0.001";
+  self.meanInit = 1;
+  self.covInit = 1;
   self.helpURL = @"http://en.wikipedia.org/wiki/Mixture_model#Multivariate_Gaussian_mixture_model";
+
   
   [self addObservers];
 }
@@ -53,6 +58,8 @@
   [self addObserver:self forKeyPath:@"numRestarts" options:0 context:nil];
   [self addObserver:self forKeyPath:@"initCentroidsFromPointsInDataset" options:0 context:nil];
   [self addObserver:self forKeyPath:@"threshold" options:0 context:nil];
+    [self addObserver:self forKeyPath:@"meanInit" options:0 context:nil];
+    [self addObserver:self forKeyPath:@"covInit" options:0 context:nil];
 }
 
 - (void) willTurnIntoFault {
@@ -60,6 +67,8 @@
   [self removeObserver:self forKeyPath:@"numRestarts"];
   [self removeObserver:self forKeyPath:@"initCentroidsFromPointsInDataset"];
   [self removeObserver:self forKeyPath:@"threshold"];
+    [self removeObserver:self forKeyPath:@"meanInit"];
+    [self removeObserver:self forKeyPath:@"covInit"];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -71,6 +80,8 @@
 
 - (void) clusterDataset:(DivvyDataset *)dataset
              assignment:(NSData *)assignment {
+    
+    //NSLog(@"%@, %@", [[[self meanInit] unsignedIntValue] class], [[[self covInit] unsignedIntValue] class]);
   
   // Map Objective-C parameters to the parameters of the C function
   gmm([dataset floatData],
@@ -79,6 +90,8 @@
          [[self k] unsignedIntValue],
          [[self numRestarts] unsignedIntValue],
          [[self threshold] floatValue],
+         [[self meanInit] unsignedIntValue],
+         [[self covInit] unsignedIntValue],
          (int *)[assignment bytes]);
 }
 

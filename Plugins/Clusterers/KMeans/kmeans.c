@@ -146,4 +146,5 @@ void kmeans(float *data, unsigned int n, unsigned int d, unsigned int k, unsigne
   free(centroids);
   free(assignment_changed);
   free(cur_assignment);
+    
 }

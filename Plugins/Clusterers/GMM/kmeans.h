@@ -15,6 +15,6 @@
 #include <float.h>
 #include <dispatch/dispatch.h>
 
-void kmeans(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned int r, int *assignment);
+void *kmeans(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned int r, int *assignment);
 
 #endif

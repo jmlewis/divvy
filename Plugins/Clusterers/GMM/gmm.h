@@ -18,7 +18,8 @@
 #include <math.h>
 #include "meancovar.h"
 #include "multivariate.h"
+#include "kmeans.h"
 
-void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned int r, float th, int *assignment);
+void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned int r, float th, unsigned int meanInit, unsigned int covInit, int *assignment);
 
 #endif

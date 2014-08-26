@@ -28,6 +28,8 @@
 @property (nonatomic, retain) NSNumber *numRestarts;
 @property (nonatomic, retain) NSNumber *initCentroidsFromPointsInDataset;
 @property (nonatomic, retain) NSString *threshold;
+@property (nonatomic, retain) NSNumber *meanInit;
+@property (nonatomic, retain) NSNumber *covInit;
 
 //  Add observers that send the delegate appropriate messages when parameters change.
 - (void) addObservers;

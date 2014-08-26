@@ -30,10 +30,11 @@
 		1966969E19A51943002EE462 /* DivvyImageAdjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 1966968219A516C6002EE462 /* DivvyImageAdjust.m */; };
 		1966969F19A51948002EE462 /* DivvyImageAdjustController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1966968619A516C6002EE462 /* DivvyImageAdjustController.m */; };
 		196696A219A51ABD002EE462 /* DivvyImageAdjust.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 1966969019A51813002EE462 /* DivvyImageAdjust.plugin */; };
+		1973B9E119AC12E600060D26 /* kmeans.c in Sources */ = {isa = PBXBuildFile; fileRef = D76454F013A6A333000B4038 /* kmeans.c */; };
 		19754C1A1970777A003FB9F6 /* meancovar.c in Sources */ = {isa = PBXBuildFile; fileRef = 19754C191970777A003FB9F6 /* meancovar.c */; };
 		19754C1E19708B66003FB9F6 /* multivariate.c in Sources */ = {isa = PBXBuildFile; fileRef = 19754C1D19708B66003FB9F6 /* multivariate.c */; };
-		1982FBA3199C36AB000F473C /* kmeans.c in Sources */ = {isa = PBXBuildFile; fileRef = 1982FBA1199C36AB000F473C /* kmeans.c */; };
 		1984545819A51D2500A96965 /* DivvyImageAdjust.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1984545619A51D1E00A96965 /* DivvyImageAdjust.xib */; };
+		19CC661E19A95216003F13BF /* DivvyGMM.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 19D244F2196C53140034F9DA /* DivvyGMM.plugin */; };
 		19D244FE196C54BA0034F9DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D730D27713B5297E00E01F31 /* Cocoa.framework */; };
 		19D244FF196C54C20034F9DA /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77DF783118636A2009C1946 /* Accelerate.framework */; };
 		19D2450E196C56130034F9DA /* DivvyGMM.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D24504196C56130034F9DA /* DivvyGMM.m */; };
@@ -159,6 +160,13 @@
 			remoteGlobalIDString = 1966968F19A51813002EE462;
 			remoteInfo = DivvyImageAdjust;
 		};
+		19CC661C19A9520F003F13BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 19D244F1196C53140034F9DA;
+			remoteInfo = DivvyGMM;
+		};
 		D704B6A913E088B1002692E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -279,8 +287,6 @@
 		19754C1B197077D1003FB9F6 /* meancovar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = meancovar.h; sourceTree = "<group>"; };
 		19754C1C19708B57003FB9F6 /* multivariate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multivariate.h; sourceTree = "<group>"; };
 		19754C1D19708B66003FB9F6 /* multivariate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = multivariate.c; sourceTree = "<group>"; };
-		1982FBA1199C36AB000F473C /* kmeans.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kmeans.c; sourceTree = "<group>"; };
-		1982FBA2199C36AB000F473C /* kmeans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kmeans.h; sourceTree = "<group>"; };
 		1984545619A51D1E00A96965 /* DivvyImageAdjust.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DivvyImageAdjust.xib; sourceTree = "<group>"; };
 		19D244F2196C53140034F9DA /* DivvyGMM.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivvyGMM.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		19D24502196C56130034F9DA /* DivvyGMM-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DivvyGMM-Info.plist"; sourceTree = "<group>"; };
@@ -664,8 +670,6 @@
 		19D24500196C56130034F9DA /* GMM */ = {
 			isa = PBXGroup;
 			children = (
-				1982FBA1199C36AB000F473C /* kmeans.c */,
-				1982FBA2199C36AB000F473C /* kmeans.h */,
 				19D24502196C56130034F9DA /* DivvyGMM-Info.plist */,
 				19D24505196C56130034F9DA /* DivvyGMM.xcdatamodel */,
 				19D24506196C56130034F9DA /* DivvyGMM.xib */,
@@ -1082,6 +1086,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				19CC661D19A9520F003F13BF /* PBXTargetDependency */,
 				196696A419A51AC4002EE462 /* PBXTargetDependency */,
 				D7ACDA31145B67AD0067CE1E /* PBXTargetDependency */,
 				D74C692013DF6A9200CC5BB2 /* PBXTargetDependency */,
@@ -1324,6 +1329,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19CC661E19A95216003F13BF /* DivvyGMM.plugin in Resources */,
 				196696A219A51ABD002EE462 /* DivvyImageAdjust.plugin in Resources */,
 				D7839096151FE64300422899 /* 3dclust.bin in Resources */,
 				D7839097151FE64300422899 /* coil20.bin in Resources */,
@@ -1462,9 +1468,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1973B9E119AC12E600060D26 /* kmeans.c in Sources */,
 				19D2450E196C56130034F9DA /* DivvyGMM.m in Sources */,
 				19D24512196C56130034F9DA /* gmm.c in Sources */,
-				1982FBA3199C36AB000F473C /* kmeans.c in Sources */,
 				19D2450F196C56130034F9DA /* DivvyGMM.xcdatamodel in Sources */,
 				19754C1A1970777A003FB9F6 /* meancovar.c in Sources */,
 				19754C1E19708B66003FB9F6 /* multivariate.c in Sources */,
@@ -1592,6 +1598,11 @@
 			isa = PBXTargetDependency;
 			target = 1966968F19A51813002EE462 /* DivvyImageAdjust */;
 			targetProxy = 196696A319A51AC4002EE462 /* PBXContainerItemProxy */;
+		};
+		19CC661D19A9520F003F13BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 19D244F1196C53140034F9DA /* DivvyGMM */;
+			targetProxy = 19CC661C19A9520F003F13BF /* PBXContainerItemProxy */;
 		};
 		D704B6AA13E088B1002692E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

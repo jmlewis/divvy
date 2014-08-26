@@ -12,11 +12,11 @@
 
 #include "multivariate.h"
 
-double *cholesky(double *A, int n) {
+void *cholesky(double *L, double *A, int n) {
     
     // Taken from http://rosettacode.org/wiki/Cholesky_decomposition#C
     
-    double *L = (double*)calloc(n * n, sizeof(double));
+    //double *L = (double*)calloc(n * n, sizeof(double));
     if (L == NULL)
         exit(EXIT_FAILURE);
     
@@ -31,6 +31,7 @@ double *cholesky(double *A, int n) {
         }
     
     return L;
+    return 0;
 }
 
 double *transpose(double *A, int n) {
@@ -43,12 +44,12 @@ double *transpose(double *A, int n) {
     return AT;
 }
 
-double *lowerTriangleInverse(double *C, int dims) {
+void *lowerTriangleInverse(double* lowTriInv, double *C, int dims) {
     
     // Conversion of MATLAB code from
     // http://stackoverflow.com/questions/12239409/matlab-algorithm-for-finding-inverse-of-matrix
     
-    double *lowTriInv = (double*)calloc(dims * dims, sizeof(double));
+    //double *lowTriInv = (double*)calloc(dims * dims, sizeof(double));
     double *identity = (double*)calloc(dims * dims, sizeof(double));
     
     // Create Identity Matrix and set lowTriInv to zeros
@@ -74,17 +75,27 @@ double *lowerTriangleInverse(double *C, int dims) {
         }
     }
     
-    return lowTriInv;
+    //return lowTriInv;
     
     free(identity);
+    
+    return 0;
 }
 
-double *dot(double *A, double *B, int n, int m, int o, int p) {
+void *dot(double *prod, double *A, double *B, int n, int m, int o, int p) {
     // Matrix A is of size nxm
     // Matrix B is of size oxp
     // m = o
     // So product is of size nxp
-    double *prod = (double*)calloc(n * p, sizeof(double));
+    //double *prod = (double*)calloc(n * p, sizeof(double));
+    
+    // Clear prod first
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < p; j++) {
+            *(prod + (i * p + j)) = 0;
+        }
+    }
+    
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < p; j++) {
             for(int k = 0; k < m; k++) {
@@ -92,7 +103,8 @@ double *dot(double *A, double *B, int n, int m, int o, int p) {
             }
         }
     }
-    return prod;
+    //return prod;
+    return 0;
 }
 
 
@@ -102,11 +114,19 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
     double *tmpCov = (double*)calloc(d * d, sizeof(double));
     
     double *cho = (double*)calloc(d * d, sizeof(double));
-    double *covInv = (double*)calloc(d * d, sizeof(double));
     double *choInv = (double*)calloc(d * d, sizeof(double));
+    double *covInv = (double*)calloc(d * d, sizeof(double));
     
     // For each distribution, compute the inverse of covariance matrix and the constant term (includes determinant of cov)
     for(int i = 0; i < k; i++) {
+        
+//        printf("Cov\n");
+//        for(int i = 0; i<d; i++) {
+//            for(int j = 0; j<d; j++) {
+//                printf("%f ", covs[i*d+j]);
+//            }
+//            printf("\n");
+//        }
         
         double covDet = 1;
         double constant = 0;
@@ -123,10 +143,44 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
             }
         }
         
+//        printf("Temp Cov\n");
+//        for(int i = 0; i<d; i++) {
+//            for(int j = 0; j<d; j++) {
+//                printf("%f ", tmpCov[i*d+j]);
+//            }
+//            printf("\n");
+//        }
+        
         // Compute the inverse of the covariance matrix
-        cho = cholesky(tmpCov,d);
-        choInv = lowerTriangleInverse(cho,d);
-        covInv = dot(transpose(choInv,d), choInv, d, d, d, d);
+        cholesky(cho, tmpCov,d);
+        
+//        printf("Cholesky\n");
+//        for(int i = 0; i<d; i++) {
+//            for(int j = 0; j<d; j++) {
+//                printf("%f ", cho[i*d+j]);
+//            }
+//            printf("\n");
+//        }
+        
+        lowerTriangleInverse(choInv,cho,d);
+        
+//        printf("Lower Triangle Inverse\n");
+//        for(int i = 0; i<d; i++) {
+//            for(int j = 0; j<d; j++) {
+//                printf("%f ", choInv[i*d+j]);
+//            }
+//            printf("\n");
+//        }
+        
+        dot(covInv, transpose(choInv,d), choInv, d, d, d, d);
+        
+//        printf("Covariance Inverse\n");
+//        for(int i = 0; i<d; i++) {
+//            for(int j = 0; j<d; j++) {
+//                printf("%f ", covInv[i*d+j]);
+//            }
+//            printf("\n");
+//        }
         
         // Compute the determinant of the covariance matrix
         // det(A) = sqrt(det(L)) where L is the cholesky decomposition
@@ -158,7 +212,7 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
 
 
 
-double mvnpdf(double *vec, double *mu, double *invcov, double cnst, int d, int j, int l) {
+double mvnpdf(double *dist, double *vec, double *mu, double *invcov, double cnst, int d, int j, int l) {
     
     // Compute the probability of a point under a Multivariate Gaussian
     
@@ -171,14 +225,18 @@ double mvnpdf(double *vec, double *mu, double *invcov, double cnst, int d, int j
         *(vecMinusMean + i) = *(vec + i) - *(mu + i);
     }
     
-    firstprod = dot(vecMinusMean, invcov, 1, d, d, d);
-    expval = *dot(firstprod, vecMinusMean, 1, d, d, 1);
+    dot(firstprod, vecMinusMean, invcov, 1, d, d, d);
+    dot(&expval, firstprod, vecMinusMean, 1, d, d, 1);
     
     eExp = exp(-0.5 * expval);
     
-    return (cnst * eExp);
+    //return (cnst * eExp);
+    *dist = cnst * eExp;
     
     free(vecMinusMean);
+    free(firstprod);
+    
+    return 0;
 }
 
 

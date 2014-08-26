@@ -14,15 +14,15 @@ void *covar(float *data, unsigned int n, unsigned int d, double *cov) {
     
     // data has columns as data points n, and rows as dimensions d
     // the covariance matrix will be dxd
-    float *tmpmeans = (float *)malloc(d * sizeof(float));
-    float *vec = (float *)malloc(n * sizeof(float));
+    float *tmpmeans = (float *)calloc(d, sizeof(float));
+    //float *vec = (float *)malloc(n * sizeof(float));
     
     // Create the mean across the data points (one column at a time)
     for(int j = 0; j < d; j++) {
         for(int i = 0; i < n; i++) {
-            tmpmeans[j] += data[i * d + j];
+            *(tmpmeans + j) += data[i * d + j];
         }
-        tmpmeans[j] /= n;
+        *(tmpmeans + j) /= n;
     }
     
     // For every combination of dimensions, find the covariance
@@ -40,7 +40,46 @@ void *covar(float *data, unsigned int n, unsigned int d, double *cov) {
     }
     
     free(tmpmeans);
-    free(vec);
+    //free(vec);
+    
+    return 0;
+}
+
+void *covar_indices(float *data, int *assignment, int clust, unsigned int n, unsigned int d, double *cov) {
+    
+    // data has columns as data points n, and rows as dimensions d
+    // the covariance matrix will be dxd
+    double *tmpmeans = (double *)calloc(d, sizeof(double));
+    int count = 0;
+    
+    // Create the mean across the data points (one column at a time)
+    for(int j = 0; j < d; j++) {
+        for(int i = 0; i < n; i++) {
+            if(assignment[i]==clust) {
+                *(tmpmeans + j) += data[i * d + j];
+                count++;
+            }
+        }
+        *(tmpmeans + j) /= count;
+    }
+    
+    // For every combination of dimensions, find the covariance
+    for(int i = 0; i < d; i++) {
+        for(int j = i; j < d; j++) {
+            double val = 0;
+            // loop through all the values in both dimensions and add them up as you go
+            for(int k = 0; k < n; k++) {
+                if(assignment[k]==clust) {
+                    val += ((*(data + (k * d + i)) - *(tmpmeans + i)) * (*(data + (k * d + j)) - *(tmpmeans + j)));
+                }
+            }
+            // divide by the total number of samples
+            *(cov + i*d +j) = val / (count-1);
+            *(cov + j*d +i) = val / (count-1);
+        }
+    }
+    
+    free(tmpmeans);
     
     return 0;
 }
