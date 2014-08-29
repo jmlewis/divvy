@@ -208,6 +208,7 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
     free(cho);
     free(covInv);
     free(choInv);
+    free(choInvTrans);
 }
 
 

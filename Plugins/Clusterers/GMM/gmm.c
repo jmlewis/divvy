@@ -469,4 +469,6 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
     free(init_assignment);
     free(distances);
     free(vecMinusMean);
+    free(firstProd);
+    free(sampleCovs);
 }
