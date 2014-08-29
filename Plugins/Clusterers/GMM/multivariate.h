@@ -19,8 +19,8 @@
 #include <float.h>
 #include <dispatch/dispatch.h>
 
-double mvnpdf(double *dist, double *vec, double *mu, double *invcov, double cnst, int d, int j, int l);
+void mvnpdf(double *dist, float *vec, double *mu, double *invcov, double cnst, int d, int j, int l);
 void createpdfs(double *mus, double *covs, double *covInvs, double *constants, int k, int d);
-void *dot(double *prod, double *A, double *B, int n, int m, int o, int p);
+void dot(double *prod, double *A, double *B, int n, int m, int o, int p);
 
 #endif

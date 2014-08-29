@@ -82,7 +82,7 @@ void *lowerTriangleInverse(double* lowTriInv, double *C, int dims) {
     return 0;
 }
 
-void *dot(double *prod, double *A, double *B, int n, int m, int o, int p) {
+void dot(double *prod, double *A, double *B, int n, int m, int o, int p) {
     // Matrix A is of size nxm
     // Matrix B is of size oxp
     // m = o
@@ -103,8 +103,6 @@ void *dot(double *prod, double *A, double *B, int n, int m, int o, int p) {
             }
         }
     }
-    //return prod;
-    return 0;
 }
 
 
@@ -212,7 +210,7 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
 
 
 
-double mvnpdf(double *dist, double *vec, double *mu, double *invcov, double cnst, int d, int j, int l) {
+void mvnpdf(double *dist, float *data, double *means, double *invcov, double cnst, int d, int j, int l) {
     
     // Compute the probability of a point under a Multivariate Gaussian
     
@@ -222,7 +220,7 @@ double mvnpdf(double *dist, double *vec, double *mu, double *invcov, double cnst
     double expval = 0;
     
     for(int i = 0; i < d; i++) {
-        vecMinusMean[i] = vec[i] - mu[i];
+        vecMinusMean[i] = data[j*d + i] - means[l*d + i];
     }
     
     dot(firstprod, vecMinusMean, invcov, 1, d, d, d);
@@ -231,12 +229,10 @@ double mvnpdf(double *dist, double *vec, double *mu, double *invcov, double cnst
     eExp = exp(-0.5 * expval);
     
     //return (cnst * eExp);
-    *dist = cnst * eExp;
+    dist[j] = cnst * eExp;
     
     free(vecMinusMean);
     free(firstprod);
-    
-    return 0;
 }
 
 

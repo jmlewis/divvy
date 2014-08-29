@@ -38,6 +38,10 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
     double *forLog = (double *)malloc(n * k * sizeof(double));                  // for computing the loglikelihood (no denom in posterior)
     int *cur_assignment = (int*)calloc(n, sizeof(int));
     int *init_assignment = (int*)calloc(n, sizeof(int));
+    double *distances = (double *)calloc(n, sizeof(double));
+    
+    double *vecMinusMean = (double *)calloc(k * n * d, sizeof(double));
+    double *sampleCovs = (double *)calloc(k * d * d, sizeof(double));
     
     //double *likelihoods = (double*)calloc(n * k, sizeof(double));       // testing to see if the mvnpdf works and it giving correct values
     
@@ -284,33 +288,32 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
 
             dispatch_apply(n, queue, ^(size_t j) {
                 double min_distance = DBL_MIN;
-                double *distance = (double*)malloc(sizeof(double));
-                //double distance;
-                double *datum = (double*)calloc(d, sizeof(double));
-                double *mn = (double*)calloc(d, sizeof(double));
-                double *icv = (double*)calloc(d * d, sizeof(double));
+                
+                //double *datum = (double*)calloc(d, sizeof(double));
+                //double *mn = (double*)calloc(d, sizeof(double));
+                //double *icv = (double*)calloc(d * d, sizeof(double));
                 double cnst;
                 double responsibilitySum = 0;
                 
                 // Get the point
-                for(int i = 0; i < d; i++) {
-                    datum[i] = data[j * d + i];
-                }
+//                for(int i = 0; i < d; i++) {
+//                    datum[i] = data[j * d + i];
+//                }
         
                 // Loop through the possible gaussians and compute responsbilities
                 for(int l = 0; l < k; l++) {
                         
                     // get the mean
-                    for(int f = 0; f < d; f++) {
-                        mn[f] = means[l * d + f];
-                    }
-                        
+//                    for(int f = 0; f < d; f++) {
+//                        mn[f] = means[l * d + f];
+//                    }
+                    
                     // get the inverse of covariance
-                    for(int q = 0; q < d; q++) {
-                        for(int r = 0; r < d; r++) {
-                            icv[q*d + r] = covInverses[l*(d*d) + q*d + r];
-                        }
-                    }
+//                    for(int q = 0; q < d; q++) {
+//                        for(int r = 0; r < d; r++) {
+//                            icv[q*d + r] = covInverses[l*(d*d) + q*d + r];
+//                        }
+//                    }
                     
                     // get the constant term
                     cnst = constantTerms[l];
@@ -318,14 +321,15 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     // Compute distance. Since all posteriors are proportional to likelihood*prior, we can assign
                     // cluster color by the numerator (largest prob), even though point is used in all gaussians
                     
-                    mvnpdf(distance, datum, mn, icv, cnst, d, j,l);
+                    // By sending the start address of the covInverse, it will use that specific covInverse without creating new one
+                    mvnpdf(distances, data, means, &covInverses[l*(d*d)], cnst, d, j,l);
                     //*(likelihoods + (j * k + l)) = distance;
-                    *distance *= priors[l];
-                    responsibilities[j * k + l] = *distance;
-                    responsibilitySum += *distance;
+                    distances[j] *= priors[l];
+                    responsibilities[j * k + l] = distances[j];
+                    responsibilitySum += distances[j];
                     
-                    if(*distance > min_distance) {
-                        min_distance = *distance;
+                    if(distances[j] > min_distance) {
+                        min_distance = distances[j];
                         cur_assignment[j] = l;
                     }
                 }
@@ -338,10 +342,10 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     responsibilities[j * k + l] /= responsibilitySum;
                 }
                 
-                free(distance);
-                free(datum);
-                free(mn);
-                free(icv);
+                //free(distance);
+                //free(datum);
+                //free(mn);
+                //free(icv);
             });
             
 //            printf("Responsbilities!\n");
@@ -364,8 +368,8 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
             // M-STEP (recompute gaussians)
             dispatch_apply(k, queue, ^(size_t j) {
 
-                double *sample_cov = (double*)calloc(d * d, sizeof(double));
-                double *vecMinusMean = (double*)calloc(d, sizeof(double));
+                //double *sample_cov = (double*)calloc(d * d, sizeof(double));
+                //double *vecMinusMean = (double*)calloc(d, sizeof(double));
                 
                 
                 // Compute new means - samples times their responsibilities
@@ -384,13 +388,14 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 for(int i = 0; i < n; i++) {
                     // get that point minus the mean
                     for(int l = 0; l < d; l++) {
-                        vecMinusMean[l] = data[i * d + l] - means[j * d + l];
+                        vecMinusMean[j*(n*d) + (i*d) + l] = data[i * d + l] - means[j * d + l];
                     }
                     // use it to create addition to covariance matrix
-                    dot(sample_cov,vecMinusMean,vecMinusMean,d,1,1,d);
+                    // The pointers to spots in sampleCov and vecMinusMean allow it to index into certain parts of multidimensional array
+                    dot(&sampleCovs[j*(d*d)],&vecMinusMean[j*(n*d) + (i*d)],&vecMinusMean[j*(n*d) + (i*d)],d,1,1,d);
                     for(int p = 0; p < d; p++) {
                         for(int q = 0; q < d; q++) {
-                            covariances[j*(d*d) + p*d + q] += responsibilities[i * k + j] * sample_cov[p*d + q];
+                            covariances[j*(d*d) + p*d + q] += responsibilities[i * k + j] * sampleCovs[j*(d*d) + p*d + q];
                         }
                     }
                 }
@@ -405,8 +410,8 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 priors[j] = Nk[j]/n;
                 
                 
-                free(sample_cov);
-                free(vecMinusMean);
+                //free(sample_cov);
+                //free(vecMinusMean);
             });
             
         
@@ -459,5 +464,6 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
     free(forLog);
     free(cur_assignment);
     free(init_assignment);
-
+    free(distances);
+    free(vecMinusMean);
 }

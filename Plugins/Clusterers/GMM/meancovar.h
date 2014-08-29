@@ -16,7 +16,7 @@
 #include <float.h>
 #include <dispatch/dispatch.h>
 
-void *covar(float *data, unsigned int n, unsigned int d, double *cov);
-void *covar_indices(float *data, int *assignment, int clust, unsigned int n, unsigned int d, double *cov);
+void covar(float *data, unsigned int n, unsigned int d, double *cov);
+void covar_indices(float *data, int *assignment, int clust, unsigned int n, unsigned int d, double *cov);
 
 #endif

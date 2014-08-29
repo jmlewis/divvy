@@ -10,7 +10,7 @@
 
 #include "meancovar.h"
 
-void *covar(float *data, unsigned int n, unsigned int d, double *cov) {
+void covar(float *data, unsigned int n, unsigned int d, double *cov) {
     
     // data has columns as data points n, and rows as dimensions d
     // the covariance matrix will be dxd
@@ -39,11 +39,9 @@ void *covar(float *data, unsigned int n, unsigned int d, double *cov) {
     }
     
     free(tmpmeans);
-    
-    return 0;
 }
 
-void *covar_indices(float *data, int *assignment, int clust, unsigned int n, unsigned int d, double *cov) {
+void covar_indices(float *data, int *assignment, int clust, unsigned int n, unsigned int d, double *cov) {
     
     // data has columns as data points n, and rows as dimensions d
     // the covariance matrix will be dxd
@@ -78,6 +76,4 @@ void *covar_indices(float *data, int *assignment, int clust, unsigned int n, uns
     }
     
     free(tmpmeans);
-    
-    return 0;
 }
