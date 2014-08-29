@@ -40,7 +40,10 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
     int *init_assignment = (int*)calloc(n, sizeof(int));
     double *distances = (double *)calloc(n, sizeof(double));
     
+    // Used in E-step and M-step
     double *vecMinusMean = (double *)calloc(k * n * d, sizeof(double));
+    
+    double *firstProd = (double *)calloc(k * n * d, sizeof(double));
     double *sampleCovs = (double *)calloc(k * d * d, sizeof(double));
     
     //double *likelihoods = (double*)calloc(n * k, sizeof(double));       // testing to see if the mvnpdf works and it giving correct values
@@ -322,7 +325,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     // cluster color by the numerator (largest prob), even though point is used in all gaussians
                     
                     // By sending the start address of the covInverse, it will use that specific covInverse without creating new one
-                    mvnpdf(distances, data, means, &covInverses[l*(d*d)], cnst, d, j,l);
+                    mvnpdf(distances, data, means, &vecMinusMean[l*(n*d) + (j*d)], &firstProd[l*(n*d) + (j*d)], &covInverses[l*(d*d)], cnst, n, d, j, l);
                     //*(likelihoods + (j * k + l)) = distance;
                     distances[j] *= priors[l];
                     responsibilities[j * k + l] = distances[j];

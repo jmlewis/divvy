@@ -12,7 +12,7 @@
 
 #include "multivariate.h"
 
-void *cholesky(double *L, double *A, int n) {
+void cholesky(double *L, double *A, int n) {
     
     // Taken from http://rosettacode.org/wiki/Cholesky_decomposition#C
     
@@ -30,18 +30,18 @@ void *cholesky(double *L, double *A, int n) {
             (1.0 / L[j * n + j] * (A[i * n + j] - s));
         }
     
-    return L;
-    return 0;
+    //return L;
+    //return 0;
 }
 
-double *transpose(double *A, int n) {
-    double *AT = (double*)calloc(n * n, sizeof(double));
+void transpose(double *AT, double *A, int n) {
+    //double *AT = (double*)calloc(n * n, sizeof(double));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             AT[j * n + i] = A[i * n + j];
         }
     }
-    return AT;
+    //return AT;
 }
 
 void *lowerTriangleInverse(double* lowTriInv, double *C, int dims) {
@@ -113,6 +113,7 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
     
     double *cho = (double*)calloc(d * d, sizeof(double));
     double *choInv = (double*)calloc(d * d, sizeof(double));
+    double *choInvTrans = (double*)calloc(d * d, sizeof(double));
     double *covInv = (double*)calloc(d * d, sizeof(double));
     
     // For each distribution, compute the inverse of covariance matrix and the constant term (includes determinant of cov)
@@ -170,7 +171,8 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
 //            printf("\n");
 //        }
         
-        dot(covInv, transpose(choInv,d), choInv, d, d, d, d);
+        transpose(choInvTrans,choInv,d);
+        dot(covInv, choInvTrans, choInv, d, d, d, d);
         
 //        printf("Covariance Inverse\n");
 //        for(int i = 0; i<d; i++) {
@@ -210,29 +212,29 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
 
 
 
-void mvnpdf(double *dist, float *data, double *means, double *invcov, double cnst, int d, int j, int l) {
+void mvnpdf(double *dist, float *data, double *means, double *vecMinusMean, double *firstProd, double *invcov, double cnst, int n, int d, int j, int l) {
     
     // Compute the probability of a point under a Multivariate Gaussian
     
     double eExp = 0;
-    double *vecMinusMean = (double*)calloc(d, sizeof(double));
-    double *firstprod = (double*)calloc(d*d, sizeof(double));
+    //double *vecMinusMean = (double*)calloc(d, sizeof(double));
+    //double *firstprod = (double*)calloc(d*d, sizeof(double));
     double expval = 0;
     
     for(int i = 0; i < d; i++) {
         vecMinusMean[i] = data[j*d + i] - means[l*d + i];
     }
     
-    dot(firstprod, vecMinusMean, invcov, 1, d, d, d);
-    dot(&expval, firstprod, vecMinusMean, 1, d, d, 1);
+    dot(firstProd, vecMinusMean, invcov, 1, d, d, d);
+    dot(&expval, firstProd, vecMinusMean, 1, d, d, 1);
     
     eExp = exp(-0.5 * expval);
     
     //return (cnst * eExp);
     dist[j] = cnst * eExp;
     
-    free(vecMinusMean);
-    free(firstprod);
+    //free(vecMinusMean);
+    //free(firstprod);
 }
 
 
