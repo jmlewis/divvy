@@ -68,7 +68,7 @@ void *lowerTriangleInverse(double* lowTriInv, double *C, int dims) {
                 sum += C[k * dims + b] * lowTriInv[b * dims + i];
             }
             
-            *(lowTriInv + (k * dims + i)) = (identity[k * dims + i] - sum)/C[k * dims + k];
+            lowTriInv[k * dims + i] = (identity[k * dims + i] - sum)/C[k * dims + k];
             
             sum = 0;    // have to reset sum
             
@@ -92,14 +92,14 @@ void *dot(double *prod, double *A, double *B, int n, int m, int o, int p) {
     // Clear prod first
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < p; j++) {
-            *(prod + (i * p + j)) = 0;
+            prod[i * p + j] = 0;
         }
     }
     
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < p; j++) {
             for(int k = 0; k < m; k++) {
-                *(prod + (i * p + j)) += *(A + (i * m + k)) * *(B + (k * p + j));
+                prod[i * p + j] += A[i * m + k] * B[k * p + j];
             }
         }
     }
@@ -194,10 +194,10 @@ void createpdfs(double* mus, double* covs, double* covInvs, double *constants, i
         constant = sqrt(pow(2 * M_PI, -d) * pow(covDet, -1));
 
         // Add the constant term and the inverse of covariance to the list for all distributions
-        *(constants + i) = constant;
+        constants[i] = constant;
         for(int j = 0; j < d; j++) {
             for(int k = 0; k < d; k++) {
-                *(covInvs + (i*(d*d) + j*d + k)) = *(covInv + (j*d + k));
+                covInvs[i*(d*d) + j*d + k] = covInv[j*d + k];
             }
         }
         
@@ -222,7 +222,7 @@ double mvnpdf(double *dist, double *vec, double *mu, double *invcov, double cnst
     double expval = 0;
     
     for(int i = 0; i < d; i++) {
-        *(vecMinusMean + i) = *(vec + i) - *(mu + i);
+        vecMinusMean[i] = vec[i] - mu[i];
     }
     
     dot(firstprod, vecMinusMean, invcov, 1, d, d, d);

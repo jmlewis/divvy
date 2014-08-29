@@ -95,7 +95,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 }
                 for(int i = 0; i < k; i++) {
                     for(int j = 0; j < d; j++) {
-                        *(means + (i * d + j)) /= *(means_N + i);
+                        means[i * d + j] /= means_N[i];
                     }
                 }
                 printf("K MEANS WORKS!\n");
@@ -115,7 +115,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
         printf("MEANS CREATED\n");
         for(int i = 0; i < k; i++) {
             for(int j = 0; j < d; j++) {
-                printf("%f ", *(means + (i * d + j)));
+                printf("%f ", means[i * d + j]);
             }
             printf("\n");
         }
@@ -294,7 +294,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 
                 // Get the point
                 for(int i = 0; i < d; i++) {
-                    *(datum + i) = *(data + (j * d + i));
+                    datum[i] = data[j * d + i];
                 }
         
                 // Loop through the possible gaussians and compute responsbilities
@@ -302,18 +302,18 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                         
                     // get the mean
                     for(int f = 0; f < d; f++) {
-                        *(mn + f) = *(means + (l * d + f));
+                        mn[f] = means[l * d + f];
                     }
                         
                     // get the inverse of covariance
                     for(int q = 0; q < d; q++) {
                         for(int r = 0; r < d; r++) {
-                            *(icv + (q*d + r)) = *(covInverses + (l*(d*d) + q*d + r));
+                            icv[q*d + r] = covInverses[l*(d*d) + q*d + r];
                         }
                     }
                     
                     // get the constant term
-                    cnst = *(constantTerms + l);
+                    cnst = constantTerms[l];
                     
                     // Compute distance. Since all posteriors are proportional to likelihood*prior, we can assign
                     // cluster color by the numerator (largest prob), even though point is used in all gaussians
@@ -321,12 +321,12 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     mvnpdf(distance, datum, mn, icv, cnst, d, j,l);
                     //*(likelihoods + (j * k + l)) = distance;
                     *distance *= priors[l];
-                    *(responsibilities + (j * k + l)) = *distance;
+                    responsibilities[j * k + l] = *distance;
                     responsibilitySum += *distance;
                     
                     if(*distance > min_distance) {
                         min_distance = *distance;
-                        *(cur_assignment + j) = l;
+                        cur_assignment[j] = l;
                     }
                 }
                 
@@ -334,8 +334,8 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 // Divide each responsibility by the sum of all the responsibilities to get posteriors
                 // Add these to Nk (one value for each gaussian)
                 for(int l = 0; l < k; l++) {
-                    *(forLog + (j * k + l)) = *(responsibilities +(j * k + l));
-                    *(responsibilities + (j * k + l)) /= responsibilitySum;
+                    forLog[j * k + l] = responsibilities[j * k + l];
+                    responsibilities[j * k + l] /= responsibilitySum;
                 }
                 
                 free(distance);
@@ -355,7 +355,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
             // Update Nk - can not be parallelized because it accesses the same data for all j
             for(int i = 0; i < n; i++) {
                 for(int j = 0; j < k; j++) {
-                    *(Nk + j) += *(responsibilities + (i * k + j));
+                    Nk[j] += responsibilities[i * k + j];
                 }
             }
             
@@ -371,11 +371,11 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 // Compute new means - samples times their responsibilities
                 for(int i = 0; i < n; i++) {
                     for(int l = 0; l < d; l++) {
-                        *(means + (j * d + l)) += *(responsibilities + (i * k + j)) * *(data + (i * d + l));
+                        means[j * d + l] += responsibilities[i * k + j] * data[i * d + l];
                     }
                 }
                 for(int l = 0; l < d; l++) {
-                    *(means + (j * d + l)) /= *(Nk + (j));
+                    means[j * d + l] /= Nk[j];
                 }
                 
                 
@@ -384,25 +384,25 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 for(int i = 0; i < n; i++) {
                     // get that point minus the mean
                     for(int l = 0; l < d; l++) {
-                        *(vecMinusMean + l) = *(data + (i * d + l)) - *(means + (j * d + l));
+                        vecMinusMean[l] = data[i * d + l] - means[j * d + l];
                     }
                     // use it to create addition to covariance matrix
                     dot(sample_cov,vecMinusMean,vecMinusMean,d,1,1,d);
                     for(int p = 0; p < d; p++) {
                         for(int q = 0; q < d; q++) {
-                            *(covariances + (j*(d*d) + p*d + q)) += *(responsibilities + (i * k + j)) * *(sample_cov + (p*d + q));
+                            covariances[j*(d*d) + p*d + q] += responsibilities[i * k + j] * sample_cov[p*d + q];
                         }
                     }
                 }
                 // divide entire jth covariance matrix by Nk
                 for(int p = 0; p < d; p++) {
                     for(int q = 0; q < d; q++) {
-                        *(covariances + (j*(d*d) + p*d + q)) /= *(Nk + j);
+                        covariances[j*(d*d) + p*d + q] /= Nk[j];
                     }
                 }
                 
                 // Compute new prior
-                *(priors + j) = *(Nk + j)/n;
+                priors[j] = Nk[j]/n;
                 
                 
                 free(sample_cov);
@@ -418,7 +418,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
             for(int i = 0; i < n; i++) {
                 long double tmplogpart = 0;
                 for(int j = 0; j < k; j++) {
-                    tmplogpart += *(forLog + (i * k + j));
+                    tmplogpart += forLog[i * k + j];
                 }
                 logEstimate += log(tmplogpart);
             }
@@ -432,7 +432,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
             printf("Assignment Changed!\n");
             max_cost = cur_cost;
             for(int i = 0; i < n; i++) {
-                *(assignment + i) = *(cur_assignment + i);
+                assignment[i] = cur_assignment[i];
             }
         }
         
@@ -442,7 +442,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
     }
     
     for(int i = 0; i < n; i++) {
-        printf("%d ",*(assignment + i));
+        printf("%d ", assignment[i]);
     }
     printf("\n\n");
   
