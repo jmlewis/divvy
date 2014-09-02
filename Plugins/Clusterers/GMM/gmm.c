@@ -96,16 +96,18 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 for(int i = 0; i < n; i++) {
                     int assign = init_assignment[i];
                     for(int j = 0; j < d; j++) {
-                        means[assign * d + j] = data[i * d + j];
-                        means_N[i] += 1;
+                        means[assign * d + j] += data[i * d + j];
                     }
+                    means_N[assign] += 1;
                 }
+                printf("Counts\n");
                 for(int i = 0; i < k; i++) {
+                    printf("%d ",means_N[i]);
                     for(int j = 0; j < d; j++) {
                         means[i * d + j] /= means_N[i];
                     }
                 }
-                printf("K MEANS WORKS!\n");
+                printf("\nK MEANS WORKS!\n");
                 break;
                 
             // Random
