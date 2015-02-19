@@ -231,13 +231,13 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 }
                 break;
                 
-            // Random
-            case 2:
-                break;
-                
-            // Uniform
-            case 3:
-                break;
+//            // Random
+//            case 2:
+//                break;
+//                
+//            // Uniform
+//            case 3:
+//                break;
         }
         
         // Priors
