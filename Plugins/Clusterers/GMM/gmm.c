@@ -92,6 +92,10 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
             case 0:
                 // set the assignments using k-means
                 kmeans(data,n,d,k,r,init_assignment);
+                // reset the counts
+                for(int i = 0; i < k; i++) {
+                    means_N[i] = 0;
+                }
                 // loop through the data points, add points to mean, divide by number used
                 for(int i = 0; i < n; i++) {
                     int assign = init_assignment[i];
@@ -438,7 +442,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
         cur_cost = logEstimate;
         
         // If this is the best solution so far, copy it to the output.
-        if (cur_cost > max_cost) {
+        if ((cur_cost > max_cost) && !isnan(cur_cost)) {
             printf("Assignment Changed!\n");
             max_cost = cur_cost;
             for(int i = 0; i < n; i++) {
@@ -446,7 +450,9 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
             }
         }
         
+        printf("Run = %d\n",run);
         printf("Current Cost = %f\n",cur_cost);
+        printf("isnan = %d\n",isnan(cur_cost));
         
 
     }
