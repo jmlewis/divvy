@@ -36,5 +36,5 @@ if __name__=='__main__':
     Usage: python pythontodivvy.py datafile.npy
     """
     npyfile = sys.argv[1]
-    pythondata = np.load(npyfile)
+    pythondata = numpy.load(npyfile)
     pythontodivvy(pythondata,npyfile[:-4])
