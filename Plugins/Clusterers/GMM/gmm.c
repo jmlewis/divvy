@@ -56,12 +56,17 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
     // The queue code is the part that makes it parallel.
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     
+    // Initialize all assignments as zero before learning assignments
+    for(int i = 0; i < n; i++) {
+        assignment[i] = 0;
+    }
     
     // Perform clustering for each restart (run)
     for(int run = 0; run < r; run++) {
 
         oldLogEstimate = FLT_MAX;         // not true, just initialization
         logEstimate = FLT_MAX/2 + th;     // not true, just initialization
+        
         
         for(int i = 0; i < n; i++) {
             init_assignment[i] = 0;
@@ -337,7 +342,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     responsibilities[j * k + l] = distances[j];
                     responsibilitySum += distances[j];
                     
-                    if(distances[j] > min_distance) {
+                    if (distances[j] > min_distance) { // && !isnan(distances[j])) {
                         min_distance = distances[j];
                         cur_assignment[j] = l;
                     }
@@ -356,6 +361,12 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 //free(mn);
                 //free(icv);
             });
+            
+            printf("Current Assignment!\n");
+            for(int i = 0; i < n; i++) {
+                printf("%d ", cur_assignment[i]);
+            }
+            printf("\n\n");
             
 //            printf("Responsbilities!\n");
 //            for(int i = 0; i < n; i++) {
@@ -454,13 +465,16 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
         printf("Current Cost = %f\n",cur_cost);
         printf("isnan = %d\n",isnan(cur_cost));
         
+        for(int i = 0; i < n; i++) {
+            printf("%d ", assignment[i]);
+        }
+        printf("\n\n");
 
     }
     
-    for(int i = 0; i < n; i++) {
-        printf("%d ", assignment[i]);
-    }
-    printf("\n\n");
+
+    
+    printf("%f\n", cur_cost);
   
     free(tmp_cov);
     free(means);
