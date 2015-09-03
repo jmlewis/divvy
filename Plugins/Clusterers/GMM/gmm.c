@@ -13,9 +13,8 @@
 #include "gmm.h"
 
 // A parallel gmm implementation.
-// One thing that I want to improve was to create different ways to initialize the first points.
-// The UI interface could choose the initialization method, pass it as a parameter to this function,
-// and the initialization code could run differently depending on the parameter value.
+// One thing that I want to improve was to create more ways to initialize the first points.
+
 void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned int r, float th, unsigned int meanInit, unsigned int covInit, int *assignment) {
   
     // Parameters for each Multivariate Gaussian Distribution
@@ -56,7 +55,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
     // The queue code is the part that makes it parallel.
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     
-    // Initialize all assignments as zero before learning assignments
+    // Initialize all assignments as zero before learning assignments - ensures does not crash when too many clusters chosen
     for(int i = 0; i < n; i++) {
         assignment[i] = 0;
     }
@@ -89,8 +88,6 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
         // If the covariance is computed from All, then priors are equal
         // Otherwise it is calculated from the number of points used in each covariance matrix
         
-        printf("Mean = %d, Covariance = %d \n", meanInit, covInit);
-        
         switch(meanInit) {
                 
             // K-means
@@ -109,14 +106,11 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     }
                     means_N[assign] += 1;
                 }
-                printf("Counts\n");
                 for(int i = 0; i < k; i++) {
-                    printf("%d ",means_N[i]);
                     for(int j = 0; j < d; j++) {
                         means[i * d + j] /= means_N[i];
                     }
                 }
-                printf("\nK MEANS WORKS!\n");
                 break;
                 
             // Random
@@ -128,14 +122,6 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     }
                 }
                 break;
-        }
-        
-        printf("MEANS CREATED\n");
-        for(int i = 0; i < k; i++) {
-            for(int j = 0; j < d; j++) {
-                printf("%f ", means[i * d + j]);
-            }
-            printf("\n");
         }
         
         switch(covInit) {
@@ -166,36 +152,17 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                         }
                     }
                 });
-//                printf("Assignments\n");
-//                for(int i = 0; i < n; i++) {
-//                    printf("%d = %d\n", i, assignment[i]);
-//                }
-                
-                // Determine number of points in each covariance matrix
-//                for(int i = 0; i < n; i++) {
-//                    int j = *(init_assignment + i);
-//                    *(covs_N + j) += 1;
-//                }
+
                 // Determine indices for points in cluster and create covariances
-//                printf("Number of points: %d\n", n);
                 for(int i = 0; i < k; i++) {
                     
-//                    int *indices = (int*)malloc(covs_N[i]*sizeof(int));
                     int count = 0;
-//                    // Determine indices
+                    // Determine indices
                     for(int j = 0; j < n; j++) {
                         if(init_assignment[j]==i) {
-//                            indices[count] = j;
                             count++;
                         }
                     }
-//                    printf("Count = %d\n", count);
-//                    printf("Indices:\n");
-//                    for(int jeremy = 0; jeremy < covs_N[i]; jeremy++) {
-//                        printf("%d = %d\n",jeremy,indices[jeremy]);
-//                    }
-                    
-                    printf("Computing covar!\n");
                     
                     // Use the indices to create covariances matrix
                     covar_indices(data,init_assignment,i,n,d,tmp_cov);
@@ -206,21 +173,18 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                         }
                     }
                     
-                    printf("Covariance %d\n",i);
-                    for(int l = 0; l < d; l++) {
-                        for(int m = 0; m < d; m++) {
-                            printf("%f ", covariances[i*(d*d) + l*d + m] = tmp_cov[l*d + m]);
-                        }
-                        printf("\n");
-                    }
-                    printf("\n");
+//                    for(int l = 0; l < d; l++) {
+//                        for(int m = 0; m < d; m++) {
+//                            printf("%f ", covariances[i*(d*d) + l*d + m] = tmp_cov[l*d + m]);
+//                        }
+//                        printf("\n");
+//                    }
+//                    printf("\n");
                     
 //                    free(indices);
                     covs_N[i] = count;
-                    printf("Dist %d number of indices = %f\n", i,covs_N[i]);
                 }
                 
-                    
                 break;
                 
             // All
@@ -252,17 +216,10 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
         // Priors
         for(int i = 0; i < k; i++) {
             priors[i] = covs_N[i] / n;
-            printf("%f\n",priors[i]);
         }
         
-        
-        
-        printf("Starting E-M step\n");
-    
         // Until the threshold is reached, perform E-M to update means and covariances
         while(fabs(logEstimate - oldLogEstimate) > th) {
-            
-            //printf("Error = %f \n",fabs(logEstimate - oldLogEstimate));
             
             // Zero out certain arrays
             for(int i = 0; i < k; i++) {
@@ -272,25 +229,6 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
             // Recompute the pdfs for each multivariate gaussian
             // function doesn't return anything but it sets covInverses and constantTerms
             createpdfs(means, covariances, covInverses, constantTerms, k, d);
-            
-            // Printing things out to make sure pdf creation worked
-            printf("Means!\n");
-            for(int i =  0; i<k; i++) {
-                for(int j = 0; j<d; j++) {
-                    printf("%f ", means[i*d+j]);
-                }
-                printf("\n");
-            }
-            
-            printf("Inverse of Covariance\n");
-            for(int i = 0; i<d; i++) {
-                for(int j = 0; j<d; j++) {
-                    printf("%f ", covInverses[i*d+j]);
-                }
-                printf("\n");
-            }
-        
-            printf("E-step!\n");
             
             // E-STEP (compute responsibilities)
             //
@@ -302,32 +240,11 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
 
             dispatch_apply(n, queue, ^(size_t j) {
                 double min_distance = DBL_MIN;
-                
-                //double *datum = (double*)calloc(d, sizeof(double));
-                //double *mn = (double*)calloc(d, sizeof(double));
-                //double *icv = (double*)calloc(d * d, sizeof(double));
                 double cnst;
                 double responsibilitySum = 0;
-                
-                // Get the point
-//                for(int i = 0; i < d; i++) {
-//                    datum[i] = data[j * d + i];
-//                }
         
                 // Loop through the possible gaussians and compute responsbilities
                 for(int l = 0; l < k; l++) {
-                        
-                    // get the mean
-//                    for(int f = 0; f < d; f++) {
-//                        mn[f] = means[l * d + f];
-//                    }
-                    
-                    // get the inverse of covariance
-//                    for(int q = 0; q < d; q++) {
-//                        for(int r = 0; r < d; r++) {
-//                            icv[q*d + r] = covInverses[l*(d*d) + q*d + r];
-//                        }
-//                    }
                     
                     // get the constant term
                     cnst = constantTerms[l];
@@ -348,33 +265,13 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                     }
                 }
                 
-                
                 // Divide each responsibility by the sum of all the responsibilities to get posteriors
                 // Add these to Nk (one value for each gaussian)
                 for(int l = 0; l < k; l++) {
                     forLog[j * k + l] = responsibilities[j * k + l];
                     responsibilities[j * k + l] /= responsibilitySum;
                 }
-                
-                //free(distance);
-                //free(datum);
-                //free(mn);
-                //free(icv);
             });
-            
-            printf("Current Assignment!\n");
-            for(int i = 0; i < n; i++) {
-                printf("%d ", cur_assignment[i]);
-            }
-            printf("\n\n");
-            
-//            printf("Responsbilities!\n");
-//            for(int i = 0; i < n; i++) {
-//                for(int j = 0; j < k; j++) {
-//                    printf("%f ",responsibilities[i * k + j]);
-//                }
-//                printf("\n");
-//            }
             
             // Update Nk - can not be parallelized because it accesses the same data for all j
             for(int i = 0; i < n; i++) {
@@ -383,14 +280,8 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 }
             }
             
-            printf("M-step!\n");
-            
             // M-STEP (recompute gaussians)
             dispatch_apply(k, queue, ^(size_t j) {
-
-                //double *sample_cov = (double*)calloc(d * d, sizeof(double));
-                //double *vecMinusMean = (double*)calloc(d, sizeof(double));
-                
                 
                 // Compute new means - samples times their responsibilities
                 for(int i = 0; i < n; i++) {
@@ -401,7 +292,6 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 for(int l = 0; l < d; l++) {
                     means[j * d + l] /= Nk[j];
                 }
-                
                 
                 // Compute new covariances
                 // for each data point
@@ -428,10 +318,7 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
                 
                 // Compute new prior
                 priors[j] = Nk[j]/n;
-                
-                
-                //free(sample_cov);
-                //free(vecMinusMean);
+
             });
             
         
@@ -454,27 +341,12 @@ void gmm(float *data, unsigned int n, unsigned int d, unsigned int k, unsigned i
         
         // If this is the best solution so far, copy it to the output.
         if ((cur_cost > max_cost) && !isnan(cur_cost)) {
-            printf("Assignment Changed!\n");
             max_cost = cur_cost;
             for(int i = 0; i < n; i++) {
                 assignment[i] = cur_assignment[i];
             }
         }
-        
-        printf("Run = %d\n",run);
-        printf("Current Cost = %f\n",cur_cost);
-        printf("isnan = %d\n",isnan(cur_cost));
-        
-        for(int i = 0; i < n; i++) {
-            printf("%d ", assignment[i]);
-        }
-        printf("\n\n");
-
     }
-    
-
-    
-    printf("%f\n", cur_cost);
   
     free(tmp_cov);
     free(means);
